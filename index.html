@@ -15,21 +15,21 @@
       display: flex;
     }
     .sidebar {
-      width: 140px;
+      width: 160px;
       background: #111;
-      padding: 20px;
-      border-left: 2px solid #333;
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
     .prizes {
       list-style: none;
       padding: 0;
+      font-size: 14px;
     }
     .prizes li {
-      padding: 8px;
-      margin: 4px 0;
+      padding: 6px;
+      margin: 3px 0;
       background-color: #222;
       border-radius: 5px;
       text-align: center;
@@ -40,205 +40,105 @@
       color: #000 !important;
       font-weight: bold;
     }
-    .results {
-      margin-top: 20px;
-      max-height: 300px;
-      overflow-y: auto;
-      font-size: 14px;
-    }
     .container {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
       padding: 20px;
+    }
+    .question-box {
+      margin-top: 30px;
       text-align: center;
     }
-    .start-screen, .quiz-screen, .end-screen {
-      display: none;
+    .question-box h2 {
+      font-size: 26px;
+      margin-bottom: 20px;
     }
-    .active {
-      display: block;
-    }
-    .question {
-      font-size: 24px;
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
       margin: 20px 0;
     }
     .option {
       background-color: #222;
-      border: 2px solid #444;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 10px 0;
+      color: #fff;
+      border: 2px solid #00bfff;
+      border-radius: 25px;
+      padding: 15px 40px;
+      font-size: 18px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: 0.3s;
     }
     .option:hover {
-      background-color: #333;
+      background-color: #00bfff;
+      color: #000;
     }
-    .correct {
-      background-color: green;
+    .helpers {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
     }
-    .wrong {
-      background-color: red;
-    }
-    .btn {
+    .helper-btn {
+      background-color: #222;
+      border: 2px solid #444;
+      border-radius: 10px;
+      color: #fff;
       padding: 10px 20px;
-      background-color: #ffd700;
-      border: none;
-      border-radius: 5px;
       cursor: pointer;
-      font-size: 18px;
     }
-    img.logo {
-      width: 140px;
-      margin: 20px 0;
+    .helper-btn:hover {
+      background-color: #444;
+    }
+    .emoji-box {
+      font-size: 80px;
+      margin: 20px;
     }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <ul class="prizes" id="prizeList"></ul>
-    <div class="results">
-      <h4>نتائج المشاركين</h4>
-      <ul id="resultsList"></ul>
-    </div>
+    <ul class="prizes" id="prizeList">
+      <li>1,000,000</li>
+      <li>500,000</li>
+      <li>250,000</li>
+      <li>125,000</li>
+      <li>64,000</li>
+      <li>32,000</li>
+      <li>16,000</li>
+      <li>8,000</li>
+      <li>4,000</li>
+      <li>2,000</li>
+      <li>1,000</li>
+      <li>500</li>
+      <li>300</li>
+      <li>200</li>
+      <li>100</li>
+    </ul>
   </div>
 
   <div class="container">
-    <div id="startScreen" class="start-screen active">
-      <img src="https://via.placeholder.com/200x200.png?text=شعار+الأثير" class="logo">
-      <h2>مرحبًا بك في مسابقة الأثير!</h2>
-      <input type="text" id="playerName" placeholder="أدخل اسمك" style="padding:10px; font-size:16px">
-      <br><br>
-      <button class="btn" onclick="startGame()">ابدأ اللعب</button>
+    <div class="helpers">
+      <button class="helper-btn">50 : 50</button>
+      <button class="helper-btn">📞</button>
+      <button class="helper-btn">👥</button>
     </div>
-
-    <div id="quizScreen" class="quiz-screen">
-      <div id="questionBox" class="question"></div>
-      <div id="optionsBox"></div>
-      <button id="helpBtn" class="btn" onclick="useHelp()">🧩 حذف إجابة واحدة</button>
+    <div class="emoji-box">
+      🤔
     </div>
-
-    <div id="endScreen" class="end-screen">
-      <h2>انتهت اللعبة!</h2>
-      <p id="finalMessage"></p>
-      <button class="btn" onclick="restartGame()">العودة للبداية</button>
+    <div class="question-box">
+      <h2>من هو مكتشف الجاذبية الأرضية؟</h2>
+      <div class="options">
+        <div class="option">أ - نيوتن</div>
+        <div class="option">ب - أفلاطون</div>
+        <div class="option">ج - أديسون</div>
+        <div class="option">د - الحسن بن الهيثم</div>
+      </div>
     </div>
   </div>
-
-  <script>
-    const questions = [
-      { q: "ما هي عاصمة تركيا؟", options: ["إسطنبول", "أنقرة", "إزمير", "بورصة"], correct: 1 },
-      { q: "كم عدد كواكب المجموعة الشمسية؟", options: ["7", "8", "9", "10"], correct: 1 },
-      { q: "ما هو الحيوان الذي لا يصدر صوتًا؟", options: ["السلحفاة", "الحوت", "الثعبان", "النملة"], correct: 3 },
-      { q: "ما هي لغة البرمجة التي تستخدم لتصميم المواقع؟", options: ["Python", "C++", "HTML", "Java"], correct: 2 }
-    ];
-
-    const prizeAmounts = [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000];
-    let currentIndex = 0;
-    let helpUsed = false;
-    let playerName = "";
-
-    function buildPrizeList() {
-      const prizeListEl = document.getElementById("prizeList");
-      prizeListEl.innerHTML = "";
-      prizeAmounts.slice().reverse().forEach((amount, index) => {
-        const li = document.createElement("li");
-        li.innerText = `أثير ${amount}`;
-        li.id = `prize-${prizeAmounts.length - 1 - index}`;
-        prizeListEl.appendChild(li);
-      });
-    }
-
-    function highlightPrize(index) {
-      prizeAmounts.forEach((_, i) => {
-        const li = document.getElementById(`prize-${i}`);
-        if (li) li.classList.remove("current-prize");
-      });
-      const li = document.getElementById(`prize-${index}`);
-      if (li) li.classList.add("current-prize");
-    }
-
-    function startGame() {
-      playerName = document.getElementById("playerName").value;
-      if (!playerName) return alert("الرجاء إدخال اسمك!");
-      document.getElementById("startScreen").classList.remove("active");
-      document.getElementById("quizScreen").classList.add("active");
-      buildPrizeList();
-      showQuestion();
-      highlightPrize(currentIndex);
-    }
-
-    function showQuestion() {
-      const q = questions[currentIndex];
-      document.getElementById("questionBox").innerText = `السؤال ${currentIndex + 1}: ${q.q}`;
-      const optionsBox = document.getElementById("optionsBox");
-      optionsBox.innerHTML = "";
-      q.options.forEach((opt, i) => {
-        const div = document.createElement("div");
-        div.className = "option";
-        div.innerText = opt;
-        div.onclick = () => checkAnswer(i);
-        optionsBox.appendChild(div);
-      });
-    }
-
-    function checkAnswer(selectedIndex) {
-      const q = questions[currentIndex];
-      const options = document.querySelectorAll(".option");
-      if (selectedIndex === q.correct) {
-        options[selectedIndex].classList.add("correct");
-        currentIndex++;
-        highlightPrize(currentIndex);
-        setTimeout(() => {
-          if (currentIndex < questions.length) {
-            showQuestion();
-          } else {
-            endGame(true);
-          }
-        }, 1000);
-      } else {
-        options[selectedIndex].classList.add("wrong");
-        endGame(false);
-      }
-    }
-
-    function endGame(success) {
-      document.getElementById("quizScreen").classList.remove("active");
-      document.getElementById("endScreen").classList.add("active");
-      const resultMsg = success
-        ? `🎉 مبروك يا ${playerName}! أجبت على جميع الأسئلة.`
-        : `😢 للأسف يا ${playerName}، إجابتك خاطئة.`;
-      document.getElementById("finalMessage").innerText = resultMsg;
-      addResult(playerName, currentIndex);
-    }
-
-    function restartGame() {
-      currentIndex = 0;
-      helpUsed = false;
-      document.getElementById("endScreen").classList.remove("active");
-      document.getElementById("startScreen").classList.add("active");
-    }
-
-    function useHelp() {
-      if (helpUsed) return;
-      helpUsed = true;
-      const q = questions[currentIndex];
-      const options = document.querySelectorAll(".option");
-      let removed = 0;
-      for (let i = 0; i < options.length; i++) {
-        if (i !== q.correct && removed < 2) {
-          options[i].style.display = "none";
-          removed++;
-        }
-      }
-      document.getElementById("helpBtn").disabled = true;
-    }
-
-    function addResult(name, level) {
-      const ul = document.getElementById("resultsList");
-      const li = document.createElement("li");
-      li.innerText = `${name} - وصل إلى أثير ${prizeAmounts[level - 1] || 0}`;
-      ul.appendChild(li);
-    }
-  </script>
 </body>
 </html>
