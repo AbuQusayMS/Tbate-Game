@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>من سيربح الأثير؟</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #000; color: #fff; margin: 0; padding: 0; display: flex; }
+    .sidebar { width: 160px; background: #111; padding: 10px; display: flex; flex-direction: column; justify-content: flex-start; }
+    .prizes { list-style: none; padding: 0; font-size: 14px; }
+    .prizes li { padding: 6px; margin: 3px 0; background-color: #222; border-radius: 5px; text-align: center; color: #ffd700; }
+    .current-prize { background-color: #ffd700 !important; color: #000 !important; font-weight: bold; }
+    .container { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 20px; }
+    .question-box { margin-top: 30px; text-align: center; }
+    .question-box h2 { font-size: 26px; margin-bottom: 20px; }
+    .options { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 20px 0; }
+    .option { background-color: #222; color: #fff; border: 2px solid #00bfff; border-radius: 25px; padding: 15px 40px; font-size: 18px; cursor: pointer; transition: 0.3s; }
+    .option:hover { background-color: #00bfff; color: #000; }
+    .correct { background-color: green !important; }
+    .wrong { background-color: red !important; }
+    .helpers { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
+    .helper-btn { background-color: #222; border: 2px solid #444; border-radius: 10px; color: #fff; padding: 10px 20px; cursor: pointer; }
+    .emoji-box { font-size: 80px; margin: 20px; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <ul class="prizes" id="prizeList"></ul>
+  </div>
+
+  <div class="container">
+    <div class="helpers">
+      <button class="helper-btn" id="fiftyBtn">50 : 50</button>
+    </div>
+    <div class="emoji-box">🤔</div>
+    <div class="question-box">
+      <h2 id="questionText">جاري تحميل السؤال...</h2>
+      <div class="options" id="optionsBox"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      { q: "ما هي عاصمة تركيا؟", options: ["إسطنبول", "أنقرة", "إزمير", "بورصة"], correct: 1 },
+      { q: "كم عدد كواكب المجموعة الشمسية؟", options: ["7", "8", "9", "10"], correct: 1 },
+      { q: "ما هو الحيوان الذي لا يصدر صوتًا؟", options: ["السلحفاة", "الحوت", "الثعبان", "النملة"], correct: 3 },
+      { q: "ما هي لغة البرمجة التي تستخدم لتصميم المواقع؟", options: ["Python", "C++", "HTML", "Java"], correct: 2 },
+      { q: "من هو مخترع المصباح الكهربائي؟", options: ["أديسون", "تيسلا", "فرانكلين", "باستور"], correct: 0 },
+      { q: "أين تقع الأهرامات؟", options: ["العراق", "السعودية", "مصر", "الأردن"], correct: 2 },
+      { q: "كم عدد أركان الإسلام؟", options: ["4", "5", "6", "3"], correct: 1 },
+      { q: "ما هو الكوكب الأحمر؟", options: ["زحل", "المشتري", "المريخ", "الأرض"], correct: 2 },
+      { q: "من أول رئيس لأمريكا؟", options: ["لينكولن", "جيفرسون", "واشنطن", "أوباما"], correct: 2 },
+      { q: "كم عدد أحرف اللغة العربية؟", options: ["28", "29", "30", "27"], correct: 0 },
+      { q: "ما اسم أطول نهر في العالم؟", options: ["الأمازون", "الدانوب", "النيل", "الفرات"], correct: 2 },
+      { q: "ما هو الحيوان الذي يُلقب بسفينة الصحراء؟", options: ["الحمار", "الجمل", "الثور", "الحصان"], correct: 1 },
+      { q: "في أي قارة تقع البرازيل؟", options: ["أمريكا الشمالية", "آسيا", "أفريقيا", "أمريكا الجنوبية"], correct: 3 },
+      { q: "من هو النبي الذي ابتلعه الحوت؟", options: ["موسى", "يونس", "عيسى", "محمد"], correct: 1 },
+      { q: "كم عدد القارات؟", options: ["5", "6", "7", "8"], correct: 2 },
+      { q: "ما هي عملة تركيا؟", options: ["ريال", "دولار", "ليرة", "دينار"], correct: 2 },
+      { q: "من هو مؤسس شركة آبل؟", options: ["جيف بيزوس", "إيلون ماسك", "بيل غيتس", "ستيف جوبز"], correct: 3 },
+      { q: "من هو مكتشف الجاذبية؟", options: ["نيوتن", "أينشتاين", "بلانك", "غاليلو"], correct: 0 },
+      { q: "أين يقع برج إيفل؟", options: ["برلين", "روما", "باريس", "لندن"], correct: 2 },
+      { q: "ما هو أطول سور في العالم؟", options: ["سور الصين", "سور المكسيك", "سور روما", "سور الأندلس"], correct: 0 },
+      { q: "كم عدد أشهر السنة؟", options: ["10", "11", "12", "13"], correct: 2 }
+    ];
+
+    const prizes = [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000];
+    let currentQuestion = 0;
+
+    const questionText = document.getElementById("questionText");
+    const optionsBox = document.getElementById("optionsBox");
+    const prizeList = document.getElementById("prizeList");
+
+    function renderPrizes() {
+      prizeList.innerHTML = "";
+      prizes.slice().reverse().forEach((amount, i) => {
+        const index = prizes.length - 1 - i;
+        const li = document.createElement("li");
+        li.textContent = `أثير ${amount}`;
+        li.id = `prize-${index}`;
+        prizeList.appendChild(li);
+      });
+    }
+
+    function highlightPrize(index) {
+      prizes.forEach((_, i) => {
+        const li = document.getElementById(`prize-${i}`);
+        if (li) li.classList.remove("current-prize");
+      });
+      const li = document.getElementById(`prize-${index}`);
+      if (li) li.classList.add("current-prize");
+    }
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionText.textContent = `السؤال ${currentQuestion + 1}: ${q.q}`;
+      optionsBox.innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(i);
+        optionsBox.appendChild(btn);
+      });
+      highlightPrize(currentQuestion);
+    }
+
+    function checkAnswer(index) {
+      const correct = questions[currentQuestion].correct;
+      const options = document.querySelectorAll(".option");
+      options.forEach((opt, i) => {
+        opt.style.pointerEvents = "none";
+        if (i === correct) opt.classList.add("correct");
+        if (i === index && i !== correct) opt.classList.add("wrong");
+      });
+      setTimeout(() => {
+        if (index === correct) {
+          currentQuestion++;
+          if (currentQuestion < questions.length) {
+            showQuestion();
+          } else {
+            alert("🎉 مبروك! أنهيت جميع الأسئلة.");
+          }
+        } else {
+          alert("❌ إجابة خاطئة. انتهت اللعبة.");
+        }
+      }, 1000);
+    }
+
+    renderPrizes();
+    showQuestion();
+  </script>
+</body>
+</html>
