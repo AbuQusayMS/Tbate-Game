@@ -128,8 +128,28 @@
       }, 1000);
     }
 
-    renderPrizes();
-    showQuestion();
+let helpUsed = false;
+
+document.getElementById("fiftyBtn").onclick = () => {
+  if (helpUsed) return;
+  helpUsed = true;
+
+  const q = questions[currentQuestion];
+  const wrongIndexes = q.options.map((_, i) => i).filter(i => i !== q.correct);
+
+  const shuffled = wrongIndexes.sort(() => 0.5 - Math.random());
+  const toRemove = shuffled.slice(0, 2);
+
+  const options = document.querySelectorAll(".option");
+  toRemove.forEach(i => {
+    options[i].style.visibility = "hidden";
+  });
+
+  document.getElementById("fiftyBtn").disabled = true;
+};
+
+renderPrizes();
+showQuestion();
   </script>
 </body>
 </html>
