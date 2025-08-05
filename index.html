@@ -42,6 +42,13 @@
   </div>
 
   <script>
+    window.addEventListener('click', () => {
+  document.getElementById("soundClick").play().then(() => {
+    document.getElementById("soundClick").pause();
+    document.getElementById("soundClick").currentTime = 0;
+  });
+}, { once: true });
+    
     const questions = [
       { q: "ما هي عاصمة تركيا؟", options: ["إسطنبول", "أنقرة", "إزمير", "بورصة"], correct: 1 },
       { q: "كم عدد كواكب المجموعة الشمسية؟", options: ["7", "8", "9", "10"], correct: 1 },
@@ -107,26 +114,33 @@
       highlightPrize(currentQuestion);
     }
 
-    function checkAnswer(index) {
-      const correct = questions[currentQuestion].correct;
-      const options = document.querySelectorAll(".option");
-      options.forEach((opt, i) => {
-        opt.style.pointerEvents = "none";
-        if (i === correct) opt.classList.add("correct");
-        if (i === index && i !== correct) opt.classList.add("wrong");
-      });
+function checkAnswer(index) {
+  const correct = questions[currentQuestion].correct;
+  const options = document.querySelectorAll(".option");
+
+  document.getElementById("soundClick").play();
+
+  options.forEach((opt, i) => {
+    opt.style.pointerEvents = "none";
+    if (i === correct) opt.classList.add("correct");
+    if (i === index && i !== correct) opt.classList.add("wrong");
+  });
+
+  document.getElementById("soundSuspense").play();
+
       setTimeout(() => {
-        if (index === correct) {
-          currentQuestion++;
-          if (currentQuestion < questions.length) {
-            showQuestion();
-          } else {
-            alert("🎉 مبروك! أنهيت جميع الأسئلة.");
-          }
-        } else {
-          alert("❌ إجابة خاطئة. انتهت اللعبة.");
-        }
-      }, 1000);
+if (index === correct) {
+  document.getElementById("soundCorrect").play();
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    alert("🎉 مبروك! أنهيت جميع الأسئلة.");
+  }
+} else {
+  document.getElementById("soundWrong").play();
+  alert("❌ إجابة خاطئة. انتهت اللعبة.");
+}      }, 1000);
     }
 
 let helpUsed = false;
@@ -152,5 +166,11 @@ document.getElementById("fiftyBtn").onclick = () => {
 renderPrizes();
 showQuestion();
   </script>
+
+<audio id="soundClick" src="sounds/click.mp3"></audio>
+<audio id="soundCorrect" src="sounds/correct.mp3"></audio>
+<audio id="soundWrong" src="sounds/wrong.mp3"></audio>
+<audio id="soundSuspense" src="sounds/suspense.mp3"></audio>
+  
 </body>
 </html>
