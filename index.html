@@ -25,6 +25,21 @@
   </style>
 </head>
 <body>
+<!-- شاشة البداية -->
+<div id="startScreen" style="position:fixed;z-index:1000;inset:0;background:black;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+  <h1 style="font-size:32px;margin-bottom:20px">مرحباً بك في لعبة "من سيربح الأثير؟"</h1>
+  <button onclick="startEntry()" style="padding:10px 20px;font-size:18px;cursor:pointer">اضغط للمشاركة</button>
+</div>
+
+<!-- إدخال الاسم -->
+<div id="nameEntry" style="display:none;flex-direction:column;align-items:center;margin-top:50px;">
+  <input id="playerName" type="text" placeholder="أدخل اسمك" style="padding:10px;font-size:18px;" />
+  <button onclick="submitName()" style="margin-top:10px;padding:10px 20px;font-size:18px;cursor:pointer;">ابدأ اللعبة</button>
+  <div style="margin-top:20px;text-align:right;">
+    <h3>الأسماء المسموح بها:</h3>
+    <ul style="list-style:none;padding:0;font-size:16px;" id="allowedNamesList"></ul>
+  </div>
+</div>
   <div class="sidebar">
     <ul class="prizes" id="prizeList"></ul>
   </div>
@@ -42,12 +57,6 @@
   </div>
 
   <script>
-    window.addEventListener('click', () => {
-  document.getElementById("soundClick").play().then(() => {
-    document.getElementById("soundClick").pause();
-    document.getElementById("soundClick").currentTime = 0;
-  });
-}, { once: true });
     
     const questions = [
       { q: "ما هي عاصمة تركيا؟", options: ["إسطنبول", "أنقرة", "إزمير", "بورصة"], correct: 1 },
@@ -127,19 +136,26 @@ function checkAnswer(index) {
   });
   
 
+setTimeout(() => {
+  if (index === correct) {
+    document.getElementById("soundCorrect").play();
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
       setTimeout(() => {
-if (index === correct) {
-  document.getElementById("soundCorrect").play();
-  currentQuestion++;
-  if (currentQuestion < questions.length) {
-    showQuestion();
+        showQuestion();
+      }, 1000); // انتظر انتهاء الصوت
+    } else {
+      setTimeout(() => {
+        alert("🎉 مبروك! أنهيت جميع الأسئلة.");
+      }, 1000); // انتظر قبل عرض التهنئة
+    }
   } else {
-    alert("🎉 مبروك! أنهيت جميع الأسئلة.");
+    document.getElementById("soundWrong").play();
+    setTimeout(() => {
+      alert("❌ إجابة خاطئة. انتهت اللعبة.");
+    }, 1000); // انتظر قبل عرض الخطأ
   }
-} else {
-  document.getElementById("soundWrong").play();
-  alert("❌ إجابة خاطئة. انتهت اللعبة.");
-}      }, 1000);
+}, 1000);
     }
 
 let helpUsed = false;
@@ -162,8 +178,52 @@ document.getElementById("fiftyBtn").onclick = () => {
   document.getElementById("fiftyBtn").disabled = true;
 };
 
-renderPrizes();
-showQuestion();
+    // قائمة الأسماء المسموح بها
+const allowedNames = ["مصطفى", "قصي", "أحمد", "سارة"]; // غيّرها حسب رغبتك
+
+function startEntry() {
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("nameEntry").style.display = "flex";
+  renderAllowedNames();
+}
+
+function renderAllowedNames() {
+  const list = document.getElementById("allowedNamesList");
+  list.innerHTML = "";
+  allowedNames.forEach(name => {
+    const li = document.createElement("li");
+    li.textContent = "• " + name;
+    list.appendChild(li);
+  });
+}
+
+function submitName() {
+  const name = document.getElementById("playerName").value.trim();
+  if (allowedNames.includes(name)) {
+    document.getElementById("nameEntry").style.display = "none";
+    document.querySelector(".sidebar").style.display = "flex";
+    document.querySelector(".container").style.display = "flex";
+    renderPrizes();
+    showQuestion();
+
+  } else {
+    alert("❌ هذا الاسم غير مسموح به.");
+  }
+}
+
+// عند تحميل الصفحة، اخفِ كل شيء غير شاشة البداية
+window.onload = () => {
+  document.querySelector(".sidebar").style.display = "none";
+  document.querySelector(".container").style.display = "none";
+};
+
+window.addEventListener('click', () => {
+  document.getElementById("soundClick").play().then(() => {
+    document.getElementById("soundClick").pause();
+    document.getElementById("soundClick").currentTime = 0;
+  });
+}, { once: true });
+    
   </script>
 
 <audio id="soundClick" src="click.mp3"></audio>
