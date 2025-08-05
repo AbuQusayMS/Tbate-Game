@@ -125,8 +125,7 @@ function checkAnswer(index) {
     if (i === correct) opt.classList.add("correct");
     if (i === index && i !== correct) opt.classList.add("wrong");
   });
-
-  document.getElementById("soundSuspense").play();
+  
 
       setTimeout(() => {
 if (index === correct) {
@@ -170,7 +169,6 @@ showQuestion();
 <audio id="soundClick" src="click.mp3"></audio>
 <audio id="soundCorrect" src="correct.mp3"></audio>
 <audio id="soundWrong" src="wrong.mp3"></audio>
-<audio id="soundSuspense" src="suspense.mp3"></audio>
   
 </body>
 </html>
