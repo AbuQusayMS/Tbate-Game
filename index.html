@@ -51,7 +51,11 @@
     </div>
     <div class="emoji-box"></div>
     <div class="question-box">
-      <h2 id="questionText">جاري تحميل السؤال...</h2>
+  <h2 id="questionText">جاري تحميل السؤال...</h2>
+  <div class="options" id="optionsBox"></div>
+  <div id="retryBox" style="display:none; margin-top: 20px;">
+    <button onclick="retryGame()" style="padding:10px 20px; font-size:18px; cursor:pointer;">🔄 إعادة المحاولة</button>
+  </div>
       <div class="options" id="optionsBox"></div>
     </div>
   </div>
@@ -147,12 +151,14 @@ setTimeout(() => {
     } else {
       setTimeout(() => {
         alert("🎉 مبروك! أنهيت جميع الأسئلة.");
+document.getElementById("retryBox").style.display = "block";
       }, 1000); // انتظر قبل عرض التهنئة
     }
   } else {
     document.getElementById("soundWrong").play();
     setTimeout(() => {
       alert("❌ إجابة خاطئة. انتهت اللعبة.");
+document.getElementById("retryBox").style.display = "block";
     }, 1000); // انتظر قبل عرض الخطأ
   }
 }, 1000);
@@ -223,6 +229,16 @@ window.addEventListener('click', () => {
     document.getElementById("soundClick").currentTime = 0;
   });
 }, { once: true });
+
+    function retryGame() {
+  currentQuestion = 0;
+  helpUsed = false;
+  document.getElementById("fiftyBtn").disabled = false;
+  document.querySelectorAll(".option").forEach(opt => opt.style.visibility = "visible");
+  document.getElementById("retryBox").style.display = "none";
+  renderPrizes();
+  showQuestion();
+}
     
   </script>
 
