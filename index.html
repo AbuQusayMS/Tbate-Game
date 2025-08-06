@@ -6,13 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>من سيربح اللقب؟</title>
   <style>
-   body {
+  body {
   font-family: Arial, sans-serif;
   background-color: #000;
   color: #fff;
   margin: 0;
   padding: 0;
   display: flex;
+  flex-direction: row-reverse; /* هذا هو المفتاح! */
   direction: rtl;
   text-align: right;
 }
@@ -51,7 +52,7 @@
   <!-- خانة الاسم على اليمين -->
   <div style="flex:1; display:flex; flex-direction:column; align-items:flex-end;">
     <input id="playerName" type="text" placeholder="أدخل اسمك"
- style="padding:10px;font-size:18px; text-align:right; width:250px;" />
+ style="padding:10px;font-size:18px; text-align:right; width:180px;" />
     <button onclick="submitName()" style="margin-top:10px;padding:10px 20px;font-size:18px;cursor:pointer;">ابدأ اللعبة</button>
   </div>
 
