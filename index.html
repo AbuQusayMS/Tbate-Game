@@ -7,8 +7,14 @@
   <title>من سيربح اللقب؟</title>
   <style>
     body { font-family: Arial, sans-serif; background-color: #000; color: #fff; margin: 0; padding: 0; display: flex; }
-    .sidebar { width: 160px; background: #111; padding: 10px; display: flex; flex-direction: column; justify-content: flex-start; }
-    .prizes { list-style: none; padding: 0; font-size: 14px; }
+    .sidebar { width: 100px; background: #111; padding: 10px; display: flex; flex-direction: column; justify-content: flex-start; }
+    .prizes {
+  list-style: none;
+  padding: 0;
+  font-size: 14px;
+  direction: rtl;
+  text-align: right;
+}
     .prizes li { padding: 6px; margin: 3px 0; background-color: #222; border-radius: 5px; text-align: center; color: #ffd700; }
     .current-prize { background-color: #ffd700 !important; color: #000 !important; font-weight: bold; }
     .container { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 20px; }
@@ -158,21 +164,21 @@ setTimeout(() => {
     if (currentQuestion < questions.length) {
       setTimeout(() => {
         showQuestion();
-      }, 2000); // انتظر انتهاء الصوت
+      }, 500); // انتظر انتهاء الصوت
     } else {
       setTimeout(() => {
         alert("🎉 مبروك! أنهيت جميع الأسئلة.");
 document.getElementById("retryBox").style.display = "block";
-      }, 2000); // انتظر قبل عرض التهنئة
+      }, 1000); // انتظر قبل عرض التهنئة
     }
   } else {
     document.getElementById("soundWrong").play();
     setTimeout(() => {
       alert("❌ إجابة خاطئة. انتهت اللعبة.");
 document.getElementById("retryBox").style.display = "block";
-    }, 2000); // انتظر قبل عرض الخطأ
+    }, 500); // انتظر قبل عرض الخطأ
   }
-}, 2000);
+}, 500);
     }
 
 let helpUsed = false;
