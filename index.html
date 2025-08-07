@@ -378,6 +378,16 @@
       font-weight: bold;
     }
     
+    .wrong-count {
+      color: #ff6b6b;
+      font-weight: bold;
+    }
+    
+    .title-box {
+      color: var(--accent);
+      font-weight: bold;
+    }
+    
     /* منطقة المساعدة */
     .helpers {
       display: flex;
@@ -595,7 +605,25 @@
     
     .score-display {
       font-size: 1.5rem;
-      margin-bottom: 30px;
+      margin-bottom: 10px;
+    }
+    
+    .player-stats {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      margin: 20px 0;
+      text-align: right;
+    }
+    
+    .player-stats p {
+      margin: 10px 0;
+      font-size: 1.1rem;
+    }
+    
+    .player-stats .highlight {
+      color: var(--accent);
+      font-weight: bold;
     }
     
     .end-buttons {
@@ -680,6 +708,7 @@
       .game-info {
         width: 100%;
         justify-content: center;
+        flex-wrap: wrap;
       }
       
       .options {
@@ -727,6 +756,11 @@
         min-width: 160px;
         font-size: 0.9rem;
       }
+      
+      .end-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
     }
   </style>
 </head>
@@ -767,7 +801,7 @@
           <li>لديك 30 ثانية للإجابة على كل سؤال</li>
           <li>يمكنك استخدام المساعدة مرة واحدة</li>
           <li>كل سؤال صحيح يقربك من اللقب التالي</li>
-          <li>5 أسئلة خاطئة تنهي اللعبة</li>
+          <li>3 أخطاء فقط تنهي اللعبة</li>
         </ul>
       </div>
     </div>
@@ -795,6 +829,14 @@
         <div class="info-box">
           <i class="fas fa-clock"></i>
           <span>الوقت: <span class="timer" id="timer">30</span> ثانية</span>
+        </div>
+        <div class="info-box">
+          <i class="fas fa-times-circle"></i>
+          <span>الأخطاء: <span class="wrong-count" id="wrongCount">0</span>/<span id="maxWrong">3</span></span>
+        </div>
+        <div class="info-box">
+          <i class="fas fa-crown"></i>
+          <span>اللقب: <span class="title-box" id="currentTitle">-</span></span>
         </div>
       </div>
     </div>
@@ -836,6 +878,15 @@
       <div class="score-display">
         لقد حصلت على <span id="finalScore" style="color: var(--accent);">0</span> نقطة
       </div>
+      
+      <div class="player-stats">
+        <h3>إحصائيات اللاعب:</h3>
+        <p>اللقب الذي وصلت إليه: <span class="highlight" id="finalTitle">-</span></p>
+        <p>عدد المحاولات: <span class="highlight" id="attemptsCount">0</span></p>
+        <p>أفضل نتيجة: <span class="highlight" id="bestScore">0</span> نقطة</p>
+        <p>أفضل لقب: <span class="highlight" id="bestTitle">-</span></p>
+      </div>
+      
       <div class="end-buttons">
         <button class="end-btn play-again" onclick="retryGame()">
           <i class="fas fa-redo"></i> اللعب مرة أخرى
@@ -848,6 +899,7 @@
   </div>
 
   <script>
+    // قائمة الأسئلة
     const questions = [
       { q: "ما هي عاصمة تركيا؟", options: ["إسطنبول", "أنقرة", "إزمير", "بورصة"], correct: 1 },
       { q: "كم عدد كواكب المجموعة الشمسية؟", options: ["7", "8", "9", "10"], correct: 1 },
@@ -872,13 +924,32 @@
       { q: "كم عدد أشهر السنة؟", options: ["10", "11", "12", "13"], correct: 2 }
     ];
 
+    // قائمة الألقاب المرتبطة بالنقاط
     const prizes = [
-      "المبتدئ", "المتقدم", "الذكي", "المحترف", "العبقري",
-      "الأسطورة", "المرعب", "المدمر", "المهيمن", "الزاحف",
-      "الصنديد", "الجلاد", "الزعيم", "الأثيري", "اللقب الأعظم", 
-      "الملك", "العاهل", "المبدع", "الصقر", "الغراب", "الخارق"
+      { points: 0, title: "المبتدئ" },
+      { points: 300, title: "المتقدم" },
+      { points: 600, title: "الذكي" },
+      { points: 900, title: "المحترف" },
+      { points: 1200, title: "العبقري" },
+      { points: 1500, title: "الأسطورة" },
+      { points: 1800, title: "المرعب" },
+      { points: 2100, title: "المدمر" },
+      { points: 2400, title: "المهيمن" },
+      { points: 2700, title: "الزاحف" },
+      { points: 3000, title: "الصنديد" },
+      { points: 3300, title: "الجلاد" },
+      { points: 3600, title: "الزعيم" },
+      { points: 3900, title: "الأثيري" },
+      { points: 4200, title: "اللقب الأعظم" }, 
+      { points: 4500, title: "الملك" },
+      { points: 4800, title: "العاهل" },
+      { points: 5100, title: "المبدع" },
+      { points: 5400, title: "الصقر" },
+      { points: 5700, title: "الغراب" },
+      { points: 6000, title: "الخارق" }
     ];
     
+    // الأسماء المسموحة للمشاركة
     const allowedNames = [
       { name: "القارئ الوحيد", username: "@MS_AbuQusay" },
       { name: "الذكي السريع", username: "@FastThinker" },
@@ -886,6 +957,7 @@
       { name: "العبقري الغامض", username: "@GeniusMyst" }
     ];
     
+    // متغيرات اللعبة
     let currentQuestion = 0;
     let playerName = "";
     let helpUsed = false;
@@ -893,7 +965,15 @@
     let timeLeft = 30;
     let score = 0;
     let wrongAnswers = 0;
+    const maxWrongAnswers = 3; // تحديد عدد الأخطاء المسموحة
+    let shuffledQuestions = [];
+    let playerStats = {
+      attempts: 0,
+      bestScore: 0,
+      bestTitle: ""
+    };
 
+    // عناصر DOM
     const questionText = document.getElementById("questionText");
     const optionsBox = document.getElementById("optionsBox");
     const prizeList = document.getElementById("prizeList");
@@ -906,13 +986,88 @@
     const finalScore = document.getElementById("finalScore");
     const prizeEarned = document.getElementById("prizeEarned");
     const endTitle = document.getElementById("endTitle");
+    const wrongCountElement = document.getElementById("wrongCount");
+    const currentTitleElement = document.getElementById("currentTitle");
+    const finalTitleElement = document.getElementById("finalTitle");
+    const attemptsCountElement = document.getElementById("attemptsCount");
+    const bestScoreElement = document.getElementById("bestScore");
+    const bestTitleElement = document.getElementById("bestTitle");
 
     // تهيئة اللعبة
     function initGame() {
+      // خلط الأسئلة عشوائياً
+      shuffleQuestions();
+      
       totalQuestions.textContent = questions.length;
       renderPrizes();
       showQuestion();
       startTimer();
+      updatePlayerStats();
+    }
+
+    // خلط الأسئلة بشكل عشوائي
+    function shuffleQuestions() {
+      shuffledQuestions = [...questions];
+      for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
+      }
+    }
+
+    // تحديث إحصائيات اللاعب
+    function updatePlayerStats() {
+      // تحميل بيانات اللاعب من localStorage
+      const savedData = localStorage.getItem(playerName);
+      if (savedData) {
+        playerStats = JSON.parse(savedData);
+      } else {
+        playerStats = {
+          attempts: 0,
+          bestScore: 0,
+          bestTitle: ""
+        };
+      }
+    }
+
+    // حفظ بيانات اللاعب
+    function savePlayerStats() {
+      // تحديث محاولات اللاعب
+      playerStats.attempts++;
+      
+      // تحديث أفضل نتيجة وأفضل لقب
+      if (score > playerStats.bestScore) {
+        playerStats.bestScore = score;
+        playerStats.bestTitle = getCurrentTitle(score);
+      }
+      
+      // حفظ البيانات في localStorage
+      localStorage.setItem(playerName, JSON.stringify(playerStats));
+    }
+
+    // الحصول على اللقب الحالي بناءً على النقاط
+    function getCurrentTitle(points) {
+      // ترتيب الألقاب من الأعلى إلى الأدنى
+      const sortedPrizes = [...prizes].sort((a, b) => b.points - a.points);
+      
+      // البحث عن اللقب المناسب للنقاط
+      for (const prize of sortedPrizes) {
+        if (points >= prize.points) {
+          return prize.title;
+        }
+      }
+      
+      return "المبتدئ";
+    }
+
+    // تحديث عرض الأخطاء
+    function updateWrongCount() {
+      wrongCountElement.textContent = wrongAnswers;
+    }
+
+    // تحديث عرض اللقب
+    function updateTitle() {
+      const title = getCurrentTitle(score);
+      currentTitleElement.textContent = title;
     }
 
     // عرض الجوائز
@@ -921,7 +1076,7 @@
       prizes.slice().reverse().forEach((prize, i) => {
         const index = prizes.length - 1 - i;
         const li = document.createElement("li");
-        li.textContent = prize;
+        li.textContent = prize.title;
         li.id = `prize-${index}`;
         prizeList.appendChild(li);
       });
@@ -939,7 +1094,7 @@
 
     // عرض السؤال الحالي
     function showQuestion() {
-      const q = questions[currentQuestion];
+      const q = shuffledQuestions[currentQuestion];
       questionText.textContent = q.q;
       currentQuestionNum.textContent = currentQuestion + 1;
       optionsBox.innerHTML = "";
@@ -958,9 +1113,9 @@
 
     // التحقق من الإجابة
     function checkAnswer(index) {
-      const correct = questions[currentQuestion].correct;
+      const q = shuffledQuestions[currentQuestion];
+      const correct = q.correct;
       const options = document.querySelectorAll(".option");
-      const q = questions[currentQuestion];
 
       // إيقاف المؤقت
       clearInterval(timer);
@@ -982,6 +1137,7 @@
             opt.classList.add("wrong");
           }, 500);
           wrongAnswers++;
+          updateWrongCount();
         }
       });
 
@@ -989,26 +1145,27 @@
       if (index === correct) {
         score += 100;
         scoreElement.textContent = score;
+        updateTitle();
         
         setTimeout(() => {
           // الانتقال للسؤال التالي
           currentQuestion++;
           
-          if (currentQuestion < questions.length) {
+          if (currentQuestion < shuffledQuestions.length && wrongAnswers < maxWrongAnswers) {
             showQuestion();
           } else {
-            endGame(true);
+            endGame(wrongAnswers < maxWrongAnswers);
           }
         }, 1500);
       } else {
         setTimeout(() => {
-          if (wrongAnswers >= 5) {
+          if (wrongAnswers >= maxWrongAnswers) {
             endGame(false);
           } else {
             // الانتقال للسؤال التالي حتى مع الإجابة الخاطئة
             currentQuestion++;
             
-            if (currentQuestion < questions.length) {
+            if (currentQuestion < shuffledQuestions.length) {
               showQuestion();
             } else {
               endGame(true);
@@ -1052,11 +1209,13 @@
       
       setTimeout(() => {
         wrongAnswers++;
-        if (wrongAnswers >= 5) {
+        updateWrongCount();
+        
+        if (wrongAnswers >= maxWrongAnswers) {
           endGame(false);
         } else {
           currentQuestion++;
-          if (currentQuestion < questions.length) {
+          if (currentQuestion < shuffledQuestions.length) {
             showQuestion();
           } else {
             endGame(true);
@@ -1071,7 +1230,7 @@
       helpUsed = true;
       document.getElementById("fiftyBtn").disabled = true;
 
-      const q = questions[currentQuestion];
+      const q = shuffledQuestions[currentQuestion];
       const wrongIndexes = q.options.map((_, i) => i).filter(i => i !== q.correct);
 
       // اختيار إجابتين خاطئتين بشكل عشوائي
@@ -1134,6 +1293,8 @@
       score = 0;
       wrongAnswers = 0;
       scoreElement.textContent = score;
+      updateWrongCount();
+      updateTitle();
       
       document.getElementById("fiftyBtn").disabled = false;
       document.querySelectorAll(".option").forEach(opt => {
@@ -1142,6 +1303,8 @@
         opt.style.pointerEvents = "auto";
       });
       
+      // خلط الأسئلة من جديد
+      shuffleQuestions();
       initGame();
     }
 
@@ -1159,15 +1322,25 @@
     function endGame(isWin) {
       clearInterval(timer);
       
+      // حفظ إحصائيات اللاعب
+      savePlayerStats();
+      
       if (isWin) {
         endTitle.textContent = "مبروك! لقد فزت باللقب";
-        prizeEarned.textContent = prizes[Math.min(currentQuestion, prizes.length - 1)];
       } else {
         endTitle.textContent = "انتهت اللعبة";
-        prizeEarned.textContent = "حاول مرة أخرى";
       }
       
+      const currentTitle = getCurrentTitle(score);
+      prizeEarned.textContent = currentTitle;
       finalScore.textContent = score;
+      finalTitleElement.textContent = currentTitle;
+      
+      // عرض إحصائيات اللاعب
+      attemptsCountElement.textContent = playerStats.attempts;
+      bestScoreElement.textContent = playerStats.bestScore;
+      bestTitleElement.textContent = playerStats.bestTitle;
+      
       document.getElementById("endScreen").style.display = "flex";
     }
 
@@ -1177,13 +1350,8 @@
       document.querySelector(".container").style.display = "none";
       document.getElementById("nameEntry").style.display = "none";
       document.getElementById("endScreen").style.display = "none";
+      document.getElementById("maxWrong").textContent = maxWrongAnswers;
     };
-
-    // إضافة أصوات (لأغراض العرض فقط)
-    document.addEventListener('click', function() {
-      // في التطبيق الحقيقي، سيتم استبدال هذا برمز تشغيل الصوت الفعلي
-      console.log("صوت النقر");
-    });
   </script>
 </body>
 </html>
