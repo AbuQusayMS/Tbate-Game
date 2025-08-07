@@ -298,6 +298,13 @@
       transition: transform 0.3s ease;
     }
     
+    .prizes li .title {
+      display: block;
+      font-weight: bold;
+      color: var(--accent);
+      margin-top: 5px;
+    }
+    
     .current-prize {
       background: linear-gradient(to right, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05)) !important;
       color: var(--accent) !important;
@@ -429,6 +436,12 @@
       background: rgba(255, 215, 0, 0.2);
       border-color: var(--accent);
       color: var(--accent);
+    }
+    
+    .cost {
+      font-size: 0.8rem;
+      color: #ffd700;
+      margin-left: 5px;
     }
     
     /* منطقة السؤال */
@@ -804,6 +817,7 @@
           <li>يمكنك استخدام المساعدة مرة واحدة</li>
           <li>كل سؤال صحيح يقربك من اللقب التالي</li>
           <li>3 أخطاء فقط تنهي اللعبة</li>
+          <li>النقاط تُحسب من مجموع الجوائز التي حصلت عليها</li>
         </ul>
       </div>
     </div>
@@ -885,12 +899,12 @@
       </div>
       
       <div class="player-stats">
-        <h3>إحصائيات اللاعب:</h3>
-        <p>هذه هي المحاولة رقم: <span class="highlight" id="attemptNumber">1</span></p>
-        <p>اللقب الذي وصلت إليه: <span class="highlight" id="finalTitle">-</span></p>
+        <h3>ملخص الأداء:</h3>
+        <p>أعلى لقب: <span class="highlight" id="finalTitle">-</span></p>
+        <p>مجموع النقاط الكلي: <span class="highlight" id="totalPoints">0</span></p>
+        <p>النقاط المستخدمة في المساعدات: <span class="highlight" id="usedPoints">0</span></p>
+        <p>صافي النقاط: <span class="highlight" id="netPoints">0</span></p>
         <p>عدد المحاولات: <span class="highlight" id="attemptsCount">0</span></p>
-        <p>أفضل نتيجة: <span class="highlight" id="bestScore">0</span> نقطة</p>
-        <p>أفضل لقب: <span class="highlight" id="bestTitle">-</span></p>
       </div>
       
       <div class="end-buttons">
@@ -935,7 +949,7 @@
       { points: 4000, title: "" },
       { points: 8000, title: "" },
       { points: 16000, title: "" },
-      { points: 32000, title: "لقب حكيم الزمان" },
+      { points: 32000, title: "حكيم الزمان" },
       { points: 64000, title: "" },
       { points: 125000, title: "" },
       { points: 250000, title: "" },
@@ -969,6 +983,9 @@
       lastTitle: ""
     };
     let currentAttemptNumber = 0;
+    let timeHelpUsed = false;
+    let changeQuestionUsed = false;
+    let usedPoints = 0;
 
     // عناصر DOM
     const questionText = document.getElementById("questionText");
@@ -992,6 +1009,9 @@
     const attemptNumberElement = document.getElementById("attemptNumber");
     const addTimeBtn = document.getElementById("addTimeBtn");
     const changeQuestionBtn = document.getElementById("changeQuestionBtn");
+    const totalPointsElement = document.getElementById("totalPoints");
+    const usedPointsElement = document.getElementById("usedPoints");
+    const netPointsElement = document.getElementById("netPoints");
 
     // تهيئة اللعبة
     function initGame() {
@@ -1039,7 +1059,7 @@
       // تحديث محاولات اللاعب
       playerStats.attempts = currentAttemptNumber;
       playerStats.lastScore = score;
-      playerStats.lastTitle = getCurrentTitle(score);
+      playerStats.lastTitle = getCurrentTitle();
       
       // تحديث أفضل نتيجة وأفضل لقب
       if (score > playerStats.bestScore) {
@@ -1055,14 +1075,15 @@
     }
 
     // الحصول على اللقب الحالي بناءً على النقاط
-    function getCurrentTitle(points) {
+    function getCurrentTitle() {
+      let currentTitle = "";
       // البحث عن اللقب المناسب للنقاط
       for (const prize of prizes) {
-        if (points >= prize.points) {
-          return prize.title;
+        if (score >= prize.points && prize.title) {
+          currentTitle = prize.title;
         }
       }
-      return "";
+      return currentTitle;
     }
 
     // تحديث عرض الأخطاء
@@ -1072,7 +1093,7 @@
 
     // تحديث عرض اللقب
     function updateTitle() {
-      const title = getCurrentTitle(score);
+      const title = getCurrentTitle();
       currentTitleElement.textContent = title;
     }
 
@@ -1083,7 +1104,7 @@
         const li = document.createElement("li");
         li.textContent = `${formatNumber(prize.points)} نقطة`;
         if (prize.title) {
-          li.innerHTML += `<br><span class="title">${prize.title}</span>`;
+          li.innerHTML += `<span class="title">${prize.title}</span>`;
         }
         li.id = `prize-${i}`;
         prizeList.appendChild(li);
@@ -1156,7 +1177,8 @@
 
       // التحقق من صحة الإجابة
       if (index === correct) {
-        score += 100;
+        // إضافة نقاط الجائزة الحالية إلى النقاط الإجمالية
+        score += prizes[currentQuestion].points;
         scoreElement.textContent = formatNumber(score);
         updateTitle();
         
@@ -1259,15 +1281,23 @@
 
     // إضافة الوقت
     addTimeBtn.onclick = () => {
+      if (timeHelpUsed) {
+        alert("لقد استخدمت هذه المساعدة بالفعل!");
+        return;
+      }
+      
       if (score < 10000) {
         alert("تحتاج إلى 10000 نقطة على الأقل لاستخدام هذه الميزة!");
         return;
       }
       
       score -= 10000;
+      usedPoints += 10000;
+      timeHelpUsed = true;
       scoreElement.textContent = formatNumber(score);
       timeLeft += 15;
       timerElement.textContent = timeLeft;
+      addTimeBtn.disabled = true;
       
       // إضافة تأثير مرئي
       timerElement.style.color = "#00ff00";
@@ -1278,13 +1308,21 @@
 
     // تغيير السؤال
     changeQuestionBtn.onclick = () => {
+      if (changeQuestionUsed) {
+        alert("لقد استخدمت هذه المساعدة بالفعل!");
+        return;
+      }
+      
       if (score < 20000) {
         alert("تحتاج إلى 20000 نقطة على الأقل لاستخدام هذه الميزة!");
         return;
       }
       
       score -= 20000;
+      usedPoints += 20000;
+      changeQuestionUsed = true;
       scoreElement.textContent = formatNumber(score);
+      changeQuestionBtn.disabled = true;
       
       // إزالة السؤال الحالي من القائمة
       shuffledQuestions.splice(currentQuestion, 1);
@@ -1351,13 +1389,19 @@
       
       currentQuestion = 0;
       helpUsed = false;
+      timeHelpUsed = false;
+      changeQuestionUsed = false;
       score = 0;
+      usedPoints = 0;
       wrongAnswers = 0;
       scoreElement.textContent = score;
       updateWrongCount();
       updateTitle();
       
       document.getElementById("fiftyBtn").disabled = false;
+      addTimeBtn.disabled = false;
+      changeQuestionBtn.disabled = false;
+      
       document.querySelectorAll(".option").forEach(opt => {
         opt.classList.remove("correct", "wrong");
         opt.style.opacity = "1";
@@ -1386,11 +1430,13 @@
       const playerData = {
         name: playerName,
         score: score,
-        title: getCurrentTitle(score),
+        title: getCurrentTitle(),
         attempts: playerStats.attempts,
         attemptNumber: currentAttemptNumber,
         wrongAnswers: wrongAnswers,
         date: new Date().toISOString(),
+        usedPoints: usedPoints,
+        netPoints: score - usedPoints,
         secret: "YourSecretKey123"
       };
       
@@ -1408,6 +1454,9 @@
     function endGame(isWin) {
       clearInterval(timer);
       
+      // حساب صافي النقاط
+      const netScore = score - usedPoints;
+      
       // حفظ إحصائيات اللاعب
       savePlayerStats();
       
@@ -1417,10 +1466,13 @@
         endTitle.textContent = "انتهت اللعبة";
       }
       
-      const currentTitle = getCurrentTitle(score);
+      const currentTitle = getCurrentTitle();
       prizeEarned.textContent = currentTitle;
       finalScore.textContent = formatNumber(score);
       finalTitleElement.textContent = currentTitle;
+      totalPointsElement.textContent = formatNumber(score);
+      usedPointsElement.textContent = formatNumber(usedPoints);
+      netPointsElement.textContent = formatNumber(netScore);
       
       // عرض إحصائيات اللاعب
       attemptsCountElement.textContent = playerStats.attempts;
