@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>من سيربح اللقب؟ - النسخة الاحترافية</title>
+  <title>من سيربح اللقب؟ - النسخة النهائية</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -361,6 +361,7 @@
     .game-info {
       display: flex;
       gap: 20px;
+      flex-wrap: wrap;
     }
     
     .info-box {
@@ -755,6 +756,7 @@
       .helper-btn {
         min-width: 160px;
         font-size: 0.9rem;
+        padding: 10px 15px;
       }
       
       .end-buttons {
@@ -809,7 +811,7 @@
   
   <!-- الشريط الجانبي للجوائز -->
   <div class="sidebar">
-    <h3 class="prizes-title">الألقاب</h3>
+    <h3 class="prizes-title">الجوائز</h3>
     <ul class="prizes" id="prizeList"></ul>
   </div>
 
@@ -824,7 +826,7 @@
       <div class="game-info">
         <div class="info-box">
           <i class="fas fa-question-circle"></i>
-          <span>السؤال: <span id="currentQuestionNum">1</span>/<span id="totalQuestions">20</span></span>
+          <span>السؤال: <span id="currentQuestionNum">1</span>/<span id="totalQuestions">15</span></span>
         </div>
         <div class="info-box">
           <i class="fas fa-clock"></i>
@@ -845,8 +847,11 @@
       <button class="helper-btn" id="fiftyBtn">
         <i class="fas fa-ban"></i> حذف إجابتين (50:50)
       </button>
-      <button class="helper-btn" id="timerBtn" disabled>
-        <i class="fas fa-hourglass-half"></i> إضافة وقت (+15 ثانية)
+      <button class="helper-btn" id="addTimeBtn">
+        <i class="fas fa-hourglass-half"></i> إضافة وقت (+15 ثانية) <span class="cost">(10000 نقطة)</span>
+      </button>
+      <button class="helper-btn" id="changeQuestionBtn">
+        <i class="fas fa-sync-alt"></i> تغيير السؤال <span class="cost">(20000 نقطة)</span>
       </button>
     </div>
     
@@ -900,7 +905,7 @@
   </div>
 
   <script>
-    // قائمة الأسئلة
+    // قائمة الأسئلة (15 سؤال فقط)
     const questions = [
       { q: "ما هي عاصمة تركيا؟", options: ["إسطنبول", "أنقرة", "إزمير", "بورصة"], correct: 1 },
       { q: "كم عدد كواكب المجموعة الشمسية؟", options: ["7", "8", "9", "10"], correct: 1 },
@@ -916,38 +921,26 @@
       { q: "ما هو الحيوان الذي يُلقب بسفينة الصحراء؟", options: ["الحمار", "الجمل", "الثور", "الحصان"], correct: 1 },
       { q: "في أي قارة تقع البرازيل؟", options: ["أمريكا الشمالية", "آسيا", "أفريقيا", "أمريكا الجنوبية"], correct: 3 },
       { q: "من هو النبي الذي ابتلعه الحوت؟", options: ["موسى", "يونس", "عيسى", "محمد"], correct: 1 },
-      { q: "كم عدد القارات؟", options: ["5", "6", "7", "8"], correct: 2 },
-      { q: "ما هي عملة تركيا؟", options: ["ريال", "دولار", "ليرة", "دينار"], correct: 2 },
-      { q: "من هو مؤسس شركة آبل؟", options: ["جيف بيزوس", "إيلون ماسك", "بيل غيتس", "ستيف جوبز"], correct: 3 },
-      { q: "من هو مكتشف الجاذبية؟", options: ["نيوتن", "أينشتاين", "بلانك", "غاليلو"], correct: 0 },
-      { q: "أين يقع برج إيفل؟", options: ["برلين", "روما", "باريس", "لندن"], correct: 2 },
-      { q: "ما هو أطول سور في العالم؟", options: ["سور الصين", "سور المكسيك", "سور روما", "سور الأندلس"], correct: 0 },
-      { q: "كم عدد أشهر السنة؟", options: ["10", "11", "12", "13"], correct: 2 }
+      { q: "كم عدد القارات؟", options: ["5", "6", "7", "8"], correct: 2 }
     ];
 
-    // قائمة الألقاب المرتبطة بالنقاط
+    // قائمة الجوائز الجديدة (15 جائزة فقط)
     const prizes = [
-      { points: 0, title: "المبتدئ" },
-      { points: 300, title: "المتقدم" },
-      { points: 600, title: "الذكي" },
-      { points: 900, title: "المحترف" },
-      { points: 1200, title: "العبقري" },
-      { points: 1500, title: "الأسطورة" },
-      { points: 1800, title: "المرعب" },
-      { points: 2100, title: "المدمر" },
-      { points: 2400, title: "المهيمن" },
-      { points: 2700, title: "الزاحف" },
-      { points: 3000, title: "الصنديد" },
-      { points: 3300, title: "الجلاد" },
-      { points: 3600, title: "الزعيم" },
-      { points: 3900, title: "الأثيري" },
-      { points: 4200, title: "اللقب الأعظم" }, 
-      { points: 4500, title: "الملك" },
-      { points: 4800, title: "العاهل" },
-      { points: 5100, title: "المبدع" },
-      { points: 5400, title: "الصقر" },
-      { points: 5700, title: "الغراب" },
-      { points: 6000, title: "الخارق" }
+      { points: 100, title: "" },
+      { points: 200, title: "" },
+      { points: 300, title: "" },
+      { points: 500, title: "" },
+      { points: 1000, title: "وسام العقل اللامع" },
+      { points: 2000, title: "" },
+      { points: 4000, title: "" },
+      { points: 8000, title: "" },
+      { points: 16000, title: "" },
+      { points: 32000, title: "لقب حكيم الزمان" },
+      { points: 64000, title: "" },
+      { points: 125000, title: "" },
+      { points: 250000, title: "" },
+      { points: 500000, title: "" },
+      { points: 1000000, title: "نجم المعرفة الذهبية" }
     ];
     
     // الأسماء المسموحة للمشاركة
@@ -966,7 +959,7 @@
     let timeLeft = 30;
     let score = 0;
     let wrongAnswers = 0;
-    const maxWrongAnswers = 3; // تحديد عدد الأخطاء المسموحة
+    const maxWrongAnswers = 3;
     let shuffledQuestions = [];
     let playerStats = {
       attempts: 0,
@@ -975,7 +968,7 @@
       lastScore: 0,
       lastTitle: ""
     };
-    let currentAttemptNumber = 0; // رقم المحاولة الحالي
+    let currentAttemptNumber = 0;
 
     // عناصر DOM
     const questionText = document.getElementById("questionText");
@@ -997,6 +990,8 @@
     const bestScoreElement = document.getElementById("bestScore");
     const bestTitleElement = document.getElementById("bestTitle");
     const attemptNumberElement = document.getElementById("attemptNumber");
+    const addTimeBtn = document.getElementById("addTimeBtn");
+    const changeQuestionBtn = document.getElementById("changeQuestionBtn");
 
     // تهيئة اللعبة
     function initGame() {
@@ -1061,17 +1056,13 @@
 
     // الحصول على اللقب الحالي بناءً على النقاط
     function getCurrentTitle(points) {
-      // ترتيب الألقاب من الأعلى إلى الأدنى
-      const sortedPrizes = [...prizes].sort((a, b) => b.points - a.points);
-      
       // البحث عن اللقب المناسب للنقاط
-      for (const prize of sortedPrizes) {
+      for (const prize of prizes) {
         if (points >= prize.points) {
           return prize.title;
         }
       }
-      
-      return "المبتدئ";
+      return "";
     }
 
     // تحديث عرض الأخطاء
@@ -1088,13 +1079,20 @@
     // عرض الجوائز
     function renderPrizes() {
       prizeList.innerHTML = "";
-      prizes.slice().reverse().forEach((prize, i) => {
-        const index = prizes.length - 1 - i;
+      prizes.forEach((prize, i) => {
         const li = document.createElement("li");
-        li.textContent = prize.title;
-        li.id = `prize-${index}`;
+        li.textContent = `${formatNumber(prize.points)} نقطة`;
+        if (prize.title) {
+          li.innerHTML += `<br><span class="title">${prize.title}</span>`;
+        }
+        li.id = `prize-${i}`;
         prizeList.appendChild(li);
       });
+    }
+
+    // تنسيق الأرقام بفواصل
+    function formatNumber(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     // تمييز الجائزة الحالية
@@ -1159,7 +1157,7 @@
       // التحقق من صحة الإجابة
       if (index === correct) {
         score += 100;
-        scoreElement.textContent = score;
+        scoreElement.textContent = formatNumber(score);
         updateTitle();
         
         setTimeout(() => {
@@ -1259,6 +1257,47 @@
       });
     };
 
+    // إضافة الوقت
+    addTimeBtn.onclick = () => {
+      if (score < 10000) {
+        alert("تحتاج إلى 10000 نقطة على الأقل لاستخدام هذه الميزة!");
+        return;
+      }
+      
+      score -= 10000;
+      scoreElement.textContent = formatNumber(score);
+      timeLeft += 15;
+      timerElement.textContent = timeLeft;
+      
+      // إضافة تأثير مرئي
+      timerElement.style.color = "#00ff00";
+      setTimeout(() => {
+        timerElement.style.color = "var(--accent)";
+      }, 1000);
+    };
+
+    // تغيير السؤال
+    changeQuestionBtn.onclick = () => {
+      if (score < 20000) {
+        alert("تحتاج إلى 20000 نقطة على الأقل لاستخدام هذه الميزة!");
+        return;
+      }
+      
+      score -= 20000;
+      scoreElement.textContent = formatNumber(score);
+      
+      // إزالة السؤال الحالي من القائمة
+      shuffledQuestions.splice(currentQuestion, 1);
+      
+      // إضافة سؤال جديد عشوائي
+      const randomIndex = Math.floor(Math.random() * questions.length);
+      const newQuestion = questions[randomIndex];
+      shuffledQuestions.splice(currentQuestion, 0, newQuestion);
+      
+      // عرض السؤال الجديد
+      showQuestion();
+    };
+
     // بدء إدخال الاسم
     function startEntry() {
       document.getElementById("startScreen").style.display = "none";
@@ -1282,7 +1321,15 @@
       const nameInput = document.getElementById("playerName");
       const name = nameInput.value.trim();
       
-      if (name) {
+      if (!name) {
+        alert("الرجاء إدخال اسمك للمشاركة");
+        return;
+      }
+      
+      // التحقق من وجود الاسم في القائمة المسموحة
+      const found = allowedNames.some(entry => entry.name === name);
+      
+      if (found) {
         playerName = name;
         playerDisplayName.textContent = name;
         playerAvatar.textContent = name.charAt(0).toUpperCase();
@@ -1293,8 +1340,7 @@
         
         initGame();
       } else {
-        alert("الرجاء إدخال اسمك للمشاركة");
-        nameInput.focus();
+        alert("اسمك غير موجود ضمن القائمة المسموح لها بالمشاركة. تأكد من كتابة الاسم بشكل صحيح أو تواصل مع مسؤول المسابقة لإضافته.");
       }
     }
 
@@ -1335,7 +1381,7 @@
 
     // إرسال الإحصائيات إلى Google Sheets
     function sendPlayerStats() {
-      const url = "https://script.google.com/macros/s/AKfycbxlw6tPz7pBUToGtIlhT7MbyYmNYPxLXySpLNGTtOeeEw8KUKZm-VBHTZQ1pbLNgLwd/exec"; // استبدل برابطك
+      const url = "https://script.google.com/macros/s/AKfycbxlw6tPz7pBUToGtIlhT7MbyYmNYPxLXySpLNGTtOeeEw8KUKZm-VBHTZQ1pbLNgLwd/exec";
       
       const playerData = {
         name: playerName,
@@ -1344,23 +1390,18 @@
         attempts: playerStats.attempts,
         attemptNumber: currentAttemptNumber,
         wrongAnswers: wrongAnswers,
-        secret: "YourSecretKey123" // استبدل بمفتاحك السري
+        date: new Date().toISOString(),
+        secret: "YourSecretKey123"
       };
       
       fetch(url, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(playerData)
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === "success") {
-          console.log("تم إرسال الإحصائيات بنجاح");
-        } else {
-          console.error("خطأ في الإرسال:", data.message);
-        }
-      })
-      .catch(error => console.error("حدث خطأ:", error));
+      .then(() => console.log("تم إرسال الإحصائيات بنجاح"))
+      .catch(error => console.error("حدث خطأ في الإرسال:", error));
     }
 
     // انتهاء اللعبة
@@ -1378,12 +1419,12 @@
       
       const currentTitle = getCurrentTitle(score);
       prizeEarned.textContent = currentTitle;
-      finalScore.textContent = score;
+      finalScore.textContent = formatNumber(score);
       finalTitleElement.textContent = currentTitle;
       
       // عرض إحصائيات اللاعب
       attemptsCountElement.textContent = playerStats.attempts;
-      bestScoreElement.textContent = playerStats.bestScore;
+      bestScoreElement.textContent = formatNumber(playerStats.bestScore);
       bestTitleElement.textContent = playerStats.bestTitle;
       attemptNumberElement.textContent = currentAttemptNumber;
       
