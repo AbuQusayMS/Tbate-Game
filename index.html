@@ -656,6 +656,7 @@
       justify-content: center;
       gap: 20px;
       margin-top: 30px;
+      flex-wrap: wrap;
     }
     
     .end-btn {
@@ -666,6 +667,11 @@
       cursor: pointer;
       font-weight: bold;
       transition: all 0.3s ease;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
     
     .play-again {
@@ -676,6 +682,95 @@
     .new-player {
       background: linear-gradient(to right, #2196F3, #0D47A1);
       color: white;
+    }
+    
+    .share-results {
+      background: linear-gradient(to right, #9C27B0, #673AB7);
+      color: white;
+    }
+    
+    /* نافذة مشاركة النتائج */
+    #shareModal {
+      display: none;
+      position: fixed;
+      z-index: 3000;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: var(--box-shadow);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--accent);
+      background: none;
+      border: none;
+    }
+    
+    .share-text {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      margin: 20px 0;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      text-align: right;
+      white-space: pre-wrap;
+    }
+    
+    .share-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .share-btn {
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .share-btn:hover {
+      transform: translateY(-3px);
+    }
+    
+    .twitter-btn {
+      background: #1DA1F2;
+      color: white;
+    }
+    
+    .instagram-btn {
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: white;
+    }
+    
+    .copy-btn {
+      background: var(--accent);
+      color: var(--primary);
     }
     
     /* الرسوم المتحركة */
@@ -744,6 +839,14 @@
         font-size: 0.8rem;
         padding: 8px 5px;
       }
+      
+      .end-buttons {
+        flex-direction: column;
+      }
+      
+      .end-btn {
+        width: 100%;
+      }
     }
     
     @media (max-width: 576px) {
@@ -783,9 +886,13 @@
         padding: 10px 15px;
       }
       
-      .end-buttons {
+      .share-actions {
         flex-direction: column;
-        gap: 10px;
+      }
+      
+      .share-btn {
+        width: 100%;
+        justify-content: center;
       }
     }
   </style>
@@ -916,8 +1023,8 @@
         <p>صافي النقاط: <span class="highlight" id="netPointsEnd">0</span></p>
         <p>أعلى لقب: <span class="highlight" id="highestTitle">-</span></p>
         <p>زمن إنهاء المسابقة: <span class="highlight" id="endTime">00:00</span></p>
-        <p>النقاط المستخدمة: <span class="highlight" id="usedPointsEnd">0</span></p>
-        <p>عدد المحاولات: <span class="highlight" id="attemptsCountEnd">0</span></p>
+        <p>عدد المساعدات المستخدمة: <span class="highlight" id="usedHelpersCount">0</span></p>
+        <p>النقاط المخصومة: <span class="highlight" id="usedPointsEnd">0</span></p>
       </div>
       
       <div class="end-buttons">
@@ -926,6 +1033,33 @@
         </button>
         <button class="end-btn new-player" onclick="newPlayer()">
           <i class="fas fa-user-plus"></i> لاعب جديد
+        </button>
+        <button class="end-btn share-results" onclick="shareResults()">
+          <i class="fas fa-share-alt"></i> مشاركة النتائج
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- نافذة مشاركة النتائج -->
+  <div id="shareModal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeShareModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <h3 style="text-align: center; color: var(--accent); margin-bottom: 20px;">
+        <i class="fas fa-share-alt"></i> مشاركة النتائج
+      </h3>
+      <div class="share-text" id="shareTextContent"></div>
+      <div class="share-actions">
+        <button class="share-btn twitter-btn" onclick="shareOnTwitter()">
+          <i class="fab fa-twitter"></i> مشاركة على تويتر
+        </button>
+        <button class="share-btn instagram-btn" onclick="shareOnInstagram()">
+          <i class="fab fa-instagram"></i> نسخ للمشاركة على انستغرام
+        </button>
+        <button class="share-btn copy-btn" onclick="copyResults()">
+          <i class="fas fa-copy"></i> نسخ النتائج
         </button>
       </div>
     </div>
@@ -1018,16 +1152,16 @@
     const wrongCountElement = document.getElementById("wrongCount");
     const currentTitleElement = document.getElementById("currentTitle");
     const finalTitleElement = document.getElementById("highestTitle");
-    const attemptsCountElement = document.getElementById("attemptsCountEnd");
+    const attemptsCountElement = document.getElementById("usedHelpersCount");
     const addTimeBtn = document.getElementById("addTimeBtn");
     const changeQuestionBtn = document.getElementById("changeQuestionBtn");
     const totalPointsElement = document.getElementById("totalPointsEnd");
     const usedPointsElement = document.getElementById("usedPointsEnd");
     const netPointsElement = document.getElementById("netPointsEnd");
-    const bestScoreElement = document.getElementById("bestScore");
     const playerNameEnd = document.getElementById("playerNameEnd");
     const endTimeElement = document.getElementById("endTime");
     const fiftyBtn = document.getElementById("fiftyBtn");
+    const shareTextContent = document.getElementById("shareTextContent");
 
     // تهيئة اللعبة
     function initGame() {
@@ -1465,6 +1599,9 @@
       const seconds = Math.floor((timeDiff % 60000) / 1000);
       const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
       
+      // حساب عدد المساعدات المستخدمة
+      const usedHelpersCount = [fiftyFiftyUsed, timeHelpUsed, changeQuestionUsed].filter(Boolean).length;
+      
       // حفظ إحصائيات اللاعب
       savePlayerStats();
       
@@ -1484,10 +1621,76 @@
       
       // عرض إحصائيات اللاعب
       playerNameEnd.textContent = playerName;
-      attemptsCountElement.textContent = playerStats.attempts;
+      attemptsCountElement.textContent = usedHelpersCount;
       endTimeElement.textContent = formattedTime;
       
       document.getElementById("endScreen").style.display = "flex";
+    }
+
+    // مشاركة النتائج
+    function shareResults() {
+      const netScore = score - usedPoints;
+      const usedHelpersCount = [fiftyFiftyUsed, timeHelpUsed, changeQuestionUsed].filter(Boolean).length;
+      
+      const shareText = `🏆 لقد أنهيت تحدي المسابقة!
+🔹 الاسم: ${playerName}
+🔹 مجموع النقاط: ${formatNumber(score)}
+🔹 أعلى لقب وصلت إليه: ${playerStats.bestTitle}
+🔹 عدد المساعدات المستخدمة: ${usedHelpersCount}
+🔹 النقاط المخصومة بسبب المساعدات: ${formatNumber(usedPoints)}
+🔹 نتيجتي النهائية: ${formatNumber(netScore)} نقطة
+
+هل تستطيع أن تتفوق علي؟ 
+#تباتي #TBATE`;
+      
+      shareTextContent.textContent = shareText;
+      document.getElementById("shareModal").style.display = "flex";
+    }
+
+    // إغلاق نافذة المشاركة
+    function closeShareModal() {
+      document.getElementById("shareModal").style.display = "none";
+    }
+
+    // مشاركة النتائج على تويتر
+    function shareOnTwitter() {
+      const netScore = score - usedPoints;
+      const shareText = `🏆 لقد أنهيت تحدي المسابقة وحصلت على ${formatNumber(netScore)} نقطة! 
+هل تستطيع أن تتفوق علي؟ 
+#تباتي #TBATE`;
+      
+      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+      window.open(twitterUrl, "_blank");
+    }
+
+    // مشاركة النتائج على انستغرام
+    function shareOnInstagram() {
+      alert("تم نسخ النتائج إلى الحافظة. يُرجى لصقها في تطبيق Instagram لمشاركتها.");
+      copyResults();
+    }
+
+    // نسخ النتائج إلى الحافظة
+    function copyResults() {
+      const netScore = score - usedPoints;
+      const usedHelpersCount = [fiftyFiftyUsed, timeHelpUsed, changeQuestionUsed].filter(Boolean).length;
+      
+      const shareText = `🏆 لقد أنهيت تحدي المسابقة!
+🔹 الاسم: ${playerName}
+🔹 مجموع النقاط: ${formatNumber(score)}
+🔹 أعلى لقب وصلت إليه: ${playerStats.bestTitle}
+🔹 عدد المساعدات المستخدمة: ${usedHelpersCount}
+🔹 النقاط المخصومة بسبب المساعدات: ${formatNumber(usedPoints)}
+🔹 نتيجتي النهائية: ${formatNumber(netScore)} نقطة
+
+هل تستطيع أن تتفوق علي؟ 
+#تباتي #TBATE`;
+      
+      navigator.clipboard.writeText(shareText).then(() => {
+        alert("تم نسخ النتائج إلى الحافظة بنجاح! يمكنك الآن مشاركتها على أي منصة.");
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+        alert("حدث خطأ أثناء نسخ النتائج. يُرجى المحاولة مرة أخرى.");
+      });
     }
 
     // تهيئة الصفحة عند التحميل
@@ -1496,6 +1699,7 @@
       document.querySelector(".container").style.display = "none";
       document.getElementById("nameEntry").style.display = "none";
       document.getElementById("endScreen").style.display = "none";
+      document.getElementById("shareModal").style.display = "none";
       document.getElementById("maxWrong").textContent = maxWrongAnswers;
     };
   </script>
