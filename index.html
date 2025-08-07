@@ -881,6 +881,7 @@
       
       <div class="player-stats">
         <h3>إحصائيات اللاعب:</h3>
+        <p>هذه هي المحاولة رقم: <span class="highlight" id="attemptNumber">1</span></p>
         <p>اللقب الذي وصلت إليه: <span class="highlight" id="finalTitle">-</span></p>
         <p>عدد المحاولات: <span class="highlight" id="attemptsCount">0</span></p>
         <p>أفضل نتيجة: <span class="highlight" id="bestScore">0</span> نقطة</p>
@@ -970,8 +971,11 @@
     let playerStats = {
       attempts: 0,
       bestScore: 0,
-      bestTitle: ""
+      bestTitle: "",
+      lastScore: 0,
+      lastTitle: ""
     };
+    let currentAttemptNumber = 0; // رقم المحاولة الحالي
 
     // عناصر DOM
     const questionText = document.getElementById("questionText");
@@ -992,6 +996,7 @@
     const attemptsCountElement = document.getElementById("attemptsCount");
     const bestScoreElement = document.getElementById("bestScore");
     const bestTitleElement = document.getElementById("bestTitle");
+    const attemptNumberElement = document.getElementById("attemptNumber");
 
     // تهيئة اللعبة
     function initGame() {
@@ -1024,24 +1029,34 @@
         playerStats = {
           attempts: 0,
           bestScore: 0,
-          bestTitle: ""
+          bestTitle: "",
+          lastScore: 0,
+          lastTitle: ""
         };
       }
+      
+      // تحديث رقم المحاولة الحالي
+      currentAttemptNumber = playerStats.attempts + 1;
     }
 
     // حفظ بيانات اللاعب
     function savePlayerStats() {
       // تحديث محاولات اللاعب
-      playerStats.attempts++;
+      playerStats.attempts = currentAttemptNumber;
+      playerStats.lastScore = score;
+      playerStats.lastTitle = getCurrentTitle(score);
       
       // تحديث أفضل نتيجة وأفضل لقب
       if (score > playerStats.bestScore) {
         playerStats.bestScore = score;
-        playerStats.bestTitle = getCurrentTitle(score);
+        playerStats.bestTitle = playerStats.lastTitle;
       }
       
       // حفظ البيانات في localStorage
       localStorage.setItem(playerName, JSON.stringify(playerStats));
+      
+      // إرسال الإحصائيات إلى Google Sheets
+      sendPlayerStats();
     }
 
     // الحصول على اللقب الحالي بناءً على النقاط
@@ -1318,6 +1333,36 @@
       document.getElementById("playerName").focus();
     }
 
+    // إرسال الإحصائيات إلى Google Sheets
+    function sendPlayerStats() {
+      const url = "https://script.google.com/macros/s/.../exec"; // استبدل برابطك
+      
+      const playerData = {
+        name: playerName,
+        score: score,
+        title: getCurrentTitle(score),
+        attempts: playerStats.attempts,
+        attemptNumber: currentAttemptNumber,
+        wrongAnswers: wrongAnswers,
+        secret: "YourSecretKey123" // استبدل بمفتاحك السري
+      };
+      
+      fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(playerData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "success") {
+          console.log("تم إرسال الإحصائيات بنجاح");
+        } else {
+          console.error("خطأ في الإرسال:", data.message);
+        }
+      })
+      .catch(error => console.error("حدث خطأ:", error));
+    }
+
     // انتهاء اللعبة
     function endGame(isWin) {
       clearInterval(timer);
@@ -1340,6 +1385,7 @@
       attemptsCountElement.textContent = playerStats.attempts;
       bestScoreElement.textContent = playerStats.bestScore;
       bestTitleElement.textContent = playerStats.bestTitle;
+      attemptNumberElement.textContent = currentAttemptNumber;
       
       document.getElementById("endScreen").style.display = "flex";
     }
