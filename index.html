@@ -1085,6 +1085,13 @@
       { q: "كم عدد القارات؟", options: ["5", "6", "7", "8"], correct: 2 }
     ];
 
+    // سؤال احتياطي لتغيير السؤال
+    const reserveQuestion = {
+      q: "ما هو أطول نهر في العالم؟",
+      options: ["نهر الأمازون", "نهر النيل", "نهر المسيسيبي", "نهر اليانغتسي"],
+      correct: 1
+    };
+
     // قائمة الجوائز الجديدة (15 جائزة فقط)
     const prizes = [
       { points: 100, title: "" },
@@ -1468,7 +1475,7 @@
       }, 1000);
     };
 
-    // تغيير السؤال
+    // تغيير السؤال باستخدام السؤال الاحتياطي
     changeQuestionBtn.onclick = () => {
       if (changeQuestionUsed) {
         alert("لقد استخدمت هذه المساعدة بالفعل!");
@@ -1486,13 +1493,8 @@
       scoreElement.textContent = formatNumber(score);
       changeQuestionBtn.disabled = true;
       
-      // إزالة السؤال الحالي من القائمة
-      shuffledQuestions.splice(currentQuestion, 1);
-      
-      // إضافة سؤال جديد عشوائي
-      const randomIndex = Math.floor(Math.random() * questions.length);
-      const newQuestion = questions[randomIndex];
-      shuffledQuestions.splice(currentQuestion, 0, newQuestion);
+      // استبدال السؤال الحالي بالسؤال الاحتياطي
+      shuffledQuestions[currentQuestion] = reserveQuestion;
       
       // عرض السؤال الجديد
       showQuestion();
@@ -1548,6 +1550,7 @@
     function retryGame() {
       document.getElementById("endScreen").style.display = "none";
       document.getElementById("retryBox").style.display = "none";
+      document.getElementById("shareModal").style.display = "none";
       
       currentQuestion = 0;
       timeHelpUsed = false;
@@ -1578,6 +1581,7 @@
     // لاعب جديد
     function newPlayer() {
       document.getElementById("endScreen").style.display = "none";
+      document.getElementById("shareModal").style.display = "none";
       document.querySelector(".sidebar").style.display = "none";
       document.querySelector(".container").style.display = "none";
       document.getElementById("nameEntry").style.display = "flex";
