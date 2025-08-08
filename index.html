@@ -640,6 +640,7 @@
       margin-bottom: 8px;
     }
     
+    /* التعديلات الجديدة لملخص الأداء */
     .player-stats {
       background: rgba(0, 0, 0, 0.2);
       border-radius: var(--border-radius);
@@ -650,48 +651,68 @@
     
     .player-stats h3 {
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       color: var(--accent);
       border-bottom: 2px solid var(--accent);
       padding-bottom: 8px;
-      font-size: 1.1rem;
+      font-size: 1.3rem;
     }
     
-    .player-stats p {
-      margin: 10px 0;
-      font-size: 1rem;
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    
+    .stat-item {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 12px;
+      transition: all 0.3s ease;
     }
     
-    .player-stats .highlight {
+    .stat-item:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.12);
+    }
+    
+    .stat-label {
+      color: #aaa;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
       color: var(--accent);
       font-weight: bold;
-      text-align: left;
+      font-size: 1.1rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     
     .end-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
       margin-top: 20px;
-      flex-wrap: wrap;
     }
     
     .end-btn {
-      padding: 10px 20px;
+      padding: 12px;
       font-size: 1rem;
       border-radius: var(--border-radius);
       border: none;
       cursor: pointer;
       font-weight: bold;
       transition: all 0.3s ease;
-      min-width: 160px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      flex: 1;
+      text-align: center;
     }
     
     .play-again {
@@ -707,6 +728,10 @@
     .share-results {
       background: linear-gradient(to right, #9C27B0, #673AB7);
       color: white;
+    }
+    
+    .end-btn i {
+      font-size: 1.5rem;
     }
     
     /* نافذة مشاركة النتائج */
@@ -871,11 +896,43 @@
       }
       
       .end-buttons {
-        flex-direction: column;
+        grid-template-columns: 1fr;
+        gap: 10px;
       }
       
       .end-btn {
-        width: 100%;
+        flex-direction: row;
+        justify-content: center;
+      }
+      
+      /* تعديلات شاشة النهاية */
+      .end-title {
+        font-size: 1.5rem;
+      }
+      
+      .prize-earned {
+        font-size: 1.3rem;
+      }
+      
+      .player-stats h3 {
+        font-size: 1.2rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      
+      .stat-item {
+        padding: 10px;
+      }
+      
+      .stat-label {
+        font-size: 0.8rem;
+      }
+      
+      .stat-value {
+        font-size: 1rem;
       }
     }
     
@@ -961,11 +1018,11 @@
       }
       
       .end-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
       }
       
       .prize-earned {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
       }
       
       .score-display {
@@ -977,10 +1034,27 @@
       }
       
       .player-stats h3 {
-        font-size: 1rem;
+        font-size: 1.1rem;
       }
       
-      .player-stats p {
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      
+      .stat-item {
+        padding: 8px 10px;
+      }
+      
+      .stat-label {
+        font-size: 0.75rem;
+      }
+      
+      .stat-value {
+        font-size: 0.95rem;
+      }
+      
+      .end-btn {
         font-size: 0.9rem;
       }
     }
@@ -1013,22 +1087,11 @@
       }
       
       .end-title {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
       }
       
       .prize-earned {
         font-size: 1.1rem;
-      }
-      
-      .player-stats p {
-        font-size: 0.85rem;
-        flex-direction: column;
-        text-align: center;
-      }
-      
-      .player-stats .highlight {
-        margin-top: 5px;
-        text-align: center;
       }
       
       .end-btn {
@@ -1164,24 +1227,50 @@
       
       <div class="player-stats">
         <h3>ملخص الأداء</h3>
-        <p>اسم المشارك: <span class="highlight" id="playerNameEnd">-</span></p>
-        <p>مجموع النقاط النهائي: <span class="highlight" id="totalPointsEnd">0</span></p>
-        <p>صافي النقاط: <span class="highlight" id="netPointsEnd">0</span></p>
-        <p>أعلى لقب: <span class="highlight" id="highestTitle">-</span></p>
-        <p>زمن إنهاء المسابقة: <span class="highlight" id="endTime">00:00</span></p>
-        <p>عدد المساعدات المستخدمة: <span class="highlight" id="usedHelpersCount">0</span></p>
-        <p>النقاط المخصومة: <span class="highlight" id="usedPointsEnd">0</span></p>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-label">اسم المشارك</span>
+            <span class="stat-value" id="playerNameEnd">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">مجموع النقاط النهائي</span>
+            <span class="stat-value" id="totalPointsEnd">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">صافي النقاط</span>
+            <span class="stat-value" id="netPointsEnd">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">أعلى لقب</span>
+            <span class="stat-value" id="highestTitle">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">زمن إنهاء المسابقة</span>
+            <span class="stat-value" id="endTime">00:00</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">عدد المساعدات المستخدمة</span>
+            <span class="stat-value" id="usedHelpersCount">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">النقاط المخصومة</span>
+            <span class="stat-value" id="usedPointsEnd">0</span>
+          </div>
+        </div>
       </div>
       
       <div class="end-buttons">
         <button class="end-btn play-again" onclick="retryGame()">
-          <i class="fas fa-redo"></i> اللعب مرة أخرى
+          <i class="fas fa-redo"></i>
+          <span>اللعب مرة أخرى</span>
         </button>
         <button class="end-btn new-player" onclick="newPlayer()">
-          <i class="fas fa-user-plus"></i> لاعب جديد
+          <i class="fas fa-user-plus"></i>
+          <span>لاعب جديد</span>
         </button>
         <button class="end-btn share-results" onclick="shareResults()">
-          <i class="fas fa-share-alt"></i> مشاركة النتائج
+          <i class="fas fa-share-alt"></i>
+          <span>مشاركة النتائج</span>
         </button>
       </div>
     </div>
@@ -1765,14 +1854,15 @@
       prizeEarned.textContent = currentTitle;
       finalScore.textContent = formatNumber(score);
       finalTitleElement.textContent = playerStats.bestTitle;
-      totalPointsElement.textContent = formatNumber(score);
-      usedPointsElement.textContent = formatNumber(usedPoints);
-      netPointsElement.textContent = formatNumber(netScore);
       
-      // عرض إحصائيات اللاعب
-      playerNameEnd.textContent = playerName;
-      attemptsCountElement.textContent = usedHelpersCount;
-      endTimeElement.textContent = formattedTime;
+      // تحديث قيم النتائج في التصميم الجديد
+      document.getElementById("playerNameEnd").textContent = playerName;
+      document.getElementById("totalPointsEnd").textContent = formatNumber(score);
+      document.getElementById("netPointsEnd").textContent = formatNumber(netScore);
+      document.getElementById("highestTitle").textContent = playerStats.bestTitle;
+      document.getElementById("endTime").textContent = formattedTime;
+      document.getElementById("usedHelpersCount").textContent = usedHelpersCount;
+      document.getElementById("usedPointsEnd").textContent = formatNumber(usedPoints);
       
       document.getElementById("endScreen").style.display = "flex";
     }
