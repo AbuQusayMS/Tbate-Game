@@ -6,8 +6,9 @@
   <title>من سيربح اللقب؟ - النسخة المحسنة</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* جميع أنماط CSS السابقة تبقى كما هي */
-    /* تم إضافة أنماط جديدة لحالة الحفظ */
+    /* أنماط CSS السابقة تبقى كما هي */
+    
+    /* أنماط جديدة لحالة الحفظ */
     .save-status {
       position: fixed;
       bottom: 20px;
@@ -37,6 +38,7 @@
       background: rgba(244, 67, 54, 0.9);
     }
     
+    /* تحسين تجربة 50:50 */
     .option.disabled {
       text-decoration: line-through;
       opacity: 0.5;
@@ -48,36 +50,36 @@
   
   <!-- شاشة البداية -->
   <div id="startScreen">
-    <!-- محتوى شاشة البداية يبقى كما هو -->
+    <!-- محتوى شاشة البداية -->
   </div>
 
   <!-- إدخال الاسم -->
   <div id="nameEntry">
-    <!-- محتوى إدخال الاسم يبقى كما هو -->
+    <!-- محتوى إدخال الاسم -->
   </div>
   
   <!-- الشريط الجانبي للجوائز -->
   <div class="sidebar">
-    <!-- محتوى الشريط الجانبي يبقى كما هو -->
+    <!-- محتوى الشريط الجانبي -->
   </div>
 
   <!-- المحتوى الرئيسي -->
   <div class="container">
-    <!-- محتوى المحتوى الرئيسي يبقى كما هو -->
+    <!-- محتوى المحتوى الرئيسي -->
   </div>
   
   <!-- شاشة النهاية -->
   <div id="endScreen">
-    <!-- محتوى شاشة النهاية يبقى كما هو -->
+    <!-- محتوى شاشة النهاية -->
   </div>
   
   <!-- نافذة مشاركة النتائج -->
   <div id="shareModal">
-    <!-- محتوى نافذة المشاركة يبقى كما هو -->
+    <!-- محتوى نافذة المشاركة -->
   </div>
   
   <!-- حالة الحفظ -->
-  <div id="saveStatus" class="save-status">
+  <div id="saveStatus" class="save-status" style="display: none;">
     <i class="fas fa-save"></i>
     <span id="saveStatusText">تم الحفظ ✓</span>
   </div>
@@ -86,9 +88,60 @@
     // رابط تطبيق الويب
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbye_Br8h7RVNBnI84fRxYA2RsNktq8gqSAQeh2txYdkqgAZYc1G-W1CvpTS67XR0nd5/exec';
 
-    // قائمة الأسئلة والجوائز والأسماء المسموحة تبقى كما هي
+    // قائمة الأسئلة (15 سؤال فقط)
+    const questions = [
+      { q: "ما هي عاصمة تركيا؟", options: ["إسطنبول", "أنقرة", "إزمير", "بورصة"], correct: 1 },
+      { q: "كم عدد كواكب المجموعة الشمسية؟", options: ["7", "8", "9", "10"], correct: 1 },
+      { q: "ما هو الحيوان الذي لا يصدر صوتًا؟", options: ["السلحفاة", "الحوت", "الثعبان", "النملة"], correct: 3 },
+      { q: "ما هي لغة البرمجة التي تستخدم لتصميم المواقع؟", options: ["Python", "C++", "HTML", "Java"], correct: 2 },
+      { q: "من هو مخترع المصباح الكهربائي؟", options: ["أديسون", "تيسلا", "فرانكلين", "باستور"], correct: 0 },
+      { q: "أين تقع الأهرامات؟", options: ["العراق", "السعودية", "مصر", "الأردن"], correct: 2 },
+      { q: "كم عدد أركان الإسلام؟", options: ["4", "5", "6", "3"], correct: 1 },
+      { q: "ما هو الكوكب الأحمر؟", options: ["زحل", "المشتري", "المريخ", "الأرض"], correct: 2 },
+      { q: "من أول رئيس لأمريكا؟", options: ["لينكولن", "جيفرسون", "واشنطن", "أوباما"], correct: 2 },
+      { q: "كم عدد أحرف اللغة العربية؟", options: ["28", "29", "30", "27"], correct: 0 },
+      { q: "ما اسم أطول نهر في العالم؟", options: ["الأمازون", "الدانوب", "النيل", "الفرات"], correct: 2 },
+      { q: "ما هو الحيوان الذي يُلقب بسفينة الصحراء؟", options: ["الحمار", "الجمل", "الثور", "الحصان"], correct: 1 },
+      { q: "في أي قارة تقع البرازيل؟", options: ["أمريكا الشمالية", "آسيا", "أفريقيا", "أمريكا الجنوبية"], correct: 3 },
+      { q: "من هو النبي الذي ابتلعه الحوت؟", options: ["موسى", "يونس", "عيسى", "محمد"], correct: 1 },
+      { q: "كم عدد القارات؟", options: ["5", "6", "7", "8"], correct: 2 }
+    ];
+
+    // سؤال احتياطي لتغيير السؤال
+    const reserveQuestion = {
+      q: "ما هو أطول نهر في العالم؟",
+      options: ["نهر الأمازون", "نهر النيل", "نهر المسيسيبي", "نهر اليانغتسي"],
+      correct: 1
+    };
+
+    // قائمة الجوائز الجديدة (15 جائزة فقط)
+    const prizes = [
+      { points: 100, title: "" },
+      { points: 200, title: "" },
+      { points: 300, title: "" },
+      { points: 500, title: "" },
+      { points: 1000, title: "وسام العقل اللامع" },
+      { points: 2000, title: "" },
+      { points: 4000, title: "" },
+      { points: 8000, title: "" },
+      { points: 16000, title: "" },
+      { points: 32000, title: "حكيم الزمان" },
+      { points: 64000, title: "" },
+      { points: 125000, title: "" },
+      { points: 250000, title: "" },
+      { points: 500000, title: "" },
+      { points: 1000000, title: "نجم المعرفة الذهبية" }
+    ];
     
-    // متغيرات اللعبة مع إضافة متغيرات جديدة
+    // الأسماء المسموحة للمشاركة
+    const allowedNames = [
+      { name: "القارئ الوحيد", username: "@MS_AbuQusay" },
+      { name: "الذكي السريع", username: "@FastThinker" },
+      { name: "صائد الجوائز", username: "@HunterXP" },
+      { name: "العبقري الغامض", username: "@GeniusMyst" }
+    ];
+    
+    // متغيرات اللعبة مع إضافة متغيرات جديدة للنظام
     let currentQuestion = 0;
     let playerName = "";
     let timer;
@@ -208,9 +261,9 @@
     }
 
     // دالة لإرسال البيانات إلى جدول جوجل
-    async function sendToGoogleSheets(data, isFinal = false) {
+    async function sendToGoogleSheets(isFinal = false) {
       if (!isOnline) {
-        saveQueue.push({data, isFinal});
+        saveQueue.push({isFinal});
         updateSaveStatus('لا يوجد اتصال، سيتم الحفظ لاحقاً', 'error');
         return false;
       }
@@ -257,7 +310,7 @@
         }
       } catch (error) {
         console.error('Error saving to Google Sheets:', error);
-        saveQueue.push({data, isFinal});
+        saveQueue.push({isFinal});
         updateSaveStatus('فشل الحفظ، سيتم إعادة المحاولة لاحقاً', 'error');
         return false;
       }
@@ -279,12 +332,13 @@
       
       updateSaveStatus('جارٍ معالجة الطابور...', 'saving');
       
-      while (saveQueue.length > 0 && isOnline) {
-        const item = saveQueue[0];
-        const success = await sendToGoogleSheets(item.data, item.isFinal);
+      for (let i = 0; i < saveQueue.length; i++) {
+        const item = saveQueue[i];
+        const success = await sendToGoogleSheets(item.isFinal);
         
         if (success) {
-          saveQueue.shift();
+          saveQueue.splice(i, 1);
+          i--; // تعديل الفهرس بعد الحذف
         } else {
           break;
         }
@@ -312,7 +366,7 @@
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
         saveLocalState();
-        sendToGoogleSheets({ currentQuestion, score }, false);
+        sendToGoogleSheets(false);
       }, 500);
     }
 
@@ -340,6 +394,9 @@
         attempt: currentAttemptNumber,
         playerName
       });
+      
+      // إرسال البيانات الأولية
+      debouncedSave();
     }
 
     // التحقق من الإجابة مع إضافة تسجيل الحدث
@@ -476,7 +533,8 @@
       
       // حفظ التقدم النهائي
       saveLocalState();
-      await sendToGoogleSheets({}, true);
+      await sendToGoogleSheets(true);
+      await processSaveQueue();
       
       // حساب صافي النقاط
       const netScore = score - usedPoints;
@@ -585,12 +643,421 @@
         
         // حفظ سريع قبل الخروج
         saveLocalState();
-        sendToGoogleSheets({}, false);
+        sendToGoogleSheets(false);
       });
     };
     
     // بقية الدوال تبقى كما هي مع إضافة استدعاءات logEvent و debouncedSave عند النقاط الحرجة
-    // ...
+    
+    // ======== بقية الكود الأصلي ======== //
+    
+    // عناصر DOM
+    const questionText = document.getElementById("questionText");
+    const optionsBox = document.getElementById("optionsBox");
+    const prizeList = document.getElementById("prizeList");
+    const timerElement = document.getElementById("timer");
+    const currentQuestionNum = document.getElementById("currentQuestionNum");
+    const totalQuestions = document.getElementById("totalQuestions");
+    const playerDisplayName = document.getElementById("playerDisplayName");
+    const playerAvatar = document.getElementById("playerAvatar");
+    const scoreElement = document.getElementById("score");
+    const finalScore = document.getElementById("finalScore");
+    const prizeEarned = document.getElementById("prizeEarned");
+    const endTitle = document.getElementById("endTitle");
+    const wrongCountElement = document.getElementById("wrongCount");
+    const currentTitleElement = document.getElementById("currentTitle");
+    const finalTitleElement = document.getElementById("highestTitle");
+    const attemptsCountElement = document.getElementById("usedHelpersCount");
+    const addTimeBtn = document.getElementById("addTimeBtn");
+    const changeQuestionBtn = document.getElementById("changeQuestionBtn");
+    const totalPointsElement = document.getElementById("totalPointsEnd");
+    const usedPointsElement = document.getElementById("usedPointsEnd");
+    const netPointsElement = document.getElementById("netPointsEnd");
+    const playerNameEnd = document.getElementById("playerNameEnd");
+    const endTimeElement = document.getElementById("endTime");
+    const fiftyBtn = document.getElementById("fiftyBtn");
+    const shareTextContent = document.getElementById("shareTextContent");
+
+    // خلط الأسئلة بشكل عشوائي
+    function shuffleQuestions() {
+      shuffledQuestions = [...questions];
+      for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
+      }
+    }
+
+    // تحديث إحصائيات اللاعب
+    function updatePlayerStats() {
+      // تحميل بيانات اللاعب من localStorage
+      const savedData = localStorage.getItem(playerName);
+      if (savedData) {
+        playerStats = JSON.parse(savedData);
+      } else {
+        playerStats = {
+          attempts: 0,
+          bestScore: 0,
+          bestTitle: "",
+          lastScore: 0,
+          lastTitle: ""
+        };
+      }
+      
+      // تحديث رقم المحاولة الحالي
+      currentAttemptNumber = playerStats.attempts + 1;
+    }
+
+    // حفظ بيانات اللاعب
+    function savePlayerStats() {
+      // تحديث محاولات اللاعب
+      playerStats.attempts = currentAttemptNumber;
+      playerStats.lastScore = score;
+      playerStats.lastTitle = getCurrentTitle();
+      
+      // تحديث أفضل نتيجة وأفضل لقب
+      if (score > playerStats.bestScore) {
+        playerStats.bestScore = score;
+        playerStats.bestTitle = playerStats.lastTitle;
+      }
+      
+      // حفظ البيانات في localStorage
+      localStorage.setItem(playerName, JSON.stringify(playerStats));
+    }
+
+    // الحصول على اللقب الحالي بناءً على النقاط
+    function getCurrentTitle() {
+      let currentTitle = "";
+      // البحث عن اللقب المناسب للنقاط
+      for (const prize of prizes) {
+        if (score >= prize.points && prize.title) {
+          currentTitle = prize.title;
+        }
+      }
+      return currentTitle;
+    }
+
+    // تحديث عرض الأخطاء
+    function updateWrongCount() {
+      wrongCountElement.textContent = wrongAnswers;
+    }
+
+    // تحديث عرض اللقب
+    function updateTitle() {
+      const title = getCurrentTitle();
+      currentTitleElement.textContent = title;
+    }
+
+    // عرض الجوائز
+    function renderPrizes() {
+      prizeList.innerHTML = "";
+      prizes.forEach((prize, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${formatNumber(prize.points)} نقطة`;
+        if (prize.title) {
+          li.innerHTML += `<span class="title">${prize.title}</span>`;
+        }
+        li.id = `prize-${i}`;
+        prizeList.appendChild(li);
+      });
+    }
+
+    // تنسيق الأرقام بفواصل
+    function formatNumber(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // تمييز الجائزة الحالية
+    function highlightPrize(index) {
+      prizes.forEach((_, i) => {
+        const li = document.getElementById(`prize-${i}`);
+        if (li) li.classList.remove("current-prize");
+      });
+      const li = document.getElementById(`prize-${index}`);
+      if (li) li.classList.add("current-prize");
+    }
+
+    // عرض السؤال الحالي
+    function showQuestion() {
+      const q = shuffledQuestions[currentQuestion];
+      questionText.textContent = q.q;
+      currentQuestionNum.textContent = currentQuestion + 1;
+      optionsBox.innerHTML = "";
+      
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(i);
+        optionsBox.appendChild(btn);
+      });
+      
+      highlightPrize(currentQuestion);
+      resetTimer();
+    }
+
+    // بدء المؤقت
+    function startTimer() {
+      clearInterval(timer);
+      timeLeft = 30;
+      timerElement.textContent = timeLeft;
+      
+      timer = setInterval(() => {
+        timeLeft--;
+        timerElement.textContent = timeLeft;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          timeUp();
+        }
+      }, 1000);
+    }
+
+    // إعادة تعيين المؤقت
+    function resetTimer() {
+      clearInterval(timer);
+      timeLeft = 30;
+      timerElement.textContent = timeLeft;
+      startTimer();
+    }
+
+    // انتهاء الوقت
+    function timeUp() {
+      const options = document.querySelectorAll(".option");
+      options.forEach(opt => {
+        opt.style.pointerEvents = "none";
+      });
+      
+      setTimeout(() => {
+        wrongAnswers++;
+        updateWrongCount();
+        
+        if (wrongAnswers >= maxWrongAnswers) {
+          endGame(false);
+        } else {
+          currentQuestion++;
+          if (currentQuestion < shuffledQuestions.length) {
+            showQuestion();
+          } else {
+            endGame(true);
+          }
+        }
+      }, 1000);
+    }
+
+    // إضافة الوقت
+    addTimeBtn.onclick = () => {
+      if (timeHelpUsed) {
+        alert("لقد استخدمت هذه المساعدة بالفعل!");
+        return;
+      }
+      
+      if (score < 30000) {
+        alert("تحتاج إلى 30000 نقطة على الأقل لاستخدام هذه الميزة!");
+        return;
+      }
+      
+      score -= 30000;
+      usedPoints += 30000;
+      timeHelpUsed = true;
+      scoreElement.textContent = formatNumber(score);
+      timeLeft += 15;
+      timerElement.textContent = timeLeft;
+      addTimeBtn.disabled = true;
+      
+      // تسجيل الحدث
+      logEvent('helper_used', {
+        type: 'add_time',
+        cost: 30000
+      });
+      
+      debouncedSave();
+      
+      // إضافة تأثير مرئي
+      timerElement.style.color = "#00ff00";
+      setTimeout(() => {
+        timerElement.style.color = "var(--accent)";
+      }, 1000);
+    };
+
+    // تغيير السؤال باستخدام السؤال الاحتياطي
+    changeQuestionBtn.onclick = () => {
+      if (changeQuestionUsed) {
+        alert("لقد استخدمت هذه المساعدة بالفعل!");
+        return;
+      }
+      
+      if (score < 50000) {
+        alert("تحتاج إلى 50000 نقطة على الأقل لاستخدام هذه الميزة!");
+        return;
+      }
+      
+      score -= 50000;
+      usedPoints += 50000;
+      changeQuestionUsed = true;
+      scoreElement.textContent = formatNumber(score);
+      changeQuestionBtn.disabled = true;
+      
+      // تسجيل الحدث
+      logEvent('helper_used', {
+        type: 'change_question',
+        cost: 50000
+      });
+      
+      debouncedSave();
+      
+      // استبدال السؤال الحالي بالسؤال الاحتياطي
+      shuffledQuestions[currentQuestion] = reserveQuestion;
+      
+      // عرض السؤال الجديد
+      showQuestion();
+    };
+
+    // بدء إدخال الاسم
+    function startEntry() {
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("nameEntry").style.display = "flex";
+      renderAllowedNames();
+    }
+
+    // عرض الأسماء المسموحة
+    function renderAllowedNames() {
+      const list = document.getElementById("allowedNamesList");
+      list.innerHTML = "";
+      allowedNames.forEach(entry => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="username">${entry.username}</span>: ${entry.name}`;
+        list.appendChild(li);
+      });
+    }
+
+    // إعادة المحاولة
+    function retryGame() {
+      document.getElementById("endScreen").style.display = "none";
+      document.getElementById("retryBox").style.display = "none";
+      document.getElementById("shareModal").style.display = "none";
+      
+      currentQuestion = 0;
+      timeHelpUsed = false;
+      changeQuestionUsed = false;
+      fiftyFiftyUsed = false;
+      score = 0;
+      usedPoints = 0;
+      wrongAnswers = 0;
+      scoreElement.textContent = score;
+      updateWrongCount();
+      updateTitle();
+      
+      fiftyBtn.disabled = false;
+      addTimeBtn.disabled = false;
+      changeQuestionBtn.disabled = false;
+      
+      document.querySelectorAll(".option").forEach(opt => {
+        opt.classList.remove("correct", "wrong", "disabled");
+        opt.style.opacity = "1";
+        opt.style.pointerEvents = "auto";
+      });
+      
+      // خلط الأسئلة من جديد
+      shuffleQuestions();
+      initGame();
+    }
+
+    // لاعب جديد
+    function newPlayer() {
+      document.getElementById("endScreen").style.display = "none";
+      document.getElementById("shareModal").style.display = "none";
+      document.querySelector(".sidebar").style.display = "none";
+      document.querySelector(".container").style.display = "none";
+      document.getElementById("nameEntry").style.display = "flex";
+      document.getElementById("playerName").value = "";
+      document.getElementById("playerName").focus();
+      
+      // إعادة تعيين المتغيرات
+      participantId = '';
+      gameEvents = [];
+      saveQueue = [];
+    }
+
+    // مشاركة النتائج
+    function shareResults() {
+      const netScore = score - usedPoints;
+      const usedHelpersCount = [fiftyFiftyUsed, timeHelpUsed, changeQuestionUsed].filter(Boolean).length;
+      
+      const shareText = `🏆 لقد أنهيت تحدي المسابقة!
+🔹 الاسم: ${playerName}
+🔹 مجموع النقاط: ${formatNumber(score)}
+🔹 أعلى لقب وصلت إليه: ${playerStats.bestTitle}
+🔹 عدد المساعدات المستخدمة: ${usedHelpersCount}
+🔹 النقاط المخصومة بسبب المساعدات: ${formatNumber(usedPoints)}
+🔹 نتيجتي النهائية: ${formatNumber(netScore)} نقطة
+
+رابط المسابقة:
+https://abuqusayms.github.io/Tbate-Game/
+هل تستطيع أن تتفوق علي؟ 
+#تباتي #TBATE`;
+      
+      shareTextContent.textContent = shareText;
+      document.getElementById("shareModal").style.display = "flex";
+    }
+
+    // إغلاق نافذة المشاركة
+    function closeShareModal() {
+      document.getElementById("shareModal").style.display = "none";
+    }
+
+    // مشاركة النتائج على تويتر
+    function shareOnTwitter() {
+      const netScore = score - usedPoints;
+      const usedHelpersCount = [fiftyFiftyUsed, timeHelpUsed, changeQuestionUsed].filter(Boolean).length;
+      
+      const shareText = `🏆 لقد أنهيت تحدي المسابقة!
+🔹 الاسم: ${playerName}
+🔹 مجموع النقاط: ${formatNumber(score)}
+🔹 أعلى لقب وصلت إليه: ${playerStats.bestTitle}
+🔹 عدد المساعدات المستخدمة: ${usedHelpersCount}
+🔹 النقاط المخصومة بسبب المساعدات: ${formatNumber(usedPoints)}
+🔹 نتيجتي النهائية: ${formatNumber(netScore)} نقطة
+
+رابط المسابقة:
+https://abuqusayms.github.io/Tbate-Game/
+هل تستطيع أن تتفوق علي؟ 
+#تباتي #TBATE`;
+      
+      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+      window.open(twitterUrl, "_blank");
+    }
+
+    // مشاركة النتائج على انستغرام
+    function shareOnInstagram() {
+      alert("تم نسخ النتائج إلى الحافظة. يُرجى لصقها في تطبيق Instagram لمشاركتها.");
+      copyResults();
+    }
+
+    // نسخ النتائج إلى الحافظة
+    function copyResults() {
+      const netScore = score - usedPoints;
+      const usedHelpersCount = [fiftyFiftyUsed, timeHelpUsed, changeQuestionUsed].filter(Boolean).length;
+      
+      const shareText = `🏆 لقد أنهيت تحدي المسابقة!
+🔹 الاسم: ${playerName}
+🔹 مجموع النقاط: ${formatNumber(score)}
+🔹 أعلى لقب وصلت إليه: ${playerStats.bestTitle}
+🔹 عدد المساعدات المستخدمة: ${usedHelpersCount}
+🔹 النقاط المخصومة بسبب المساعدات: ${formatNumber(usedPoints)}
+🔹 نتيجتي النهائية: ${formatNumber(netScore)} نقطة
+
+رابط المسابقة:
+https://abuqusayms.github.io/Tbate-Game/
+هل تستطيع أن تتفوق علي؟ 
+#تباتي #TBATE`;
+      
+      navigator.clipboard.writeText(shareText).then(() => {
+        alert("تم نسخ النتائج إلى الحافظة بنجاح! يمكنك الآن مشاركتها على أي منصة.");
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+        alert("حدث خطأ أثناء نسخ النتائج. يُرجى المحاولة مرة أخرى.");
+      });
+    }
   </script>
 </body>
 </html>
