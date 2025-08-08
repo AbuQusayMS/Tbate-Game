@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>من سيربح اللقب؟ - النسخة النهائية</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>من سيربح اللقب؟ - النسخة المحسنة</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -34,6 +34,7 @@
       flex-direction: column;
       overflow-x: hidden;
       position: relative;
+      padding: 0;
     }
     
     body::before {
@@ -49,10 +50,10 @@
     
     .crown-icon {
       position: absolute;
-      top: 20px;
+      top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 40px;
+      font-size: 30px;
       color: var(--accent);
       text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
       animation: pulse 2s infinite;
@@ -70,21 +71,22 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 20px;
+      padding: 15px;
       transition: opacity 0.8s ease;
+      overflow-y: auto;
     }
     
     .logo {
-      font-size: 4rem;
-      margin-bottom: 20px;
+      font-size: 3rem;
+      margin-bottom: 15px;
       color: var(--accent);
       text-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
       animation: shine 3s infinite;
     }
     
     .start-title {
-      font-size: 2.5rem;
-      margin-bottom: 30px;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
       background: linear-gradient(to right, #ffd700, #ff8c00, #ffd700);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -95,14 +97,14 @@
       background: linear-gradient(to right, #ffd700, #ff8c00);
       border: none;
       border-radius: 50px;
-      padding: 15px 50px;
-      font-size: 1.5rem;
+      padding: 12px 40px;
+      font-size: 1.2rem;
       cursor: pointer;
       color: var(--primary);
       font-weight: bold;
       box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
       transition: all 0.3s ease;
-      margin-top: 20px;
+      margin-top: 15px;
       position: relative;
       overflow: hidden;
     }
@@ -137,17 +139,19 @@
       width: 100%;
       max-width: 800px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 15px;
       background: var(--card-bg);
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow-y: auto;
+      max-height: 100vh;
     }
     
     .name-title {
-      font-size: 2rem;
-      margin-bottom: 30px;
+      font-size: 1.7rem;
+      margin-bottom: 20px;
       text-align: center;
       color: var(--accent);
     }
@@ -156,13 +160,13 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      margin-bottom: 30px;
+      gap: 12px;
+      margin-bottom: 20px;
     }
     
     .player-name-input {
-      padding: 15px 20px;
-      font-size: 1.2rem;
+      padding: 12px 15px;
+      font-size: 1.1rem;
       text-align: right;
       width: 100%;
       background: rgba(255, 255, 255, 0.1);
@@ -182,8 +186,8 @@
       background: linear-gradient(to right, #4CAF50, #2E7D32);
       border: none;
       border-radius: var(--border-radius);
-      padding: 15px 30px;
-      font-size: 1.2rem;
+      padding: 12px 20px;
+      font-size: 1.1rem;
       cursor: pointer;
       color: white;
       font-weight: bold;
@@ -200,20 +204,21 @@
     .names-container {
       display: flex;
       width: 100%;
-      gap: 30px;
-      margin-top: 20px;
+      gap: 15px;
+      margin-top: 15px;
+      flex-direction: column;
     }
     
     .names-section {
       flex: 1;
       background: rgba(0, 0, 0, 0.2);
       border-radius: var(--border-radius);
-      padding: 20px;
+      padding: 15px;
     }
     
     .section-title {
-      font-size: 1.3rem;
-      margin-bottom: 15px;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
       color: var(--accent);
       border-bottom: 2px solid var(--accent);
       padding-bottom: 5px;
@@ -222,11 +227,11 @@
     .allowed-names-list {
       list-style: none;
       padding: 0;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     
     .allowed-names-list li {
-      padding: 8px 0;
+      padding: 6px 0;
       border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
       display: flex;
       justify-content: space-between;
@@ -238,9 +243,9 @@
     
     /* الشريط الجانبي للجوائز */
     .sidebar {
-      width: 160px;
+      width: 140px;
       background: rgba(0, 0, 0, 0.3);
-      padding: 20px 10px;
+      padding: 15px 8px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -248,12 +253,16 @@
       box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(5px);
       border-left: 1px solid rgba(255, 255, 255, 0.1);
+      overflow-y: auto;
+      max-height: calc(100vh - 40px);
+      position: fixed;
+      top: 20px;
     }
     
     .prizes-title {
       text-align: center;
-      font-size: 1.3rem;
-      margin-bottom: 20px;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
       color: var(--accent);
       position: relative;
     }
@@ -271,12 +280,12 @@
     .prizes {
       list-style: none;
       padding: 0;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
     
     .prizes li {
-      padding: 10px 8px;
-      margin: 5px 0;
+      padding: 8px 6px;
+      margin: 4px 0;
       background: rgba(0, 0, 0, 0.3);
       border-radius: 5px;
       text-align: center;
@@ -302,7 +311,8 @@
       display: block;
       font-weight: bold;
       color: var(--accent);
-      margin-top: 5px;
+      margin-top: 3px;
+      font-size: 0.8rem;
     }
     
     .current-prize {
@@ -322,63 +332,67 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 20px;
+      padding: 15px;
       max-width: 1200px;
       margin: 0 auto;
       width: 100%;
+      margin-left: 150px;
     }
     
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 30px;
-      padding: 15px 20px;
+      margin-bottom: 20px;
+      padding: 12px 15px;
       background: var(--card-bg);
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
       backdrop-filter: blur(5px);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
     }
     
     .player-info {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 10px;
+      margin-bottom: 5px;
     }
     
     .player-avatar {
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: linear-gradient(45deg, var(--accent), #ff8c00);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       font-weight: bold;
       color: var(--primary);
     }
     
     .player-name {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       font-weight: bold;
     }
     
     .game-info {
       display: flex;
-      gap: 20px;
+      gap: 12px;
       flex-wrap: wrap;
     }
     
     .info-box {
       background: rgba(0, 0, 0, 0.3);
-      padding: 10px 20px;
+      padding: 8px 15px;
       border-radius: 30px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 1.1rem;
+      gap: 6px;
+      font-size: 0.9rem;
+      margin: 3px 0;
     }
     
     .timer {
@@ -400,8 +414,8 @@
     .helpers {
       display: flex;
       justify-content: center;
-      gap: 20px;
-      margin-bottom: 30px;
+      gap: 12px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
     
@@ -410,16 +424,17 @@
       border: 2px solid rgba(255, 255, 255, 0.2);
       border-radius: var(--border-radius);
       color: var(--text);
-      padding: 12px 25px;
+      padding: 10px 15px;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 500;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       transition: all 0.3s ease;
-      min-width: 180px;
+      min-width: 160px;
       justify-content: center;
+      flex: 1;
     }
     
     .helper-btn:hover:not(:disabled) {
@@ -439,9 +454,9 @@
     }
     
     .cost {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #ffd700;
-      margin-left: 5px;
+      margin-left: 3px;
     }
     
     /* منطقة السؤال */
@@ -449,34 +464,36 @@
       width: 100%;
       background: var(--card-bg);
       border-radius: var(--border-radius);
-      padding: 30px;
+      padding: 20px;
       box-shadow: var(--box-shadow);
       backdrop-filter: blur(5px);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
     
     .question-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 25px;
-      padding-bottom: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
     }
     
     .question-number {
-      font-size: 1.1rem;
+      font-size: 1rem;
       background: rgba(255, 215, 0, 0.2);
-      padding: 5px 15px;
+      padding: 4px 12px;
       border-radius: 20px;
       color: var(--accent);
+      margin-bottom: 5px;
     }
     
     .question-text {
-      font-size: 1.8rem;
-      line-height: 1.5;
-      margin-bottom: 30px;
+      font-size: 1.4rem;
+      line-height: 1.4;
+      margin-bottom: 20px;
       font-weight: 500;
       text-align: center;
     }
@@ -484,9 +501,9 @@
     /* الخيارات */
     .options {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin: 20px 0;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 15px 0;
     }
     
     .option {
@@ -494,15 +511,15 @@
       color: var(--text);
       border: 2px solid rgba(255, 255, 255, 0.2);
       border-radius: var(--border-radius);
-      padding: 20px;
-      font-size: 1.2rem;
+      padding: 15px;
+      font-size: 1.1rem;
       cursor: pointer;
       transition: all 0.3s ease;
       text-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 80px;
+      min-height: 70px;
       position: relative;
       overflow: hidden;
     }
@@ -544,7 +561,7 @@
     /* منطقة إعادة المحاولة */
     #retryBox {
       display: none;
-      margin-top: 30px;
+      margin-top: 20px;
       text-align: center;
     }
     
@@ -552,8 +569,8 @@
       background: linear-gradient(to right, #2196F3, #0D47A1);
       border: none;
       border-radius: var(--border-radius);
-      padding: 15px 40px;
-      font-size: 1.2rem;
+      padding: 12px 30px;
+      font-size: 1.1rem;
       cursor: pointer;
       color: white;
       font-weight: bold;
@@ -561,7 +578,7 @@
       transition: all 0.3s ease;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     
     .retry-btn:hover {
@@ -580,13 +597,14 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 20px;
+      padding: 15px;
+      overflow-y: auto;
     }
     
     .end-container {
       background: var(--card-bg);
       border-radius: var(--border-radius);
-      padding: 40px;
+      padding: 25px;
       max-width: 600px;
       width: 100%;
       box-shadow: var(--box-shadow);
@@ -595,22 +613,22 @@
     }
     
     .trophy-icon {
-      font-size: 80px;
+      font-size: 60px;
       color: var(--accent);
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       text-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
       animation: bounce 2s infinite;
     }
     
     .end-title {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
       color: var(--accent);
     }
     
     .prize-earned {
-      font-size: 2rem;
-      margin-bottom: 30px;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
       background: linear-gradient(to right, #ffd700, #ff8c00);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -618,29 +636,30 @@
     }
     
     .score-display {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
     }
     
     .player-stats {
       background: rgba(0, 0, 0, 0.2);
       border-radius: var(--border-radius);
-      padding: 20px;
-      margin: 20px 0;
+      padding: 15px;
+      margin: 15px 0;
       text-align: right;
     }
     
     .player-stats h3 {
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       color: var(--accent);
       border-bottom: 2px solid var(--accent);
-      padding-bottom: 10px;
+      padding-bottom: 8px;
+      font-size: 1.1rem;
     }
     
     .player-stats p {
-      margin: 15px 0;
-      font-size: 1.1rem;
+      margin: 10px 0;
+      font-size: 1rem;
       display: flex;
       justify-content: space-between;
     }
@@ -654,24 +673,25 @@
     .end-buttons {
       display: flex;
       justify-content: center;
-      gap: 20px;
-      margin-top: 30px;
+      gap: 15px;
+      margin-top: 20px;
       flex-wrap: wrap;
     }
     
     .end-btn {
-      padding: 12px 30px;
-      font-size: 1.1rem;
+      padding: 10px 20px;
+      font-size: 1rem;
       border-radius: var(--border-radius);
       border: none;
       cursor: pointer;
       font-weight: bold;
       transition: all 0.3s ease;
-      min-width: 180px;
+      min-width: 160px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
+      flex: 1;
     }
     
     .play-again {
@@ -696,15 +716,16 @@
       z-index: 3000;
       inset: 0;
       background: rgba(0, 0, 0, 0.8);
-      padding: 20px;
+      padding: 15px;
       align-items: center;
       justify-content: center;
+      overflow-y: auto;
     }
     
     .modal-content {
       background: var(--card-bg);
       border-radius: var(--border-radius);
-      padding: 30px;
+      padding: 20px;
       max-width: 500px;
       width: 100%;
       box-shadow: var(--box-shadow);
@@ -715,9 +736,9 @@
     
     .close-modal {
       position: absolute;
-      top: 15px;
-      left: 15px;
-      font-size: 1.5rem;
+      top: 12px;
+      left: 12px;
+      font-size: 1.2rem;
       cursor: pointer;
       color: var(--accent);
       background: none;
@@ -727,9 +748,9 @@
     .share-text {
       background: rgba(0, 0, 0, 0.3);
       border-radius: var(--border-radius);
-      padding: 20px;
-      margin: 20px 0;
-      font-size: 1.1rem;
+      padding: 15px;
+      margin: 15px 0;
+      font-size: 1rem;
       line-height: 1.6;
       text-align: right;
       white-space: pre-wrap;
@@ -738,20 +759,24 @@
     .share-actions {
       display: flex;
       justify-content: center;
-      gap: 15px;
-      margin-top: 20px;
+      gap: 12px;
+      margin-top: 15px;
+      flex-wrap: wrap;
     }
     
     .share-btn {
-      padding: 10px 20px;
+      padding: 8px 15px;
       border-radius: var(--border-radius);
       border: none;
       cursor: pointer;
       font-weight: bold;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.3s ease;
+      flex: 1;
+      min-width: 140px;
+      justify-content: center;
     }
     
     .share-btn:hover {
@@ -792,28 +817,33 @@
       60% {transform: translateY(-15px);}
     }
     
-    /* التصميم المتجاوب */
+    /* التصميم المتجاوب للهواتف */
     @media (max-width: 992px) {
       .container {
-        padding: 15px;
+        padding: 12px;
+        margin-left: 0;
       }
       
       .sidebar {
-        width: 130px;
+        position: relative;
+        width: 100%;
+        top: 0;
+        margin-bottom: 15px;
+        border-radius: var(--border-radius);
       }
       
       .question-text {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
       }
     }
     
     @media (max-width: 768px) {
       .start-title {
-        font-size: 2rem;
+        font-size: 1.6rem;
       }
       
       .logo {
-        font-size: 3rem;
+        font-size: 2.5rem;
       }
       
       .names-container {
@@ -822,7 +852,7 @@
       
       .header {
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
       }
       
       .game-info {
@@ -837,7 +867,7 @@
       
       .prizes li {
         font-size: 0.8rem;
-        padding: 8px 5px;
+        padding: 6px 4px;
       }
       
       .end-buttons {
@@ -851,39 +881,40 @@
     
     @media (max-width: 576px) {
       .start-title {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
       }
       
       .logo {
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
       
       .start-btn {
-        padding: 12px 40px;
-        font-size: 1.2rem;
+        padding: 10px 30px;
+        font-size: 1rem;
       }
       
       .name-title {
-        font-size: 1.7rem;
+        font-size: 1.4rem;
       }
       
       .question-text {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
       }
       
       .option {
-        padding: 15px;
-        font-size: 1.1rem;
+        padding: 12px;
+        font-size: 1rem;
+        min-height: 60px;
       }
       
       .helpers {
-        gap: 10px;
+        gap: 8px;
       }
       
       .helper-btn {
-        min-width: 160px;
-        font-size: 0.9rem;
-        padding: 10px 15px;
+        min-width: 100%;
+        font-size: 0.85rem;
+        padding: 8px 10px;
       }
       
       .share-actions {
@@ -892,7 +923,122 @@
       
       .share-btn {
         width: 100%;
-        justify-content: center;
+      }
+      
+      .crown-icon {
+        font-size: 25px;
+      }
+      
+      .player-avatar {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+      
+      .player-name {
+        font-size: 1rem;
+      }
+      
+      .info-box {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+      }
+      
+      .question-box {
+        padding: 15px;
+      }
+      
+      .question-number {
+        font-size: 0.9rem;
+      }
+      
+      .prizes-title {
+        font-size: 1rem;
+      }
+      
+      .end-container {
+        padding: 20px;
+      }
+      
+      .end-title {
+        font-size: 1.5rem;
+      }
+      
+      .prize-earned {
+        font-size: 1.2rem;
+      }
+      
+      .score-display {
+        font-size: 1.1rem;
+      }
+      
+      .player-stats {
+        padding: 12px;
+      }
+      
+      .player-stats h3 {
+        font-size: 1rem;
+      }
+      
+      .player-stats p {
+        font-size: 0.9rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .start-title {
+        font-size: 1.3rem;
+      }
+      
+      .logo {
+        font-size: 1.8rem;
+      }
+      
+      .name-title {
+        font-size: 1.3rem;
+      }
+      
+      .question-text {
+        font-size: 1.1rem;
+      }
+      
+      .option {
+        padding: 10px;
+        font-size: 0.95rem;
+      }
+      
+      .helper-btn {
+        font-size: 0.8rem;
+        min-width: 100%;
+      }
+      
+      .end-title {
+        font-size: 1.4rem;
+      }
+      
+      .prize-earned {
+        font-size: 1.1rem;
+      }
+      
+      .player-stats p {
+        font-size: 0.85rem;
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .player-stats .highlight {
+        margin-top: 5px;
+        text-align: center;
+      }
+      
+      .end-btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+      }
+      
+      .share-text {
+        font-size: 0.9rem;
+        padding: 12px;
       }
     }
   </style>
@@ -904,7 +1050,7 @@
   <div id="startScreen">
     <div class="logo">👑</div>
     <h1 class="start-title">من سيربح اللقب؟</h1>
-    <p style="font-size: 1.2rem; max-width: 600px; margin-bottom: 30px; line-height: 1.6;">
+    <p style="font-size: 1.1rem; max-width: 600px; margin-bottom: 20px; line-height: 1.5;">
       اختبر معلوماتك في هذه المسابقة المثيرة واربح لقبًا مميزًا! كل سؤال يقربك خطوة من اللقب الأعظم. هل تمتلك ما يكفي من المعرفة لتربح اللقب؟
     </p>
     <button class="start-btn" onclick="startEntry()">
@@ -977,13 +1123,13 @@
     
     <div class="helpers">
       <button class="helper-btn" id="fiftyBtn">
-        <i class="fas fa-ban"></i> حذف إجابتين (50:50) <span class="cost">(40000 نقطة)</span>
+        <i class="fas fa-ban"></i> 50:50 <span class="cost">(40K)</span>
       </button>
       <button class="helper-btn" id="addTimeBtn">
-        <i class="fas fa-hourglass-half"></i> إضافة وقت (+15 ثانية) <span class="cost">(30000 نقطة)</span>
+        <i class="fas fa-hourglass-half"></i> +15 ثانية <span class="cost">(30K)</span>
       </button>
       <button class="helper-btn" id="changeQuestionBtn">
-        <i class="fas fa-sync-alt"></i> تغيير السؤال <span class="cost">(50000 نقطة)</span>
+        <i class="fas fa-sync-alt"></i> تغيير السؤال <span class="cost">(50K)</span>
       </button>
     </div>
     
@@ -1047,7 +1193,7 @@
       <button class="close-modal" onclick="closeShareModal()">
         <i class="fas fa-times"></i>
       </button>
-      <h3 style="text-align: center; color: var(--accent); margin-bottom: 20px;">
+      <h3 style="text-align: center; color: var(--accent); margin-bottom: 15px;">
         <i class="fas fa-share-alt"></i> مشاركة النتائج
       </h3>
       <div class="share-text" id="shareTextContent"></div>
@@ -1644,6 +1790,8 @@
 🔹 النقاط المخصومة بسبب المساعدات: ${formatNumber(usedPoints)}
 🔹 نتيجتي النهائية: ${formatNumber(netScore)} نقطة
 
+رابط المسابقة:
+https://abuqusayms.github.io/Tbate-Game/
 هل تستطيع أن تتفوق علي؟ 
 #تباتي #TBATE`;
       
@@ -1659,7 +1807,18 @@
     // مشاركة النتائج على تويتر
     function shareOnTwitter() {
       const netScore = score - usedPoints;
-      const shareText = `🏆 لقد أنهيت تحدي المسابقة وحصلت على ${formatNumber(netScore)} نقطة! 
+      const usedHelpersCount = [fiftyFiftyUsed, timeHelpUsed, changeQuestionUsed].filter(Boolean).length;
+      
+      const shareText = `🏆 لقد أنهيت تحدي المسابقة!
+🔹 الاسم: ${playerName}
+🔹 مجموع النقاط: ${formatNumber(score)}
+🔹 أعلى لقب وصلت إليه: ${playerStats.bestTitle}
+🔹 عدد المساعدات المستخدمة: ${usedHelpersCount}
+🔹 النقاط المخصومة بسبب المساعدات: ${formatNumber(usedPoints)}
+🔹 نتيجتي النهائية: ${formatNumber(netScore)} نقطة
+
+رابط المسابقة:
+https://abuqusayms.github.io/Tbate-Game/
 هل تستطيع أن تتفوق علي؟ 
 #تباتي #TBATE`;
       
@@ -1686,6 +1845,8 @@
 🔹 النقاط المخصومة بسبب المساعدات: ${formatNumber(usedPoints)}
 🔹 نتيجتي النهائية: ${formatNumber(netScore)} نقطة
 
+رابط المسابقة:
+https://abuqusayms.github.io/Tbate-Game/
 هل تستطيع أن تتفوق علي؟ 
 #تباتي #TBATE`;
       
