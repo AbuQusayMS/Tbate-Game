@@ -823,6 +823,33 @@
       color: var(--primary);
     }
     
+    /* مؤشر حالة الحفظ */
+    .save-status {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      z-index: 10000;
+      display: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .save-status.saving {
+      background: rgba(30, 30, 150, 0.7);
+    }
+    
+    .save-status.success {
+      background: rgba(0, 100, 0, 0.7);
+    }
+    
+    .save-status.error {
+      background: rgba(150, 0, 0, 0.7);
+    }
+    
     /* الرسوم المتحركة */
     @keyframes pulse {
       0% { transform: translateX(-50%) scale(1); }
@@ -1109,6 +1136,9 @@
 <body>
   <div class="crown-icon">👑</div>
   
+  <!-- مؤشر حالة الحفظ -->
+  <div id="saveStatus" class="save-status"></div>
+  
   <!-- شاشة البداية -->
   <div id="startScreen">
     <div class="logo">👑</div>
@@ -1301,6 +1331,9 @@
   </div>
 
   <script>
+    // رابط Google Apps Script
+    const API_URL = "https://script.google.com/macros/s/AKfycbyNbGbMG3SLwjs_V4aOSFTazF-QwOm5ebQ2kz0AHChvtWlkHZtI5EizoSNStnyLvkGi/exec";
+
     // قائمة الأسئلة (15 سؤال فقط)
     const questions = [
       { q: "ما هي عاصمة تركيا؟", options: ["إسطنبول", "أنقرة", "إزمير", "بورصة"], correct: 1 },
@@ -1377,6 +1410,14 @@
     let usedPoints = 0;
     let gameStartTime;
     let gameEndTime;
+    let participantId = '';
+
+    // طابور الطلبات الفاشلة
+    let requestQueue = [];
+    let isSaving = false;
+    let saveDebounceTimer;
+    let lastSaveTime = 0;
+    let eventsLog = [];
 
     // عناصر DOM
     const questionText = document.getElementById("questionText");
@@ -1404,20 +1445,193 @@
     const endTimeElement = document.getElementById("endTime");
     const fiftyBtn = document.getElementById("fiftyBtn");
     const shareTextContent = document.getElementById("shareTextContent");
+    const saveStatus = document.getElementById("saveStatus");
+
+    // ================================================
+    // نظام حفظ التقدم وإرسال البيانات
+    // ================================================
+
+    // توليد معرف فريد للمشارك
+    function generateParticipantId(name) {
+      const timestamp = Date.now().toString(36);
+      const randomId = Math.random().toString(36).substring(2, 8);
+      return `${name.replace(/\s+/g, '_')}_${timestamp}_${randomId}`;
+    }
+
+    // حفظ حالة اللعبة في localStorage
+    function saveGameState() {
+      const gameState = {
+        participantId,
+        name: playerName,
+        attempt: currentAttemptNumber,
+        currentQuestion,
+        score,
+        status: 'in_progress',
+        lastUpdate: new Date().toISOString(),
+        startTime: gameStartTime ? gameStartTime.toISOString() : null,
+        endTime: gameEndTime ? gameEndTime.toISOString() : null,
+        totalTime: gameStartTime && gameEndTime ? (gameEndTime - gameStartTime) : 0,
+        wrongAnswers,
+        usedPoints,
+        helpersUsed: {
+          fiftyFiftyUsed,
+          timeHelpUsed,
+          changeQuestionUsed
+        },
+        events: [...eventsLog],
+        finalTitle: getCurrentTitle()
+      };
+      
+      localStorage.setItem('gameState', JSON.stringify(gameState));
+      debouncedSaveToServer();
+    }
+
+    // إرسال البيانات إلى الخادم مع معالجة الانقطاع
+    async function sendToServer(data) {
+      showSaveStatus('جارٍ الحفظ...', 'saving');
+      
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+          showSaveStatus('تم الحفظ ✓', 'success');
+          
+          // إرسال الطلبات المعلقة
+          if (requestQueue.length > 0) {
+            const queueCopy = [...requestQueue];
+            requestQueue = [];
+            for (const queuedData of queueCopy) {
+              await sendToServer(queuedData);
+            }
+          }
+          return true;
+        } else {
+          throw new Error(result.error || 'فشل الحفظ');
+        }
+      } catch (error) {
+        console.error('Error saving data:', error);
+        showSaveStatus('فشل الحفظ - يحاول مجدداً...', 'error');
+        
+        // تخزين الطلب في الطابور
+        requestQueue.push(data);
+        localStorage.setItem('requestQueue', JSON.stringify(requestQueue));
+        return false;
+      }
+    }
+
+    // تجميع الطلبات لتقليل عددها
+    function debouncedSaveToServer(delay = 1000) {
+      clearTimeout(saveDebounceTimer);
+      saveDebounceTimer = setTimeout(() => {
+        const gameState = JSON.parse(localStorage.getItem('gameState') || '{}');
+        if (Object.keys(gameState).length > 0) {
+          sendToServer(gameState);
+        }
+      }, delay);
+    }
+
+    // إظهار حالة الحفظ
+    function showSaveStatus(message, type = 'saving') {
+      saveStatus.textContent = message;
+      saveStatus.className = 'save-status ' + type;
+      saveStatus.style.display = 'block';
+      
+      if (type !== 'saving') {
+        setTimeout(() => {
+          saveStatus.style.display = 'none';
+        }, 3000);
+      }
+    }
+
+    // تسجيل الأحداث
+    function logEvent(eventType, details = {}) {
+      const event = {
+        type: eventType,
+        timestamp: new Date().toISOString(),
+        ...details
+      };
+      
+      eventsLog.push(event);
+      
+      // حفظ التغيير فوراً إذا كان حدثاً مهماً
+      if (['answer', 'helper_used', 'game_start', 'game_end'].includes(eventType)) {
+        saveGameState();
+      }
+    }
+
+    // استعادة الحالة المحفوظة
+    function loadGameState() {
+      const savedState = localStorage.getItem('gameState');
+      const savedQueue = localStorage.getItem('requestQueue');
+      
+      if (savedState) {
+        try {
+          const state = JSON.parse(savedState);
+          
+          // التحقق من أن اللاعب هو نفسه
+          if (state.name === playerName) {
+            participantId = state.participantId;
+            currentQuestion = state.currentQuestion;
+            score = state.score;
+            wrongAnswers = state.wrongAnswers;
+            usedPoints = state.usedPoints;
+            fiftyFiftyUsed = state.helpersUsed?.fiftyFiftyUsed || false;
+            timeHelpUsed = state.helpersUsed?.timeHelpUsed || false;
+            changeQuestionUsed = state.helpersUsed?.changeQuestionUsed || false;
+            eventsLog = state.events || [];
+            
+            scoreElement.textContent = formatNumber(score);
+            updateWrongCount();
+            updateTitle();
+            
+            // إرسال الحالة المحفوظة فوراً
+            setTimeout(() => sendToServer(state), 500);
+            return true;
+          }
+        } catch (e) {
+          console.error('Error loading saved state:', e);
+        }
+      }
+      
+      if (savedQueue) {
+        try {
+          requestQueue = JSON.parse(savedQueue);
+        } catch (e) {
+          console.error('Error loading request queue:', e);
+        }
+      }
+      
+      return false;
+    }
+
+    // ================================================
+    // دوال اللعبة
+    // ================================================
 
     // تهيئة اللعبة
     function initGame() {
-      // خلط الأسئلة عشوائياً
-      shuffleQuestions();
+      // توليد معرف فريد إذا لم يكن موجوداً
+      if (!participantId) {
+        participantId = generateParticipantId(playerName);
+      }
       
-      totalQuestions.textContent = questions.length;
-      renderPrizes();
-      showQuestion();
-      startTimer();
-      updatePlayerStats();
+      // تسجيل بدء اللعبة
+      logEvent('game_start');
       
-      // تسجيل وقت بدء اللعبة
-      gameStartTime = new Date();
+      // محاولة استعادة الحالة المحفوظة
+      const restored = loadGameState();
+      
+      if (!restored) {
+        shuffleQuestions();
+        showQuestion();
+        startTimer();
+        updatePlayerStats();
+        gameStartTime = new Date();
+      }
     }
 
     // خلط الأسئلة بشكل عشوائي
@@ -1551,6 +1765,16 @@
         opt.style.pointerEvents = "none";
       });
 
+      // تسجيل الحدث
+      const isCorrect = index === q.correct;
+      logEvent('answer', {
+        question: currentQuestion,
+        selected: index,
+        correct: q.correct,
+        isCorrect,
+        points: isCorrect ? prizes[currentQuestion].points : 0
+      });
+
       // تمييز الإجابة الصحيحة والخاطئة
       options.forEach((opt, i) => {
         if (i === correct) {
@@ -1600,6 +1824,9 @@
           }
         }, 1500);
       }
+      
+      // حفظ التغيير
+      saveGameState();
     }
 
     // بدء المؤقت
@@ -1681,6 +1908,12 @@
         options[i].style.opacity = "0.3";
         options[i].style.pointerEvents = "none";
       });
+      
+      // تسجيل الحدث
+      logEvent('helper_used', { helper: 'fifty_fifty', cost: 40000 });
+      
+      // حفظ التغيير
+      saveGameState();
     };
 
     // إضافة الوقت
@@ -1708,6 +1941,12 @@
       setTimeout(() => {
         timerElement.style.color = "var(--accent)";
       }, 1000);
+      
+      // تسجيل الحدث
+      logEvent('helper_used', { helper: 'add_time', cost: 30000 });
+      
+      // حفظ التغيير
+      saveGameState();
     };
 
     // تغيير السؤال باستخدام السؤال الاحتياطي
@@ -1733,6 +1972,12 @@
       
       // عرض السؤال الجديد
       showQuestion();
+      
+      // تسجيل الحدث
+      logEvent('helper_used', { helper: 'change_question', cost: 50000 });
+      
+      // حفظ التغيير
+      saveGameState();
     };
 
     // بدء إدخال الاسم
@@ -1775,6 +2020,12 @@
         document.querySelector(".sidebar").style.display = "flex";
         document.querySelector(".container").style.display = "flex";
         
+        // توليد معرف فريد
+        participantId = generateParticipantId(playerName);
+        
+        // حفظ الحالة الأولية
+        saveGameState();
+        
         initGame();
       } else {
         alert("اسمك غير موجود ضمن القائمة المسموح لها بالمشاركة. تأكد من كتابة الاسم بشكل صحيح أو تواصل مع مسؤول المسابقة لإضافته.");
@@ -1810,6 +2061,13 @@
       
       // خلط الأسئلة من جديد
       shuffleQuestions();
+      
+      // تسجيل الحدث
+      logEvent('game_retry');
+      
+      // حفظ التغيير
+      saveGameState();
+      
       initGame();
     }
 
@@ -1822,6 +2080,11 @@
       document.getElementById("nameEntry").style.display = "flex";
       document.getElementById("playerName").value = "";
       document.getElementById("playerName").focus();
+      
+      // مسح بيانات الجلسة الحالية
+      localStorage.removeItem('gameState');
+      eventsLog = [];
+      participantId = '';
     }
 
     // انتهاء اللعبة
@@ -1865,6 +2128,43 @@
       document.getElementById("usedPointsEnd").textContent = formatNumber(usedPoints);
       
       document.getElementById("endScreen").style.display = "flex";
+      
+      // تسجيل الحدث
+      logEvent('game_end', {
+        win: isWin,
+        finalScore: score,
+        finalTitle: currentTitle,
+        wrongAnswers,
+        usedPoints
+      });
+      
+      // إرسال النتيجة النهائية
+      const finalState = {
+        participantId,
+        name: playerName,
+        attempt: currentAttemptNumber,
+        currentQuestion,
+        score,
+        status: 'completed',
+        lastUpdate: new Date().toISOString(),
+        startTime: gameStartTime.toISOString(),
+        endTime: gameEndTime.toISOString(),
+        totalTime: timeDiff,
+        wrongAnswers,
+        usedPoints,
+        helpersUsed: {
+          fiftyFiftyUsed,
+          timeHelpUsed,
+          changeQuestionUsed
+        },
+        events: eventsLog,
+        finalTitle: currentTitle
+      };
+      
+      sendToServer(finalState);
+      
+      // مسح حالة اللعبة الحالية (تم الانتهاء)
+      localStorage.removeItem('gameState');
     }
 
     // مشاركة النتائج
@@ -1956,6 +2256,23 @@ https://abuqusayms.github.io/Tbate-Game/
       document.getElementById("endScreen").style.display = "none";
       document.getElementById("shareModal").style.display = "none";
       document.getElementById("maxWrong").textContent = maxWrongAnswers;
+      
+      // إضافة مستمعي الأحداث للحفظ عند الخروج
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+          saveGameState();
+        }
+      });
+
+      window.addEventListener('beforeunload', () => {
+        saveGameState();
+        
+        // محاولة إرسال فوري عند الخروج
+        const gameState = JSON.parse(localStorage.getItem('gameState') || '{}');
+        if (Object.keys(gameState).length > 0) {
+          navigator.sendBeacon(API_URL, JSON.stringify(gameState));
+        }
+      });
     };
   </script>
 </body>
