@@ -488,18 +488,9 @@ function populatePlayerSelect() {
 }
 
 window.startEntry = function startEntry() {
-  showToast("اختر اسمك من القائمة للمتابعة", 2000);
-  setTimeout(() => {
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("nameEntry").style.display = "flex";
-    populatePlayerSelect();
-  }, 600); // ننتظر قليلًا حتى يظهر التوست
-};
-
-  // الكود الأصلي للانتقال لشاشة اختيار الاسم
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("nameEntry").style.display = "flex";
-  populatePlayerSelect(); // دالة تعبئة القائمة بالأسماء
+  populatePlayerSelect();
 };
 
 // ===============================
@@ -863,25 +854,6 @@ window.onload = () => {
   document.getElementById("shareModal").style.display = "none";
   document.getElementById("maxWrong").textContent = maxWrongAnswers;
 
- let toastTimer = null;
-function showToast(message, duration = 3000) {
-  const el = document.getElementById('toast');
-  if (!el) return;
-  el.textContent = message;
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), duration);
-}
-
-window.startEntry = function startEntry() {
-  showToast("اختر اسمك من القائمة للمتابعة", 2000);
-  setTimeout(() => {
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("nameEntry").style.display = "flex";
-    populatePlayerSelect();
-  }, 600); // ننتظر قليلًا حتى يظهر التوست
-};
-  
   // ملء قائمة الأسماء عند التحميل
   populatePlayerSelect();
 
