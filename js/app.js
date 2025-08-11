@@ -52,7 +52,8 @@ const allowedNames = [
   { name: "ميس الريم", username: "@R2e0e0m1" },
   { name: "Kai", username: "@Kai_Virtra" },
   { name: "‏‎السير بلا شمس", username: "@Mabruok242139" },
-  { name: "محمد جمال", username: "@HamoJamal99" }
+  { name: "محمد جمال", username: "@HamoJamal99" },
+  { name: "حازم", username: "@HazeMELAMINVIP" }
 ];
 
 // --- محاولات ومراقبة الجولة ---
