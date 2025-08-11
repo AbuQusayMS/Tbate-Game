@@ -175,7 +175,11 @@ function normalizeName(s){
 // ===============================
 function getCurrentTitle() {
   let title = "";
-  for (const prize of prizes) if (score >= prize.points && prize.title) title = prize.title;
+  for (const prize of prizes) {
+    if (score >= prize.points && prize.title && score > 0) {
+      title = prize.title;
+    }
+  }
   return title;
 }
 function updateWrongCount() { wrongCountElement.textContent = wrongAnswers; }
