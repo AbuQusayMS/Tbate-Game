@@ -24,7 +24,6 @@ const prizes = [
   { points: 250000, title: "" },
   { points: 500000, title: "" },
   { points: 1000000, title: "نجم المعرفة الذهبية" },
-  { name: "تيتة", username: "@aroa_requiem" }
 ];
 
 // سؤال احتياطي لتغيير السؤال
@@ -52,6 +51,7 @@ const allowedNames = [
   { name: "ميس الريم", username: "@R2e0e0m1" },
   { name: "Kai", username: "@Kai_Virtra" },
   { name: "‏‎السير بلا شمس", username: "@Mabruok242139" },
+  { name: "تيتة", username: "@aroa_requiem" },
   { name: "محمد جمال", username: "@HamoJamal99" },
   { name: "حازم", username: "@HazeMELAMINVIP" },
   { name: "هاشم", username: "@hshz_12" }
