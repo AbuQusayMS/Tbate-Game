@@ -50,7 +50,7 @@ const allowedNames = [
   { name: "یزن", username: "@Princeyz2010" },
   { name: "ميس الريم", username: "@R2e0e0m1" },
   { name: "Kai", username: "@Kai_Virtra" },
-  { name: "‏‎بلا شمس", username: "@Mabruok242139" }
+  { name: "‏‎السير بلا شمس", username: "@Mabruok242139" }
 ];
 
 // --- محاولات ومراقبة الجولة ---
