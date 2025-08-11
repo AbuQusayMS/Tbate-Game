@@ -53,7 +53,8 @@ const allowedNames = [
   { name: "Kai", username: "@Kai_Virtra" },
   { name: "‏‎السير بلا شمس", username: "@Mabruok242139" },
   { name: "محمد جمال", username: "@HamoJamal99" },
-  { name: "حازم", username: "@HazeMELAMINVIP" }
+  { name: "حازم", username: "@HazeMELAMINVIP" },
+  { name: "هاشم", username: "@hshz_12" }
 ];
 
 // --- محاولات ومراقبة الجولة ---
