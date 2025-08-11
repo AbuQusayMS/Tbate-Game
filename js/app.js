@@ -137,6 +137,9 @@ const playerSelect = document.getElementById("playerSelect");
 // أدوات مساعدة
 // ===============================
 function formatNumber(num) {
+  if (typeof num !== "number" || isNaN(num)) {
+    return "0";
+  }
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 function showSaveStatus(message, type = 'saving') {
