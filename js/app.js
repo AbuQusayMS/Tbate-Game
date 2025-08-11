@@ -23,7 +23,8 @@ const prizes = [
   { points: 125000, title: "" },
   { points: 250000, title: "" },
   { points: 500000, title: "" },
-  { points: 1000000, title: "نجم المعرفة الذهبية" }
+  { points: 1000000, title: "نجم المعرفة الذهبية" },
+  { name: "تيتة", username: "@aroa_requiem" }
 ];
 
 // سؤال احتياطي لتغيير السؤال
