@@ -164,6 +164,40 @@ function logEvent(type, details = {}) {
   if (['answer', 'helper_used', 'game_start', 'game_end'].includes(type)) saveGameState();
 }
 
+function showWelcomeAlert() {
+  Swal.fire({
+    title: 'مرحباً بك في المسابقة!',
+    html: `
+      <div style="text-align: right; direction: rtl;">
+        <p><b>تعليمات هامة قبل البدء:</b></p>
+        <ul style="text-align: right; padding-right: 20px;">
+          <li>أنا نائم حاليًا، فإذا واجهت أي مشكلة في الموقع، اترك لي رسالة أو تعليق وسأحلّها لاحقًا.</li>
+          <li>أحيانًا قد لا تظهر لك الأسئلة، لذلك جرّب استخدام متصفح آخر أو وضع التصفّح الخفي.</li>
+          <li>لديك 3 محاولات يومية فقط</li>
+          <li>مدة الإجابة على كل سؤال 90 ثانية</li>
+          <li>يمكنك استخدام المساعدات ولكنها ستخصم من نقاطك</li>
+          <li>3 إجابات خاطئة تنهي اللعبة</li>
+        </ul>
+        <p style="color: var(--accent); margin-top: 15px;">
+          هل أنت مستعد للتحدي؟
+        </p>
+      </div>
+    `,
+    icon: 'info',
+    showCancelButton: true,
+    confirmButtonText: 'نعم، ابدأ اللعبة!',
+    cancelButtonText: 'لا، أرغب بالعودة',
+    confirmButtonColor: '#ffd700',
+    cancelButtonColor: '#f44336',
+    background: 'var(--secondary)',
+    color: 'white'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      startEntry(); // الانتقال إلى صفحة إدخال الاسم
+    }
+  });
+}
+
 // تطبيع الاسم/اليوزر (إزالة التشكيل، توحيد الألف..)
 function normalizeName(s){
   return (s || "")
