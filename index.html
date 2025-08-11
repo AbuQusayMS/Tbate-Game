@@ -889,6 +889,28 @@
       display: none;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
+
+    /* تنبيه عائم (توست) */
+.toast{
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%, -12px);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 10001;
+}
+.toast.show{
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
     
     .save-status.saving {
       background: rgba(30, 30, 150, 0.7);
@@ -1202,6 +1224,9 @@
   
   <!-- مؤشر حالة الحفظ -->
   <div id="saveStatus" class="save-status"></div>
+
+  <!-- تنبيه عائم (توست) -->
+<div id="toast" class="toast"></div>
   
   <!-- شاشة البداية -->
   <div id="startScreen">
