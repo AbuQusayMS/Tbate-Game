@@ -129,26 +129,6 @@
       transform: translateY(-5px);
       box-shadow: 0 12px 25px rgba(255, 215, 0, 0.5);
     }
-
-    .toast {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(0,0,0,0.85);
-  color: white;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 9999;
-}
-.toast.show {
-  opacity: 1;
-  transform: translateY(0);
-}
     
     /* إدخال الاسم */
     #nameEntry {
@@ -1215,29 +1195,6 @@
       margin-top: 16px;
       margin-bottom: 24px;
     }
-
-    /* باقي التنسيقات... */
-
-/* ===== Toast notification ===== */
-.toast {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(0,0,0,0.85);
-  color: white;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 9999;
-}
-.toast.show {
-  opacity: 1;
-  transform: translateY(0);
-}
   </style>
 </head>
 <body>
@@ -1254,8 +1211,8 @@
       اختبر معلوماتك في هذه المسابقة المثيرة واربح لقبًا مميزًا! كل سؤال يقربك خطوة من اللقب الأعظم. هل تمتلك ما يكفي من المعرفة لتربح اللقب؟
     </p>
     <button class="start-btn" onclick="startEntry()">
-  <i class="fas fa-play"></i> ابدأ اللعبة
-</button>
+      <i class="fas fa-play"></i> ابدأ اللعبة
+    </button>
   </div>
 
   <!-- إدخال الاسم -->
@@ -1452,9 +1409,6 @@
     </div>
   </div>
 
-
-  
-  <div id="toast" class="toast"></div>
   <script src="./js/app.js" defer></script>
 </body>
 </html>
