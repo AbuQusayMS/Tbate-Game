@@ -36,6 +36,7 @@ const reserveQuestion = {
 
 // الأسماء المسموحة
 const allowedNames = [
+  { name: "القارئ الوحيد", username: "@MS_AbuQusay" },
   { name: "کایرا", username: "@Mavimixx7" },
   { name: "عقيل", username: "@EZxAqeel" },
   { name: "Hussain XAlx", username: "@hussainx_10_x" },
