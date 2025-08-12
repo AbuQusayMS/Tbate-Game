@@ -54,7 +54,8 @@ const allowedNames = [
   { name: "تيتة", username: "@aroa_requiem" },
   { name: "محمد جمال", username: "@HamoJamal99" },
   { name: "حازم", username: "@HazeMELAMINVIP" },
-  { name: "هاشم", username: "@hshz_12" }
+  { name: "هاشم", username: "@hshz_12" },
+  { name: "E7", username: "@Gray_E7" }
 ];
 
 // --- محاولات ومراقبة الجولة ---
