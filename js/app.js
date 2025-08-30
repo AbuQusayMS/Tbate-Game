@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- إعدادات ومتغيرات اللعبة ---
-    const API_URL = "https://script.google.com/macros/s/AKfycbysgtXT_y8v53KnTRe47Pfkf3p5DVr7TuaKENNISc53AseC9LQAj-5nceZsmtVM1ug1/exec"; // !! ضع رابط الويب آب الجديد هنا
+    const API_URL = "https://script.google.com/macros/s/AKfycbydx11dse9mfQeoBkVhcCc-AMhMsRQyVRN7GLf71ubzfNIsKrHTrXxHWD3ieiocBXMXbw/exec"; // !! ضع رابط الويب آب الجديد هنا
     const QUESTION_TIME = 90;
     const PRIZES = [
         { points: 100, title: "مشارك واعد" }, { points: 200, title: "مستكشف المعرفة" },
