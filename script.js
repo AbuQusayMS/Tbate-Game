@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // !!! IMPORTANT: Paste your new Web App URL here !!!
-    const API_URL = "https://script.google.com/macros/library/d/1_P2vV_6ni5x3hiH9r-Hm_nOWVzuOlJ9P4rkRytEeZxjHULDzTJbDG6ZH/1"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbwS16Exl-EFOufB-ptfDDFepIzZJBcqCSXgCd7dt8DY5RhPQyVW_XkPyynAxN9Av7MA/exec"; 
     
     const QUESTION_TIME = 90;
     const TOTAL_AVATARS = 20;
