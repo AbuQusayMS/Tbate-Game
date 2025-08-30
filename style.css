@@ -32,17 +32,14 @@ body[data-theme='light'] {
     --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-/* --- الإعدادات الأساسية --- */
+/* --- الإعدادات الأساسية وإصلاح التمرير --- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; width: 100%; overflow: hidden; }
-
+html { height: 100%; }
 body {
+    min-height: 100%;
     font-family: var(--font-family);
     background-color: var(--bg-color);
     color: var(--text-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     transition: background-color 0.3s, color 0.3s;
     -webkit-tap-highlight-color: transparent;
 }
@@ -51,7 +48,7 @@ body {
 .screen {
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed; /* Use fixed for full-screen overlay */
     top: 0;
     left: 0;
     display: flex;
@@ -63,7 +60,7 @@ body {
     visibility: hidden;
     transform: scale(0.95);
     transition: opacity 0.4s var(--ease-out), visibility 0.4s, transform 0.4s var(--ease-out);
-    overflow-y: auto;
+    overflow-y: auto; /* Allow individual screen scrolling */
 }
 .screen.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 10; }
 
@@ -76,6 +73,7 @@ body {
     text-align: center;
     max-width: 600px;
     width: 100%;
+    margin: auto 0; /* Center vertically inside the scrollable screen */
     border: 1px solid var(--border-color);
     transition: background-color 0.3s, border-color 0.3s;
 }
@@ -96,65 +94,38 @@ body {
 .btn-secondary { background-color: var(--secondary-color); color: var(--text-color); }
 .btn-secondary:hover { background-color: var(--border-color); }
 input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    text-align: center;
+    width: 100%; padding: 12px; border-radius: 8px;
+    border: 1px solid var(--border-color); background-color: var(--bg-color);
+    color: var(--text-color); font-size: 1.2rem; margin-bottom: 20px; text-align: center;
 }
 a { color: var(--gold-color); text-decoration: none; }
 .spinner {
-    border: 5px solid var(--secondary-color);
-    border-top: 5px solid var(--gold-color);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    border: 5px solid var(--secondary-color); border-top: 5px solid var(--gold-color);
+    border-radius: 50%; width: 50px; height: 50px;
     animation: spin 1s linear infinite;
 }
 @keyframes spin { 100% { transform: rotate(360deg); } }
 
 /* --- شاشة البداية --- */
 .game-title {
-    font-size: 3rem;
-    font-weight: 900;
-    background: var(--gold-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 20px;
+    font-size: 3rem; font-weight: 900; background: var(--gold-gradient);
+    -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 20px;
 }
 .game-title span { display: inline-block; animation: bounce 2s infinite; }
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-20px); }
-    60% { transform: translateY(-10px); }
-}
+@keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } 60% { transform: translateY(-10px); } }
 
 /* --- شاشة اختيار الأفاتار --- */
 .avatar-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-    max-height: 300px;
-    overflow-y: auto;
-    padding: 5px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 15px; margin: 20px 0; max-height: 300px; overflow-y: auto; padding: 5px;
 }
 .avatar-option {
-    width: 100%;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 4px solid transparent;
-    transition: all 0.2s ease;
+    width: 100%; border-radius: 50%; cursor: pointer; border: 4px solid transparent; transition: all 0.2s ease;
 }
 .avatar-option:hover { transform: scale(1.1); }
 .avatar-option.selected { border-color: var(--gold-color); transform: scale(1.1); }
 
-/* --- الشريط الجانبي --- */
+/* --- الشريط الجانبي (قائمة الألقاب) --- */
 .sidebar {
     position: fixed; top: 0; right: -300px; width: 280px; height: 100%;
     background-color: var(--primary-color); padding: 20px; box-shadow: -5px 0 15px var(--shadow-color);
@@ -173,7 +144,7 @@ a { color: var(--gold-color); text-decoration: none; }
 .prizes-list li.past { opacity: 0.5; }
 
 /* --- منطقة اللعبة --- */
-#gameContainer { max-width: 900px; }
+#gameContainer { max-width: 900px; display: flex; flex-direction: column; justify-content: flex-start; }
 .top-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 10px; }
 .theme-toggle-btn, .open-sidebar-btn {
     background: var(--secondary-color); color: var(--text-color);
@@ -184,6 +155,7 @@ a { color: var(--gold-color); text-decoration: none; }
     background-color: var(--primary-color); border-radius: 10px; width: 100%;
 }
 .player-info { display: flex; align-items: center; gap: 15px; }
+.player-info div { display: flex; flex-direction: column; align-items: flex-start; } /* إصلاح التنسيق */
 #playerAvatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold-color); }
 #currentScore { font-size: 1.2rem; font-weight: 700; color: var(--gold-color); }
 .game-stats { text-align: left; }
@@ -212,7 +184,6 @@ a { color: var(--gold-color); text-decoration: none; }
 .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
 .leaderboard-table th, .leaderboard-table td { padding: 12px; text-align: center; border-bottom: 1px solid var(--border-color); }
 .leaderboard-table th { font-weight: bold; }
-.leaderboard-table tr:nth-child(1) td:first-child { content: '🥇'; } /* This needs JS to work better */
 
 /* --- رسائل التنبيه (Toast) --- */
 #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
@@ -229,7 +200,8 @@ a { color: var(--gold-color); text-decoration: none; }
 /* --- تصميم متجاوب --- */
 @media (max-width: 768px) {
     .options-grid { grid-template-columns: 1fr; }
-    .header { flex-direction: column; gap: 10px; }
+    .header { flex-direction: column; gap: 10px; align-items: center; } /* Center align on mobile */
+    .player-info div { align-items: center; } /* Center name and score */
     #gameContainer { padding-top: 60px; /* Space for top-bar */ }
-    .top-bar { position: absolute; top: 15px; left: 0; }
+    .top-bar { position: absolute; top: 15px; left: 0; padding: 0 15px; }
 }
