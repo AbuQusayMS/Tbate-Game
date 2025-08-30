@@ -1,1 +1,363 @@
-const _0xbe847d=_0x236f;(function(_0x404e11,_0x5a6494){const _0x59fd9b=_0x236f,_0xb11966=_0x404e11();while(!![]){try{const _0x2a3d32=-parseInt(_0x59fd9b(0x176))/0x1+-parseInt(_0x59fd9b(0x175))/0x2+-parseInt(_0x59fd9b(0x1de))/0x3*(parseInt(_0x59fd9b(0x1db))/0x4)+parseInt(_0x59fd9b(0x1e7))/0x5*(parseInt(_0x59fd9b(0x156))/0x6)+parseInt(_0x59fd9b(0x164))/0x7+parseInt(_0x59fd9b(0x183))/0x8*(parseInt(_0x59fd9b(0x1e8))/0x9)+parseInt(_0x59fd9b(0x1b7))/0xa;if(_0x2a3d32===_0x5a6494)break;else _0xb11966['push'](_0xb11966['shift']());}catch(_0x345558){_0xb11966['push'](_0xb11966['shift']());}}}(_0x5b03,0x1f140),document[_0xbe847d(0x15a)](_0xbe847d(0x15f),()=>{const _0x10e31b=_0xbe847d,_0x31e047=_0x10e31b(0x18c),_0x2786ce=0x5a,_0x517b81=0xa,_0x139562=0x14,_0x258e40=[{'points':0x64,'title':_0x10e31b(0x184)},{'points':0xc8,'title':_0x10e31b(0x17e)},{'points':0x12c,'title':_0x10e31b(0x1c7)},{'points':0x1f4,'title':_0x10e31b(0x189)},{'points':0x3e8,'title':_0x10e31b(0x150)},{'points':0x7d0,'title':_0x10e31b(0x188)},{'points':0xfa0,'title':_0x10e31b(0x1cb)},{'points':0x1f40,'title':'خبير\x20المعلومات'},{'points':0x3e80,'title':_0x10e31b(0x180)},{'points':0x7d00,'title':_0x10e31b(0x1e1)},{'points':0xfa00,'title':_0x10e31b(0x158)},{'points':0x1e848,'title':_0x10e31b(0x1e4)},{'points':0x3d090,'title':_0x10e31b(0x1c5)},{'points':0x7a120,'title':_0x10e31b(0x1d5)},{'points':0xf4240,'title':'نجم\x20المعرفة\x20الذهبي'}],_0xc89bb2={'fiftyFifty':0x9c40,'changeQuestion':0xc350},_0x24c57f={'loader':document[_0x10e31b(0x1a4)](_0x10e31b(0x186)),'start':document['getElementById'](_0x10e31b(0x16e)),'avatar':document['getElementById'](_0x10e31b(0x1cc)),'nameEntry':document[_0x10e31b(0x1a4)]('nameEntry'),'game':document[_0x10e31b(0x1a4)](_0x10e31b(0x190)),'end':document[_0x10e31b(0x1a4)](_0x10e31b(0x195)),'leaderboard':document['getElementById'](_0x10e31b(0x17b))},_0x2812be={'correct':document[_0x10e31b(0x1a4)](_0x10e31b(0x1e3)),'wrong':document[_0x10e31b(0x1a4)](_0x10e31b(0x1c3)),'click':document[_0x10e31b(0x1a4)](_0x10e31b(0x1b9)),'tick':document[_0x10e31b(0x1a4)]('tick-sound')},_0x2d443c=document[_0x10e31b(0x191)]('.avatar-grid'),_0xcd4ffd=document[_0x10e31b(0x1a4)](_0x10e31b(0x165)),_0x4198f7=document[_0x10e31b(0x191)](_0x10e31b(0x1ba)),_0x1bc1c6=document['getElementById'](_0x10e31b(0x16d));let _0x4767fc={'deviceId':_0x471146()},_0x39b3e0,_0x3393ad,_0x558301=![],_0x3b387c=0x0;function _0x28bcf3(){const _0x59a714=_0x10e31b;_0x1dd890(),_0x24307a(),_0x264925(),_0x2962ab(_0x59a714(0x162)),_0x24c57f[_0x59a714(0x186)][_0x59a714(0x192)][_0x59a714(0x18f)](_0x59a714(0x168));}function _0x1dd890(){const _0x174228=_0x10e31b;for(let _0x5c45b7=0x1;_0x5c45b7<=_0x139562;_0x5c45b7++){const _0x22427d=document[_0x174228(0x1be)](_0x174228(0x1c8));_0x22427d[_0x174228(0x1d1)]=_0x174228(0x1c9)+_0x5c45b7+_0x174228(0x1ad),_0x22427d['alt']=_0x174228(0x185)+_0x5c45b7,_0x22427d[_0x174228(0x192)][_0x174228(0x15b)](_0x174228(0x1ae)),_0x22427d[_0x174228(0x1bf)][_0x174228(0x17a)]=_0x22427d[_0x174228(0x1d1)],_0x22427d[_0x174228(0x15a)](_0x174228(0x1b6),()=>{const _0x15014f=_0x174228;_0x34b49b(_0x15014f(0x1b6)),document[_0x15014f(0x157)](_0x15014f(0x172))[_0x15014f(0x159)](_0x313b10=>_0x313b10['classList'][_0x15014f(0x18f)](_0x15014f(0x1d9))),_0x22427d[_0x15014f(0x192)][_0x15014f(0x15b)]('selected'),_0x4767fc['avatar']=_0x22427d[_0x15014f(0x1bf)][_0x15014f(0x17a)],document[_0x15014f(0x1a4)](_0x15014f(0x15e))['disabled']=![];}),_0x2d443c[_0x174228(0x17f)](_0x22427d);}}function _0x24307a(){const _0x28d47a=_0x10e31b;document['getElementById']('startPlayBtn')[_0x28d47a(0x15a)](_0x28d47a(0x1b6),()=>{const _0x22cac8=_0x28d47a;_0x34b49b(_0x22cac8(0x1b6)),_0x2962ab(_0x22cac8(0x1c2));}),document['getElementById'](_0x28d47a(0x15e))['addEventListener']('click',()=>{const _0x4d75e8=_0x28d47a;_0x34b49b(_0x4d75e8(0x1b6)),_0x2962ab(_0x4d75e8(0x19c));}),document['getElementById'](_0x28d47a(0x17d))[_0x28d47a(0x15a)]('click',_0x94f2b8),document[_0x28d47a(0x1a4)]('showLeaderboardBtn')[_0x28d47a(0x15a)]('click',_0x55f73e),document['getElementById']('backToStartBtn')[_0x28d47a(0x15a)](_0x28d47a(0x1b6),()=>{const _0x33d4f6=_0x28d47a;_0x34b49b(_0x33d4f6(0x1b6)),_0x2962ab('start');}),document[_0x28d47a(0x191)](_0x28d47a(0x1a3))[_0x28d47a(0x15a)](_0x28d47a(0x1b6),_0x7c3ba6),document[_0x28d47a(0x157)](_0x28d47a(0x1d6))['forEach'](_0x2cc83b=>_0x2cc83b['addEventListener']('click',_0x1b1099)),document[_0x28d47a(0x1a4)](_0x28d47a(0x1a0))[_0x28d47a(0x15a)](_0x28d47a(0x1b6),()=>window[_0x28d47a(0x177)][_0x28d47a(0x1b0)]());}async function _0x94f2b8(){const _0x1d27e8=_0x10e31b;_0x34b49b('click');const _0x12c8bf=document['getElementById'](_0x1d27e8(0x1da))[_0x1d27e8(0x1e5)][_0x1d27e8(0x1df)]();if(_0x12c8bf[_0x1d27e8(0x193)]<0x2){_0x70e965(_0x1d27e8(0x1a7),_0x1d27e8(0x19b));return;}_0x4767fc[_0x1d27e8(0x1d3)]=_0x12c8bf,_0x2962ab('loader');const _0x485100=await _0x35d940({'action':_0x1d27e8(0x162),..._0x4767fc});_0x485100['success']?(_0x48d8da(_0x485100['attemptId']),_0x105107(),_0x2962ab(_0x1d27e8(0x171)),await _0x6f74fb()):(_0x70e965(_0x485100[_0x1d27e8(0x19b)]===_0x1d27e8(0x1b4)?_0x1d27e8(0x1b2):_0x1d27e8(0x1b5),_0x1d27e8(0x19b)),_0x2962ab(_0x1d27e8(0x162)));}async function _0x6f74fb(){const _0x5df81d=_0x10e31b;startLoadingQuestion();const _0x1a6b4b=await _0x35d940({'action':_0x5df81d(0x153),'attemptId':_0x4767fc[_0x5df81d(0x1d7)]});_0x1a6b4b[_0x5df81d(0x19a)]?(_0x2728fd(_0x1a6b4b['question'],_0x1a6b4b['qNum'],_0x1a6b4b['totalQ']),_0x48c979(),_0x3393ad=Date[_0x5df81d(0x167)]()):(_0x70e965(_0x5df81d(0x18e),_0x5df81d(0x19b)),_0x254c20()),stopLoadingQuestion();}function _0x2728fd(_0x4c3f18,_0x59014f,_0x3a419f){const _0x4e5557=_0x10e31b;_0xcd4ffd[_0x4e5557(0x174)]=_0x4c3f18['q'],_0xcd4ffd[_0x4e5557(0x192)][_0x4e5557(0x15b)](_0x4e5557(0x1dc)),setTimeout(()=>_0xcd4ffd['classList'][_0x4e5557(0x18f)](_0x4e5557(0x1dc)),0x1f4),document[_0x4e5557(0x1a4)](_0x4e5557(0x1c1))[_0x4e5557(0x174)]=_0x4e5557(0x1a5)+_0x59014f+_0x4e5557(0x154)+_0x3a419f,_0x4198f7['innerHTML']='',_0x4c3f18[_0x4e5557(0x151)][_0x4e5557(0x159)]((_0x1e2a3d,_0x1c6de0)=>{const _0x2bae5d=_0x4e5557,_0xe71c68=document['createElement']('button');_0xe71c68[_0x2bae5d(0x192)][_0x2bae5d(0x15b)]('option-btn'),_0xe71c68[_0x2bae5d(0x174)]=_0x1e2a3d,_0xe71c68['dataset'][_0x2bae5d(0x1ca)]=_0x1c6de0,_0xe71c68['onclick']=()=>_0x2145b5(_0x1c6de0,_0xe71c68),_0x4198f7[_0x2bae5d(0x17f)](_0xe71c68);}),updateUI();}async function _0x2145b5(_0x5f4d04,_0x133fb1){const _0x245e76=_0x10e31b,_0x1f5d8e=Date[_0x245e76(0x167)]()-_0x3393ad;_0x4cd14a(),document[_0x245e76(0x157)](_0x245e76(0x1e6))['forEach'](_0x299211=>_0x299211['classList']['add'](_0x245e76(0x199)));const _0x2aa31b=await _0x35d940({'action':_0x245e76(0x16b),'attemptId':_0x4767fc[_0x245e76(0x1d7)],'answerIndex':_0x5f4d04,'answerTime':_0x1f5d8e});if(_0x2aa31b[_0x245e76(0x19a)]){if(_0x2aa31b[_0x245e76(0x1bd)]){_0x34b49b(_0x245e76(0x1bd)),_0x70e965(_0x245e76(0x170),_0x245e76(0x19a)),_0x133fb1[_0x245e76(0x192)]['add'](_0x245e76(0x1bd));const _0x2ac276=_0x258e40[_0x4767fc['currentQuestion']][_0x245e76(0x1c4)];_0x75d2ea(_0x3b387c+_0x2ac276),_0x4767fc[_0x245e76(0x1aa)]++;}else _0x34b49b(_0x245e76(0x1c0)),_0x70e965(_0x245e76(0x16c),'error'),_0x133fb1['classList'][_0x245e76(0x15b)]('wrong'),document[_0x245e76(0x191)](_0x245e76(0x1a9)+_0x2aa31b[_0x245e76(0x16a)]+'\x27]')[_0x245e76(0x192)][_0x245e76(0x15b)](_0x245e76(0x1bd)),_0x4767fc['wrongAnswers']=_0x2aa31b[_0x245e76(0x187)];updateUI(),setTimeout(()=>{const _0x439ef2=_0x245e76;_0x2aa31b[_0x439ef2(0x1a2)]||_0x4767fc[_0x439ef2(0x1aa)]>=_0x258e40[_0x439ef2(0x193)]?_0x254c20():_0x6f74fb();},0x7d0);}}function _0x254c20(){const _0x4bae8b=_0x10e31b;_0x4cd14a();const _0x3f8d17=(new Date()-new Date(_0x4767fc[_0x4bae8b(0x196)]))/0x3e8,_0x1bca0b=_0x4767fc[_0x4bae8b(0x1aa)]>0x0?_0x258e40[_0x4767fc['currentQuestion']-0x1][_0x4bae8b(0x1ac)]:_0x4bae8b(0x1ce);_0x35d940({'action':_0x4bae8b(0x1e2),'attemptId':_0x4767fc['attemptId'],'score':_0x3b387c,'finalTitle':_0x1bca0b,'totalTime':_0x3f8d17}),document[_0x4bae8b(0x1a4)](_0x4bae8b(0x155))[_0x4bae8b(0x174)]=_0x4767fc[_0x4bae8b(0x1d3)],document[_0x4bae8b(0x1a4)](_0x4bae8b(0x163))[_0x4bae8b(0x174)]=_0x1bca0b,document[_0x4bae8b(0x1a4)](_0x4bae8b(0x1a6))[_0x4bae8b(0x174)]=_0x2ec82d(_0x3b387c),document[_0x4bae8b(0x1a4)]('totalTime')[_0x4bae8b(0x174)]=Math['round'](_0x3f8d17)+_0x4bae8b(0x152),_0x2962ab(_0x4bae8b(0x1e2));}function _0x1b1099(_0x573f98){}function _0x48c979(){const _0x260dc3=_0x10e31b;_0x4cd14a(),_0x4767fc[_0x260dc3(0x17c)]=_0x2786ce,_0x558301=![],document['querySelector']('.timer-container')[_0x260dc3(0x192)][_0x260dc3(0x18f)](_0x260dc3(0x197)),_0x39b3e0=setInterval(()=>{const _0x20c94b=_0x260dc3;if(_0x558301)return;_0x4767fc[_0x20c94b(0x17c)]--,updateTimerDisplay();if(_0x4767fc[_0x20c94b(0x17c)]<=0xa)_0x2812be[_0x20c94b(0x1a8)][_0x20c94b(0x1ea)]();if(_0x4767fc[_0x20c94b(0x17c)]<=0x0){}},0x3e8);}function _0x4cd14a(){const _0x5ee678=_0x10e31b;clearInterval(_0x39b3e0),_0x2812be[_0x5ee678(0x1a8)]['pause'](),_0x2812be[_0x5ee678(0x1a8)][_0x5ee678(0x173)]=0x0;}function _0x75d2ea(_0x29e371){const _0x342ded=_0x3b387c,_0x36cfe6=_0x29e371-_0x342ded;let _0x1c5708=0x0;const _0x249946=0x1f4,_0x597db8=setInterval(()=>{const _0x4f9511=_0x236f;_0x1c5708+=0x14;const _0x33c454=_0x1c5708/_0x249946;_0x1bc1c6[_0x4f9511(0x174)]=_0x4f9511(0x1cd)+_0x2ec82d(Math[_0x4f9511(0x1b3)](_0x342ded+_0x36cfe6*_0x33c454)),_0x1c5708>=_0x249946&&(_0x1bc1c6[_0x4f9511(0x174)]=_0x4f9511(0x1cd)+_0x2ec82d(_0x29e371),clearInterval(_0x597db8));},0x14);_0x3b387c=_0x29e371;}function _0x70e965(_0x542a0a,_0xf41499=_0x10e31b(0x19f)){const _0x463240=_0x10e31b,_0x172f13=document[_0x463240(0x1a4)](_0x463240(0x19d)),_0xba00e1=document[_0x463240(0x1be)](_0x463240(0x166));_0xba00e1[_0x463240(0x1dd)]=_0x463240(0x1d4)+_0xf41499,_0xba00e1['textContent']=_0x542a0a,_0x172f13[_0x463240(0x17f)](_0xba00e1),setTimeout(()=>_0xba00e1['remove'](),0xfa0);}function _0x34b49b(_0x37d05e){const _0x442030=_0x10e31b;_0x2812be[_0x37d05e]&&(_0x2812be[_0x37d05e][_0x442030(0x173)]=0x0,_0x2812be[_0x37d05e][_0x442030(0x1ea)]());}async function _0x55f73e(){const _0x37efb6=_0x10e31b;_0x34b49b(_0x37efb6(0x1b6)),_0x2962ab(_0x37efb6(0x1a1));const _0x31c1b3=document[_0x37efb6(0x1a4)](_0x37efb6(0x1bb));_0x31c1b3[_0x37efb6(0x18d)]=_0x37efb6(0x178);const _0x126c75=await _0x35d940({'action':'getLeaderboard'});if(_0x126c75[_0x37efb6(0x19a)]&&_0x126c75['leaderboard']){if(_0x126c75[_0x37efb6(0x1a1)][_0x37efb6(0x193)]===0x0){_0x31c1b3[_0x37efb6(0x18d)]=_0x37efb6(0x18b);return;}let _0x1e94ed=_0x37efb6(0x15d);const _0x184388=['🥇','🥈','🥉'];_0x126c75['leaderboard'][_0x37efb6(0x159)](_0x7073d2=>{const _0x1284f4=_0x37efb6,_0x2e2e3b=_0x184388[_0x7073d2[0x0]-0x1]||_0x7073d2[0x0];_0x1e94ed+=_0x1284f4(0x1d8)+_0x2e2e3b+_0x1284f4(0x169)+_0x7073d2[0x1]+_0x1284f4(0x169)+_0x2ec82d(_0x7073d2[0x2])+'</td><td>'+_0x7073d2[0x3]+'</td></tr>';}),_0x1e94ed+=_0x37efb6(0x1cf),_0x31c1b3['innerHTML']=_0x1e94ed;}else _0x31c1b3[_0x37efb6(0x18d)]=_0x37efb6(0x161);}function _0x48d8da(_0x406e24){const _0x5b18f5=_0x10e31b;_0x4767fc['attemptId']=_0x406e24,_0x4767fc[_0x5b18f5(0x1aa)]=0x0,_0x4767fc[_0x5b18f5(0x187)]=0x0,_0x4767fc[_0x5b18f5(0x196)]=new Date()[_0x5b18f5(0x1ab)](),_0x75d2ea(0x0);}function _0x105107(){const _0x4933e7=_0x10e31b;document['getElementById'](_0x4933e7(0x1d0))[_0x4933e7(0x1d1)]=_0x4767fc[_0x4933e7(0x1c2)],document[_0x4933e7(0x1a4)](_0x4933e7(0x1d2))[_0x4933e7(0x174)]=_0x4767fc[_0x4933e7(0x1d3)];}function _0x7c3ba6(){const _0x5d8530=_0x10e31b;_0x34b49b('click');const _0x2237a9=document[_0x5d8530(0x1e0)][_0x5d8530(0x1bf)][_0x5d8530(0x1c6)],_0x396c65=_0x2237a9===_0x5d8530(0x1e9)?_0x5d8530(0x1b8):'dark';document['body'][_0x5d8530(0x1bf)]['theme']=_0x396c65,localStorage['setItem'](_0x5d8530(0x1c6),_0x396c65),document['querySelector'](_0x5d8530(0x1a3))['textContent']=_0x396c65===_0x5d8530(0x1e9)?'☀️':'🌙';}function _0x264925(){const _0x148535=_0x10e31b,_0x1a34b6=localStorage[_0x148535(0x18a)]('theme')||_0x148535(0x1e9);document[_0x148535(0x1e0)][_0x148535(0x1bf)][_0x148535(0x1c6)]=_0x1a34b6,document[_0x148535(0x191)](_0x148535(0x1a3))[_0x148535(0x174)]=_0x1a34b6===_0x148535(0x1e9)?'☀️':'🌙';}function _0x2962ab(_0x34c3af){const _0x2e6f05=_0x10e31b;Object[_0x2e6f05(0x182)](_0x24c57f)['forEach'](_0x8a4a9a=>_0x8a4a9a['classList'][_0x2e6f05(0x18f)](_0x2e6f05(0x168)));if(_0x24c57f[_0x34c3af])_0x24c57f[_0x34c3af][_0x2e6f05(0x192)][_0x2e6f05(0x15b)]('active');}function _0x471146(){const _0x4e114e=_0x10e31b;let _0x14d872=localStorage[_0x4e114e(0x18a)](_0x4e114e(0x15c));return!_0x14d872&&(_0x14d872=_0x4e114e(0x16f)+Date[_0x4e114e(0x167)]()+'_'+Math['random']()[_0x4e114e(0x1bc)](0x24)[_0x4e114e(0x181)](0x2,0x9),localStorage['setItem']('deviceId',_0x14d872)),_0x14d872;}function _0x2ec82d(_0x261715){const _0x262f42=_0x10e31b;return new Intl[(_0x262f42(0x1b1))](_0x262f42(0x160))[_0x262f42(0x179)](_0x261715);}async function _0x35d940(_0x3bff19){const _0x429b08=_0x10e31b;try{const _0x1a9f63=await fetch(_0x31e047,{'method':_0x429b08(0x1af),'mode':'cors','headers':{'Content-Type':'text/plain;charset=utf-8'},'body':JSON['stringify'](_0x3bff19)});if(!_0x1a9f63['ok'])throw new Error(_0x429b08(0x19e));return await _0x1a9f63['json']();}catch(_0x5a2813){return console[_0x429b08(0x19b)](_0x429b08(0x198),_0x5a2813),{'success':![],'error':_0x5a2813[_0x429b08(0x194)]};}}_0x28bcf3();}));function _0x236f(_0x5e6574,_0xb59fee){const _0x5b03f0=_0x5b03();return _0x236f=function(_0x236f74,_0x2ceac5){_0x236f74=_0x236f74-0x150;let _0xf97ed0=_0x5b03f0[_0x236f74];return _0xf97ed0;},_0x236f(_0x5e6574,_0xb59fee);}function _0x5b03(){const _0x125a02=['أسطورة\x20المسابقة','.helper-btn','attemptId','<tr><td>','selected','nameInput','4GBqXKP','fade-in','className','280218mEHsQf','trim','body','سيد\x20الأسئلة','end','correct-sound','عبقري\x20عصره','value','.option-btn','1045jZtKdP','471591jfJymT','dark','play','نجم\x20المعرفة\x20البرونزي','options','\x20ثانية','getQuestion','\x20/\x20','finalName','2478mNduPh','querySelectorAll','عقل\x20متقد','forEach','addEventListener','add','deviceId','<table\x20class=\x22leaderboard-table\x22><tr><th>الترتيب</th><th>الاسم</th><th>النقاط</th><th>اللقب</th></tr>','confirmAvatarBtn','DOMContentLoaded','ar-EG','<p>حدث\x20خطأ\x20في\x20تحميل\x20لوحة\x20الصدارة.</p>','start','finalTitle','1537991trzjAI','questionText','div','now','active','</td><td>','correctIndex','answer','لا\x20بأس،\x20حظ\x20أوفر.','currentScore','startScreen','id_','إجابة\x20رائعة!','game','.avatar-option','currentTime','textContent','272052Pbvtkg','169542LJDFrZ','location','<div\x20class=\x22spinner\x22></div>','format','avatarSrc','leaderboardScreen','timeLeft','confirmNameBtn','مستكشف\x20المعرفة','appendChild','نجم\x20المعرفة\x20الفضي','substr','values','8dfKqgR','مشارك\x20واعد','Avatar\x20','loader','wrongAnswers','صاحب\x20الفضول','مثقف\x20مبتدئ','getItem','<p>لوحة\x20الصدارة\x20فارغة\x20حاليًا!</p>','https://script.google.com/macros/s/AKfycbwMIiQTdKsIuiMB5NtN7Zkr_8aUj4K44kekPh_3ssruQsb3R3aUVS4vvl9CPspSKmVyWA/exec','innerHTML','خطأ\x20في\x20تحميل\x20السؤال.','remove','gameContainer','querySelector','classList','length','message','endScreen','startTime','frozen','API\x20Error:','disabled','success','error','nameEntry','toast-container','Network\x20error','info','restartBtn','leaderboard','gameOver','.theme-toggle-btn','getElementById','السؤال\x20','finalScore','الرجاء\x20إدخال\x20اسم\x20صحيح.','tick','.option-btn[data-index=\x27','currentQuestion','toISOString','title','.png','avatar-option','POST','reload','NumberFormat','لقد\x20وصلت\x20للحد\x20الأقصى\x20للمحاولات.','round','limit_reached','حدث\x20خطأ.','click','1678410BTxyJh','light','click-sound','.options-grid','leaderboardContent','toString','correct','createElement','dataset','wrong','questionCounter','avatar','wrong-sound','points','حكيم\x20المعرفة','theme','باحث\x20مجتهد','img','assets/avatars/avatar','index','متعمق\x20بالحقائق','avatarScreen','النقاط:\x20','لا\x20يوجد','</table>','playerAvatar','src','playerName','name','toast\x20'];_0x5b03=function(){return _0x125a02;};return _0x5b03();}
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- إعدادات ومتغيرات اللعبة ---
+    const API_URL = "https://script.google.com/macros/s/AKfycbwMIiQTdKsIuiMB5NtN7Zkr_8aUj4K44kekPh_3ssruQsb3R3aUVS4vvl9CPspSKmVyWA/exec"; // !! ضع رابط الويب آب الجديد هنا
+    const QUESTION_TIME = 90;
+    const PRIZES = [
+        { points: 100, title: "مشارك واعد" }, { points: 200, title: "مستكشف المعرفة" },
+        { points: 300, title: "باحث مجتهد" }, { points: 500, title: "مثقف مبتدئ" },
+        { points: 1000, title: "نجم المعرفة البرونزي" }, { points: 2000, title: "صاحب الفضول" },
+        { points: 4000, title: "متعمق بالحقائق" }, { points: 8000, title: "خبير المعلومات" },
+        { points: 16000, title: "نجم المعرفة الفضي" }, { points: 32000, title: "سيد الأسئلة" },
+        { points: 64000, title: "عقل متقد" }, { points: 125000, title: "عبقري عصره" },
+        { points: 250000, title: "حكيم المعرفة" }, { points: 500000, title: "أسطورة المسابقة" },
+        { points: 1000000, title: "نجم المعرفة الذهبي" }
+    ];
+    const HELPER_COSTS = { fiftyFifty: 40000, addTime: 30000, changeQuestion: 50000 };
+
+    // --- عناصر الواجهة الرسومية ---
+    const screens = {
+        loader: document.getElementById('loader'),
+        start: document.getElementById('startScreen'),
+        nameEntry: document.getElementById('nameEntry'),
+        game: document.getElementById('gameContainer'),
+        end: document.getElementById('endScreen'),
+    };
+    const nameInput = document.getElementById('nameInput');
+    const playerNameDisplay = document.getElementById('playerName');
+    const questionText = document.getElementById('questionText');
+    const optionsGrid = document.querySelector('.options-grid');
+    const timerDisplay = document.getElementById('timer');
+    const timerBar = document.querySelector('.timer-bar');
+    const scoreDisplay = document.getElementById('currentScore');
+    const wrongAnswersDisplay = document.getElementById('wrongAnswersCount');
+    const prizesList = document.querySelector('.prizes-list');
+    const currentTitleDisplay = document.getElementById('currentTitle');
+    const questionCounterDisplay = document.getElementById('questionCounter');
+    const questionSpinner = document.querySelector('.question-box .spinner-container');
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarOverlay = document.querySelector('.sidebar-overlay');
+    const shareModal = document.getElementById('shareModal');
+    
+    // --- متغيرات حالة اللعبة ---
+    let gameState = {};
+    let timerInterval;
+
+    // --- تهيئة اللعبة ---
+    function init() {
+        bindEventListeners();
+        generatePrizesList();
+        showScreen('loader');
+        gameState.deviceId = getDeviceId();
+        // تأخير بسيط لإظهار شاشة التحميل
+        setTimeout(() => showScreen('start'), 1000);
+    }
+
+    // --- إدارة الشاشات ---
+    function showScreen(screenName) {
+        Object.values(screens).forEach(s => s.classList.remove('active'));
+        if (screens[screenName]) {
+            screens[screenName].classList.add('active');
+        }
+    }
+    
+    // --- ربط الأحداث ---
+    function bindEventListeners() {
+        document.getElementById('startGameBtn').addEventListener('click', () => showScreen('nameEntry'));
+        document.getElementById('confirmNameBtn').addEventListener('click', startGame);
+        document.querySelector('.open-sidebar-btn').addEventListener('click', toggleSidebar);
+        document.querySelector('.close-sidebar-btn').addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+        document.querySelectorAll('.helper-btn').forEach(btn => btn.addEventListener('click', useHelper));
+        document.getElementById('restartBtn').addEventListener('click', () => window.location.reload());
+        document.getElementById('shareBtn').addEventListener('click', openShareModal);
+        document.querySelector('.close-modal').addEventListener('click', () => shareModal.classList.remove('active'));
+        document.getElementById('copyShareBtn').addEventListener('click', copyShareText);
+    }
+
+    // --- منطق اللعبة الأساسي ---
+    async function startGame() {
+        const name = nameInput.value.trim();
+        if (name.length < 2) {
+            alert("الرجاء إدخال اسم صحيح.");
+            return;
+        }
+
+        showScreen('loader');
+        const response = await apiCall({ action: 'start', deviceId: gameState.deviceId, name });
+        
+        if (response.success) {
+            resetGameState(name, response.attemptId);
+            playerNameDisplay.textContent = name;
+            showScreen('game');
+            await fetchQuestion();
+        } else {
+            alert(response.error === 'limit_reached' ? "لقد وصلت إلى الحد الأقصى للمحاولات اليومية." : "حدث خطأ عند بدء اللعبة.");
+            showScreen('start');
+        }
+    }
+
+    async function fetchQuestion() {
+        startLoadingQuestion();
+        const response = await apiCall({ action: 'getQuestion', attemptId: gameState.attemptId });
+        
+        if (response.success) {
+            displayQuestion(response.question, response.questionNumber, response.totalQuestions);
+            startTimer();
+        } else {
+            alert("خطأ في تحميل السؤال.");
+            endGame(true); // إنهاء اللعبة عند الفشل
+        }
+        stopLoadingQuestion();
+    }
+    
+    function displayQuestion(question, qNum, qTotal) {
+        questionText.textContent = question.q;
+        questionCounterDisplay.textContent = `السؤال ${qNum} / ${qTotal}`;
+        optionsGrid.innerHTML = '';
+        question.options.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.classList.add('option-btn');
+            button.textContent = option;
+            button.dataset.index = index;
+            button.onclick = () => checkAnswer(index, button);
+            optionsGrid.appendChild(button);
+        });
+        updateUI();
+    }
+
+    async function checkAnswer(selectedIndex, button) {
+        clearInterval(timerInterval);
+        document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
+
+        const response = await apiCall({ action: 'answer', attemptId: gameState.attemptId, answerIndex: selectedIndex });
+
+        if (response.success) {
+            if (response.correct) {
+                button.classList.add('correct');
+                gameState.score += PRIZES[gameState.currentQuestion].points;
+                gameState.currentQuestion++;
+            } else {
+                button.classList.add('wrong');
+                document.querySelector(`.option-btn[data-index='${response.correctIndex}']`).classList.add('correct');
+                gameState.wrongAnswers = response.wrongAnswers;
+            }
+            
+            updateUI();
+
+            setTimeout(() => {
+                if (response.gameOver || gameState.currentQuestion >= PRIZES.length) {
+                    endGame();
+                } else {
+                    fetchQuestion();
+                }
+            }, 2000);
+        } else {
+            alert("حدث خطأ أثناء التحقق من الإجابة.");
+        }
+    }
+
+    function endGame(abandoned = false) {
+        clearInterval(timerInterval);
+        const totalTime = (new Date() - new Date(gameState.startTime)) / 1000;
+        const finalPrize = gameState.currentQuestion > 0 ? PRIZES[gameState.currentQuestion - 1].points : 0;
+        const finalTitle = gameState.currentQuestion > 0 ? PRIZES[gameState.currentQuestion - 1].title : "لا يوجد";
+        
+        const finalPayload = {
+            action: 'end',
+            attemptId: gameState.attemptId,
+            score: gameState.score,
+            finalTitle: finalTitle,
+            finalPrize: finalPrize,
+            totalTime: totalTime
+        };
+        apiCall(finalPayload); // إرسال النتائج النهائية للخادم
+        
+        // عرض شاشة النهاية
+        document.getElementById('finalTitle').textContent = finalTitle;
+        document.getElementById('finalPrize').textContent = formatNumber(finalPrize);
+        document.getElementById('finalScore').textContent = formatNumber(gameState.score);
+        document.getElementById('totalTime').textContent = `${Math.round(totalTime)} ثانية`;
+        showScreen('end');
+    }
+
+    // --- المساعدات ---
+    async function useHelper(event) {
+        const btn = event.currentTarget;
+        const type = btn.dataset.type;
+        const cost = HELPER_COSTS[type];
+
+        if (gameState.score < cost || gameState.helpersUsed[type]) return;
+
+        btn.disabled = true;
+        gameState.helpersUsed[type] = true;
+        gameState.score -= cost;
+        updateUI();
+        
+        const response = await apiCall({ action: 'useHelper', attemptId: gameState.attemptId, helperType: type });
+
+        if (response.success) {
+            if (type === 'fiftyFifty' && response.optionsToRemove) {
+                response.optionsToRemove.forEach(index => {
+                    document.querySelector(`.option-btn[data-index='${index}']`).classList.add('disabled');
+                });
+            } else if (type === 'addTime') {
+                gameState.timeLeft += 15;
+            } else if (type === 'changeQuestion' && response.newQuestion) {
+                 clearInterval(timerInterval);
+                 displayQuestion(response.newQuestion, gameState.currentQuestion + 1, PRIZES.length);
+                 startTimer();
+            }
+        } else {
+            alert('حدث خطأ أثناء استخدام المساعدة');
+            btn.disabled = false; // إعادة تفعيل الزر
+            gameState.helpersUsed[type] = false;
+            gameState.score += cost;
+            updateUI();
+        }
+    }
+    
+    // --- المؤقت ---
+    function startTimer() {
+        clearInterval(timerInterval);
+        gameState.timeLeft = QUESTION_TIME;
+        timerInterval = setInterval(() => {
+            gameState.timeLeft--;
+            timerDisplay.textContent = gameState.timeLeft;
+            timerBar.style.width = `${(gameState.timeLeft / QUESTION_TIME) * 100}%`;
+            if (gameState.timeLeft <= 0) {
+                clearInterval(timerInterval);
+                gameState.wrongAnswers++;
+                updateUI();
+                if (gameState.wrongAnswers >= 3) {
+                    endGame();
+                } else {
+                   fetchQuestion(); 
+                }
+            }
+        }, 1000);
+    }
+    
+    // --- تحديث الواجهة ---
+    function updateUI() {
+        scoreDisplay.textContent = formatNumber(gameState.score);
+        wrongAnswersDisplay.textContent = `${gameState.wrongAnswers} / 3`;
+        updatePrizesList();
+        
+        const title = gameState.currentQuestion > 0 ? PRIZES[gameState.currentQuestion-1].title : "لا يوجد";
+        currentTitleDisplay.textContent = title;
+
+        document.querySelectorAll('.helper-btn').forEach(btn => {
+            const type = btn.dataset.type;
+            if (gameState.helpersUsed[type] || gameState.score < HELPER_COSTS[type]) {
+                btn.disabled = true;
+            }
+        });
+    }
+
+    function updatePrizesList() {
+        const items = prizesList.querySelectorAll('li');
+        items.forEach((item, index) => {
+            item.classList.remove('current', 'past');
+            if (index === (PRIZES.length - 1 - gameState.currentQuestion)) {
+                item.classList.add('current');
+            } else if (index > (PRIZES.length - 1 - gameState.currentQuestion)) {
+                item.classList.add('past');
+            }
+        });
+    }
+
+    // --- دوال مساعدة ---
+    function resetGameState(name, attemptId) {
+        gameState = {
+            ...gameState, // Keep deviceId
+            name: name,
+            attemptId: attemptId,
+            currentQuestion: 0,
+            score: 0,
+            wrongAnswers: 0,
+            timeLeft: QUESTION_TIME,
+            startTime: new Date().toISOString(),
+            helpersUsed: { fiftyFifty: false, addTime: false, changeQuestion: false }
+        };
+    }
+
+    async function apiCall(payload) {
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, //
+                body: JSON.stringify(payload)
+            });
+            if (!response.ok) throw new Error("Network response was not ok.");
+            return await response.json();
+        } catch (error) {
+            console.error('API Call Error:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    function getDeviceId() {
+        let deviceId = localStorage.getItem('deviceId');
+        if (!deviceId) {
+            deviceId = 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('deviceId', deviceId);
+        }
+        return deviceId;
+    }
+
+    function generatePrizesList() {
+        prizesList.innerHTML = '';
+        [...PRIZES].reverse().forEach((prize, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${15 - index}</span> - ${prize.title} (<strong>${formatNumber(prize.points)}</strong>)`;
+            prizesList.appendChild(li);
+        });
+    }
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+    }
+
+    function startLoadingQuestion() {
+        questionText.style.display = 'none';
+        optionsGrid.style.display = 'none';
+        questionSpinner.style.display = 'flex';
+    }
+    
+    function stopLoadingQuestion() {
+        questionText.style.display = 'block';
+        optionsGrid.style.display = 'grid';
+        questionSpinner.style.display = 'none';
+    }
+
+    function formatNumber(num) {
+        return new Intl.NumberFormat('ar-EG').format(num);
+    }
+    
+    function openShareModal() {
+        const finalTitle = document.getElementById('finalTitle').textContent;
+        const finalScore = document.getElementById('finalScore').textContent;
+        const text = `🏆 لقد أنهيت تحدي "من سيربح اللقب؟"!
+🔹 اسمي: ${gameState.name}
+🔹 لقبي: ${finalTitle}
+🔹 نقاطي: ${finalScore}
+#من_سيربح_اللقب`;
+        document.getElementById('shareText').value = text;
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`;
+        document.getElementById('twitterShareBtn').href = twitterUrl;
+        shareModal.classList.add('active');
+    }
+
+    function copyShareText() {
+        const shareText = document.getElementById('shareText');
+        shareText.select();
+        document.execCommand('copy');
+        alert('تم نسخ النص!');
+    }
+
+    init();
+});
