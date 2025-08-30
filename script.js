@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- إعدادات اللعبة ---
     // !!! مهم جداً: تأكد من لصق رابط النشر الصحيح والجديد هنا !!!
-    const API_URL = "YOUR_NEW_APPS_SCRIPT_URL_HERE";
+    const API_URL = "https://script.google.com/macros/library/d/1u4NRrG2FpcKzULPVSZlxnMsFuma2yJ3DC6JuBc9-u4bhPmGgDBI6bUAa/4";
     const QUESTION_TIME = 90;
     const TOTAL_AVATARS = 20; // يمكنك تغيير هذا الرقم إذا أردت
     const PRIZES = [
