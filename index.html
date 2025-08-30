@@ -16,7 +16,6 @@
     <div id="startScreen" class="screen">
         <div class="content-box">
             <h1 class="game-title"><span>👑</span> من سيربح اللقب؟</h1>
-            <p>المسابقة الحالية انتهت. يمكنك اللعب للتجربة.</p>
             <button id="startPlayBtn" class="btn-main">ابدأ اللعب</button>
             <button id="showLeaderboardBtn" class="btn-secondary">لوحة الصدارة</button>
         </div>
@@ -40,7 +39,7 @@
 
     <div class="sidebar">
         <button class="close-sidebar-btn">&times;</button>
-        <h3>قائمة الألقاب</h3>
+        <h3>الجوائز</h3>
         <ul class="prizes-list"></ul>
     </div>
     <div class="sidebar-overlay"></div>
@@ -48,20 +47,31 @@
     <div id="gameContainer" class="screen">
         <div class="top-bar">
             <button class="theme-toggle-btn">☀️</button>
-            <button class="open-sidebar-btn">🏆 الألقاب</button>
+            <button class="open-sidebar-btn">🏆 الجوائز</button>
         </div>
         
         <header class="header">
             <div class="player-info">
-                <img id="playerAvatar" src="" alt="Avatar">
-                <div class="player-details">
+                <div class="player-main">
+                    <img id="playerAvatar" src="" alt="Avatar">
                     <span id="playerName"></span>
-                    <strong id="currentScore">النقاط: 0</strong>
+                </div>
+                <div class="player-stats">
+                    <span>اللقب: <strong id="currentTitle">لا يوجد</strong></span>
+                    <span>النقاط: <strong id="currentScore">0</strong></span>
+                    <span>الأخطاء: <strong id="wrongAnswersCount">0 / 3</strong></span>
                 </div>
             </div>
-            <div class="game-stats">
-                <div>اللقب: <span id="currentTitle">لا يوجد</span></div>
-                <div>الأخطاء: <span id="wrongAnswersCount">0 / 3</span></div>
+            <div class="helpers">
+                <button class="helper-btn" data-type="fiftyFifty" disabled>
+                    50:50 <span class="helper-cost">(20K)</span>
+                </button>
+                <button class="helper-btn" data-type="freezeTime" disabled>
+                    ❄️ 10ث <span class="helper-cost">(15K)</span>
+                </button>
+                <button class="helper-btn" data-type="changeQuestion" disabled>
+                    🔄 سؤال <span class="helper-cost">(30K)</span>
+                </button>
             </div>
         </header>
 
@@ -79,12 +89,19 @@
 
     <div id="endScreen" class="screen">
         <div class="content-box">
-            <h2>انتهت اللعبة!</h2>
+            <h2>النتائج النهائية</h2>
             <div class="final-stats">
                 <p>الاسم: <strong id="finalName"></strong></p>
                 <p>اللقب: <strong id="finalTitle"></strong></p>
                 <p>النقاط: <strong id="finalScore"></strong></p>
                 <p>المدة: <strong id="totalTime"></strong></p>
+            </div>
+            <div class="share-section">
+                <p>مشاركة النتيجة</p>
+                <div class="share-buttons">
+                    <button id="shareXBtn" class="share-btn x">X</button>
+                    <button id="shareInstagramBtn" class="share-btn instagram">Instagram</button>
+                </div>
             </div>
             <button id="restartBtn" class="btn-main">جولة جديدة</button>
         </div>
