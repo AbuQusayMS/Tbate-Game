@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // !!! IMPORTANT: Paste your new Web App URL here !!!
+    // !!! مهم جداً: الصق رابط النشر الصحيح والجديد هنا !!!
     const API_URL = "https://script.google.com/macros/s/AKfycbwS16Exl-EFOufB-ptfDDFepIzZJBcqCSXgCd7dt8DY5RhPQyVW_XkPyynAxN9Av7MA/exec"; 
     
     const QUESTION_TIME = 90;
@@ -15,7 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
         { points: 250000, title: "حكيم المعرفة" }, { points: 500000, title: "أسطورة المسابقة" },
         { points: 1000000, title: "نجم المعرفة الذهبي" }
     ];
+    const HELPER_COSTS = { fiftyFifty: 20000, freezeTime: 15000, changeQuestion: 30000 };
 
+    // --- Cache DOM Elements ---
     const dom = {
         screens: {
             loader: document.getElementById('loader'),
@@ -37,12 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
         optionsGrid: document.querySelector('.options-grid'),
         scoreDisplay: document.getElementById('currentScore'),
         prizesList: document.querySelector('.prizes-list'),
+        helperBtns: document.querySelectorAll('.helper-btn'),
     };
 
+    // --- Game State ---
     let gameState = { deviceId: getDeviceId() };
     let timerInterval;
     let currentScoreValue = 0;
+    let isTimeFrozen = false;
 
+    // --- Initialization ---
     function init() {
         populateAvatarGrid();
         bindEventListeners();
@@ -54,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function populateAvatarGrid() {
         const avatarGrid = document.querySelector('.avatar-grid');
+        avatarGrid.innerHTML = ''; // Clear previous avatars
         for (let i = 1; i <= TOTAL_AVATARS; i++) {
             const img = document.createElement('img');
             img.src = `assets/avatars/avatar${i}.png`;
@@ -80,8 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.open-sidebar-btn').addEventListener('click', toggleSidebar);
         document.querySelector('.close-sidebar-btn').addEventListener('click', toggleSidebar);
         dom.sidebarOverlay.addEventListener('click', toggleSidebar);
+        dom.helperBtns.forEach(btn => btn.addEventListener('click', useHelper));
+        document.getElementById('shareXBtn').addEventListener('click', shareOnX);
+        document.getElementById('shareInstagramBtn').addEventListener('click', shareOnInstagram);
     }
 
+    // --- Core Game Flow ---
     async function startGame() {
         playSound('click');
         const name = document.getElementById('nameInput').value.trim();
@@ -97,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showScreen('game');
             await fetchQuestion();
         } else {
-            const errorMsg = response && response.error === 'limit_reached' ? "لقد وصلت للحد الأقصى للمحاولات." : "حدث خطأ عند بدء اللعبة.";
+            const errorMsg = response && response.error === 'limit_reached' ? `لقد وصلت للحد الأقصى للمحاولات (${LIMIT_PER_DAY}).` : "حدث خطأ عند بدء اللعبة.";
             showToast(errorMsg, 'error');
             showScreen('start');
         }
@@ -152,14 +163,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             updateUI();
+            
+            const isGameOver = gameState.wrongAnswers >= 3 || gameState.currentQuestion >= PRIZES.length;
 
             setTimeout(() => {
-                if (response.gameOver || gameState.currentQuestion >= PRIZES.length) {
+                if (isGameOver) {
                     endGame();
                 } else if (response.correct) {
                     fetchQuestion();
                 } else {
-                    endGame();
+                    showToast(`إجابة خاطئة! تبقى لديك ${3 - gameState.wrongAnswers} محاولات.`, 'error');
+                    setTimeout(fetchQuestion, 2000); // Fetch next question after showing the correct one
                 }
             }, 2000);
         } else {
@@ -172,6 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalTime = (new Date() - new Date(gameState.startTime)) / 1000;
         const finalTitle = gameState.currentQuestion > 0 ? PRIZES[gameState.currentQuestion - 1].title : "لا يوجد";
         
+        // Save final data for sharing
+        gameState.finalTitle = finalTitle;
+        gameState.finalScore = currentScoreValue;
+        
         apiCall({ action: 'end', attemptId: gameState.attemptId, score: currentScoreValue, finalTitle, totalTime });
         
         document.getElementById('finalName').textContent = gameState.name;
@@ -181,23 +199,64 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen('end');
     }
 
+    // --- Helpers Logic ---
+    function useHelper(event) {
+        const btn = event.currentTarget;
+        const type = btn.dataset.type;
+        const cost = HELPER_COSTS[type];
+
+        if (currentScoreValue < cost) {
+            showToast("نقاطك غير كافية!", "error");
+            return;
+        }
+
+        playSound('click');
+        updateScore(currentScoreValue - cost);
+        gameState.helpersUsed[type] = true;
+        btn.disabled = true;
+
+        showToast(`تم استخدام مساعدة! خصم ${formatNumber(cost)} نقطة.`, "info");
+
+        if (type === 'freezeTime') {
+            isTimeFrozen = true;
+            document.querySelector('.timer-container').classList.add('frozen');
+            setTimeout(() => {
+                isTimeFrozen = false;
+                document.querySelector('.timer-container').classList.remove('frozen');
+            }, 10000);
+        } else {
+            // Placeholder for other helpers
+            showToast("ميزة تحت التطوير!", "info");
+        }
+        updateUI();
+    }
+
+    // --- UI & State Management ---
     function startTimer() {
         clearInterval(timerInterval);
+        isTimeFrozen = false;
+        document.querySelector('.timer-container').classList.remove('frozen');
         gameState.timeLeft = QUESTION_TIME;
         const timerBar = document.querySelector('.timer-bar');
         const timerDisplay = document.getElementById('timer');
         
         timerInterval = setInterval(() => {
+            if (isTimeFrozen) return;
             gameState.timeLeft--;
             timerDisplay.textContent = gameState.timeLeft;
             timerBar.style.width = `${(gameState.timeLeft / QUESTION_TIME) * 100}%`;
             
             if (gameState.timeLeft <= 0) {
                 clearInterval(timerInterval);
+                playSound('wrong');
                 showToast("انتهى الوقت!", "error");
                 gameState.wrongAnswers++;
                 updateUI();
-                setTimeout(endGame, 1000);
+                if (gameState.wrongAnswers >= 3) {
+                    setTimeout(endGame, 1000);
+                } else {
+                    setTimeout(fetchQuestion, 1000);
+                }
             }
         }, 1000);
     }
@@ -205,16 +264,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateScore(newScore) {
         const start = currentScoreValue;
         const diff = newScore - start;
-        if(diff === 0) return;
+        if(diff === 0) {
+            dom.scoreDisplay.textContent = formatNumber(newScore);
+            return;
+        };
         let step = 0;
         const duration = 500;
         const interval = setInterval(() => {
             step += 20;
             const progress = Math.min(step / duration, 1);
             const animatedScore = Math.floor(start + diff * progress);
-            dom.scoreDisplay.textContent = `النقاط: ${formatNumber(animatedScore)}`;
+            dom.scoreDisplay.textContent = formatNumber(animatedScore);
             if (progress >= 1) {
                 clearInterval(interval);
+                updateUI(); // Update helpers after score settles
             }
         }, 20);
         currentScoreValue = newScore;
@@ -224,13 +287,22 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('wrongAnswersCount').textContent = `${gameState.wrongAnswers} / 3`;
         document.getElementById('currentTitle').textContent = gameState.currentQuestion > 0 ? PRIZES[gameState.currentQuestion-1].title : "لا يوجد";
         updatePrizesList();
+
+        dom.helperBtns.forEach(btn => {
+            const type = btn.dataset.type;
+            if (!gameState.helpersUsed[type] && currentScoreValue >= HELPER_COSTS[type]) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        });
     }
     
     function generatePrizesList() {
         dom.prizesList.innerHTML = '';
         [...PRIZES].reverse().forEach((prize, index) => {
             const li = document.createElement('li');
-            li.innerHTML = `<span>${15 - index}</span> - ${prize.title}`;
+            li.innerHTML = `<span>${15 - index}. ${prize.title}</span> <strong>${formatNumber(prize.points)}</strong>`;
             dom.prizesList.appendChild(li);
         });
     }
@@ -252,15 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
         playSound('click');
         dom.sidebar.classList.toggle('open');
         dom.sidebarOverlay.classList.toggle('active');
-    }
-
-    function showToast(message, type = 'info') {
-        const toastContainer = document.getElementById('toast-container');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.textContent = message;
-        toastContainer.appendChild(toast);
-        setTimeout(() => toast.remove(), 4000);
     }
 
     async function displayLeaderboard() {
@@ -287,12 +350,35 @@ document.addEventListener('DOMContentLoaded', () => {
             contentDiv.innerHTML = '<p>حدث خطأ في تحميل لوحة الصدارة.</p>';
         }
     }
+
+    // --- Sharing ---
+    function getShareText() {
+        return `🏆 لقد حصلت على لقب "${gameState.finalTitle}" في مسابقة "من سيربح اللقب؟" بمجموع ${formatNumber(gameState.finalScore)} نقطة!`;
+    }
+    function shareOnX() {
+        playSound('click');
+        const text = encodeURIComponent(getShareText());
+        const url = `https://twitter.com/intent/tweet?text=${text}`;
+        window.open(url, '_blank');
+    }
+    function shareOnInstagram() {
+        playSound('click');
+        navigator.clipboard.writeText(getShareText())
+            .then(() => {
+                showToast("تم نسخ النتيجة! يمكنك الآن لصقها في قصة إنستغرام.", "success");
+            })
+            .catch(() => {
+                showToast("فشل نسخ النتيجة.", "error");
+            });
+    }
     
+    // --- Utility & Setup ---
     function resetGameState(attemptId) {
         gameState.attemptId = attemptId;
         gameState.currentQuestion = 0;
         gameState.wrongAnswers = 0;
         gameState.startTime = new Date().toISOString();
+        gameState.helpersUsed = { fiftyFifty: false, freezeTime: false, changeQuestion: false };
         updateScore(0);
     }
     function setupGameUI() {
@@ -314,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function playSound(sound) {
         if (dom.sounds[sound]) {
             dom.sounds[sound].currentTime = 0;
-            dom.sounds[sound].play().catch(e => console.log("Audio play failed:", e));
+            dom.sounds[sound].play().catch(e => {});
         }
     }
     function showScreen(screenName) { Object.values(dom.screens).forEach(s => s.classList.remove('active')); if(dom.screens[screenName]) dom.screens[screenName].classList.add('active'); }
