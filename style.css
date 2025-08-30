@@ -1,4 +1,3 @@
-/* --- المتغيرات العامة والثيمات --- */
 :root {
     --font-family: 'Cairo', sans-serif;
     --ease-out: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -14,7 +13,6 @@ body[data-theme='dark'] {
     --gold-gradient: linear-gradient(45deg, #f7d02c, #fdb813);
     --correct-color: #2a9d8f;
     --wrong-color: #e76f51;
-    --disabled-color: rgba(224, 225, 221, 0.5);
     --shadow-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -28,12 +26,11 @@ body[data-theme='light'] {
     --gold-gradient: linear-gradient(45deg, #fca311, #ffb703);
     --correct-color: #2a9d8f;
     --wrong-color: #d00000;
-    --disabled-color: rgba(33, 37, 41, 0.5);
     --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-/* --- الإعدادات الأساسية وإصلاح التمرير --- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
 html { height: 100%; }
 body {
     min-height: 100%;
@@ -44,11 +41,10 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* --- الشاشات والانتقالات --- */
 .screen {
     width: 100%;
     height: 100%;
-    position: fixed; /* Use fixed for full-screen overlay */
+    position: fixed;
     top: 0;
     left: 0;
     display: flex;
@@ -60,11 +56,10 @@ body {
     visibility: hidden;
     transform: scale(0.95);
     transition: opacity 0.4s var(--ease-out), visibility 0.4s, transform 0.4s var(--ease-out);
-    overflow-y: auto; /* Allow individual screen scrolling */
+    overflow-y: auto;
 }
 .screen.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 10; }
 
-/* --- المكونات العامة --- */
 .content-box {
     background-color: var(--primary-color);
     padding: 20px 30px;
@@ -73,10 +68,10 @@ body {
     text-align: center;
     max-width: 600px;
     width: 100%;
-    margin: auto 0; /* Center vertically inside the scrollable screen */
+    margin: auto 0;
     border: 1px solid var(--border-color);
-    transition: background-color 0.3s, border-color 0.3s;
 }
+
 .btn-main, .btn-secondary {
     padding: 12px 25px;
     border-radius: 8px;
@@ -93,20 +88,13 @@ body {
 .btn-main:disabled { filter: grayscale(80%); cursor: not-allowed; transform: none; }
 .btn-secondary { background-color: var(--secondary-color); color: var(--text-color); }
 .btn-secondary:hover { background-color: var(--border-color); }
+
 input[type="text"] {
     width: 100%; padding: 12px; border-radius: 8px;
     border: 1px solid var(--border-color); background-color: var(--bg-color);
     color: var(--text-color); font-size: 1.2rem; margin-bottom: 20px; text-align: center;
 }
-a { color: var(--gold-color); text-decoration: none; }
-.spinner {
-    border: 5px solid var(--secondary-color); border-top: 5px solid var(--gold-color);
-    border-radius: 50%; width: 50px; height: 50px;
-    animation: spin 1s linear infinite;
-}
-@keyframes spin { 100% { transform: rotate(360deg); } }
 
-/* --- شاشة البداية --- */
 .game-title {
     font-size: 3rem; font-weight: 900; background: var(--gold-gradient);
     -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 20px;
@@ -114,7 +102,6 @@ a { color: var(--gold-color); text-decoration: none; }
 .game-title span { display: inline-block; animation: bounce 2s infinite; }
 @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-20px); } 60% { transform: translateY(-10px); } }
 
-/* --- شاشة اختيار الأفاتار --- */
 .avatar-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     gap: 15px; margin: 20px 0; max-height: 300px; overflow-y: auto; padding: 5px;
@@ -125,7 +112,6 @@ a { color: var(--gold-color); text-decoration: none; }
 .avatar-option:hover { transform: scale(1.1); }
 .avatar-option.selected { border-color: var(--gold-color); transform: scale(1.1); }
 
-/* --- الشريط الجانبي (قائمة الألقاب) --- */
 .sidebar {
     position: fixed; top: 0; right: -300px; width: 280px; height: 100%;
     background-color: var(--primary-color); padding: 20px; box-shadow: -5px 0 15px var(--shadow-color);
@@ -143,7 +129,6 @@ a { color: var(--gold-color); text-decoration: none; }
 .prizes-list li.current { background-color: var(--gold-color); color: #000; font-weight: bold; transform: scale(1.05); }
 .prizes-list li.past { opacity: 0.5; }
 
-/* --- منطقة اللعبة --- */
 #gameContainer { max-width: 900px; display: flex; flex-direction: column; justify-content: flex-start; }
 .top-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px; margin-bottom: 10px; }
 .theme-toggle-btn, .open-sidebar-btn {
@@ -155,37 +140,25 @@ a { color: var(--gold-color); text-decoration: none; }
     background-color: var(--primary-color); border-radius: 10px; width: 100%;
 }
 .player-info { display: flex; align-items: center; gap: 15px; }
-.player-info div { display: flex; flex-direction: column; align-items: flex-start; } /* إصلاح التنسيق */
+.player-details { display: flex; flex-direction: column; align-items: flex-start; }
 #playerAvatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold-color); }
 #currentScore { font-size: 1.2rem; font-weight: 700; color: var(--gold-color); }
 .game-stats { text-align: left; }
 .timer-container { width: 100%; background-color: var(--secondary-color); border-radius: 10px; margin: 15px 0; position: relative; height: 30px; overflow: hidden; }
 .timer-bar { width: 100%; height: 100%; background: var(--gold-gradient); border-radius: 10px; transition: width 1s linear; }
-.timer-container.frozen .timer-bar { animation: pulse-frozen 1.5s infinite; }
-@keyframes pulse-frozen { 0% { filter: brightness(1); } 50% { filter: brightness(1.2); } 100% { filter: brightness(1); } }
 #timer { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-weight: bold; }
-.helpers { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
-.helper-btn { padding: 10px 15px; font-size: 1rem; background-color: var(--secondary-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; }
-.helper-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .question-box { background-color: var(--primary-color); padding: 30px; border-radius: 10px; text-align: center; font-size: 1.4rem; min-height: 150px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-#questionText.fade-in { animation: fadeIn 0.5s; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; width: 100%; }
 .option-btn { background-color: var(--primary-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 20px; border-radius: 10px; font-size: 1.2rem; text-align: right; cursor: pointer; transition: all 0.2s ease; }
 .option-btn:hover:not(.disabled) { border-color: var(--gold-color); background-color: var(--secondary-color); }
-.option-btn.correct { background-color: var(--correct-color); color: #fff; border-color: var(--correct-color); animation: pulse 0.5s; }
-.option-btn.wrong { background-color: var(--wrong-color); color: #fff; border-color: var(--wrong-color); animation: shake 0.5s; }
+.option-btn.correct { background-color: var(--correct-color); color: #fff; border-color: var(--correct-color); }
+.option-btn.wrong { background-color: var(--wrong-color); color: #fff; border-color: var(--wrong-color); }
 .option-btn.disabled { opacity: 0.5; pointer-events: none; }
-@keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 50%, 90% { transform: translateX(-5px); } 30%, 70% { transform: translateX(5px); } }
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-/* --- لوحة الصدارة --- */
 #leaderboardContent { width: 100%; max-height: 60vh; overflow-y: auto; }
 .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
 .leaderboard-table th, .leaderboard-table td { padding: 12px; text-align: center; border-bottom: 1px solid var(--border-color); }
-.leaderboard-table th { font-weight: bold; }
 
-/* --- رسائل التنبيه (Toast) --- */
 #toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
 .toast {
     background-color: var(--primary-color); padding: 15px 20px; border-radius: 8px;
@@ -194,14 +167,19 @@ a { color: var(--gold-color); text-decoration: none; }
 }
 .toast.success { border-right: 5px solid var(--correct-color); }
 .toast.error { border-right: 5px solid var(--wrong-color); }
-.toast.info { border-right: 5px solid var(--gold-color); }
 @keyframes slideIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
 
-/* --- تصميم متجاوب --- */
+.spinner {
+    border: 5px solid var(--secondary-color); border-top: 5px solid var(--gold-color);
+    border-radius: 50%; width: 50px; height: 50px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
 @media (max-width: 768px) {
     .options-grid { grid-template-columns: 1fr; }
-    .header { flex-direction: column; gap: 10px; align-items: center; } /* Center align on mobile */
-    .player-info div { align-items: center; } /* Center name and score */
-    #gameContainer { padding-top: 60px; /* Space for top-bar */ }
+    .header { flex-direction: column; gap: 10px; align-items: center; }
+    .player-details { align-items: center; }
+    #gameContainer { padding-top: 60px; }
     .top-bar { position: absolute; top: 15px; left: 0; padding: 0 15px; }
 }
