@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>من سيربح اللقب؟</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body data-theme="dark">
@@ -18,7 +16,7 @@
     <div id="startScreen" class="screen">
         <div class="content-box">
             <h1 class="game-title"><span>👑</span> من سيربح اللقب؟</h1>
-            <p class="contest-ended">المسابقة الحالية انتهت. يمكنك اللعب للتجربة.</p>
+            <p>المسابقة الحالية انتهت. يمكنك اللعب للتجربة.</p>
             <button id="startPlayBtn" class="btn-main">ابدأ اللعب</button>
             <button id="showLeaderboardBtn" class="btn-secondary">لوحة الصدارة</button>
         </div>
@@ -27,8 +25,7 @@
     <div id="avatarScreen" class="screen">
         <div class="content-box">
             <h2>اختر صورة رمزية</h2>
-            <div class="avatar-grid">
-                </div>
+            <div class="avatar-grid"></div>
             <button id="confirmAvatarBtn" class="btn-main" disabled>التالي</button>
         </div>
     </div>
@@ -37,15 +34,15 @@
         <div class="content-box">
             <h2>أدخل اسمك للمتابعة</h2>
             <input type="text" id="nameInput" placeholder="اكتب اسمك هنا" maxlength="25">
-            <div class="instructions">
-                <h3>ملاحظات هامة:</h3>
-                <p>للتواصل مع المسؤول: <a href="https://x.com/_MS_AbuQusay" target="_blank">القارئ الوحيد</a></p>
-            </div>
             <button id="confirmNameBtn" class="btn-main">تأكيد وبدء اللعب</button>
         </div>
     </div>
 
-    <div class="sidebar"><button class="close-sidebar-btn">&times;</button><h3>قائمة الألقاب</h3><ul class="prizes-list"></ul></div>
+    <div class="sidebar">
+        <button class="close-sidebar-btn">&times;</button>
+        <h3>قائمة الألقاب</h3>
+        <ul class="prizes-list"></ul>
+    </div>
     <div class="sidebar-overlay"></div>
 
     <div id="gameContainer" class="screen">
@@ -57,7 +54,7 @@
         <header class="header">
             <div class="player-info">
                 <img id="playerAvatar" src="" alt="Avatar">
-                <div>
+                <div class="player-details">
                     <span id="playerName"></span>
                     <strong id="currentScore">النقاط: 0</strong>
                 </div>
@@ -71,38 +68,32 @@
         <div class="timer-container"><div class="timer-bar"></div><span id="timer">90</span></div>
 
         <main class="main-content">
-            <div class="helpers">
-                <button class="helper-btn" data-type="fiftyFifty">50:50</button>
-                <button class="helper-btn" data-type="freezeTime">❄️ 10ث</button>
-                <button class="helper-btn" data-type="changeQuestion">🔄 سؤال</button>
+            <div class="question-box">
+                <h3 id="questionCounter"></h3>
+                <p id="questionText"></p>
+                <div class="spinner-container" style="display: none;"><div class="spinner"></div></div>
             </div>
-            <div class="question-box"><h3 id="questionCounter"></h3><p id="questionText"></p><div class="spinner-container" style="display: none;"><div class="spinner"></div></div></div>
             <div class="options-grid"></div>
         </main>
     </div>
 
     <div id="endScreen" class="screen">
         <div class="content-box">
-            <h2 id="endTitle">انتهت اللعبة!</h2>
+            <h2>انتهت اللعبة!</h2>
             <div class="final-stats">
                 <p>الاسم: <strong id="finalName"></strong></p>
                 <p>اللقب: <strong id="finalTitle"></strong></p>
                 <p>النقاط: <strong id="finalScore"></strong></p>
                 <p>المدة: <strong id="totalTime"></strong></p>
             </div>
-            <div class="end-buttons">
-                <button id="restartBtn" class="btn-main">جولة جديدة</button>
-                <button id="shareBtn" class="btn-secondary">مشاركة النتيجة</button>
-            </div>
+            <button id="restartBtn" class="btn-main">جولة جديدة</button>
         </div>
     </div>
     
     <div id="leaderboardScreen" class="screen">
         <div class="content-box">
             <h2>🏆 لوحة الصدارة 🏆</h2>
-            <div id="leaderboardContent">
-                <div class="spinner"></div>
-            </div>
+            <div id="leaderboardContent"></div>
             <button id="backToStartBtn" class="btn-secondary">العودة</button>
         </div>
     </div>
@@ -110,7 +101,6 @@
     <audio id="correct-sound" src="assets/sounds/correct.mp3" preload="auto"></audio>
     <audio id="wrong-sound" src="assets/sounds/wrong.mp3" preload="auto"></audio>
     <audio id="click-sound" src="assets/sounds/click.mp3" preload="auto"></audio>
-    <audio id="tick-sound" src="assets/sounds/tick.mp3" preload="auto" loop></audio>
 
     <script src="script.js"></script>
 </body>
