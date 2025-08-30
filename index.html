@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>من سيربح اللقب؟</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="loader" class="screen active">
+        <div class="spinner"></div>
+        <p>جاري تحميل اللعبة...</p>
+    </div>
+
+    <div id="startScreen" class="screen">
+        <div class="content-box">
+            <h1 class="game-title"><span>👑</span> من سيربح اللقب؟</h1>
+            <p class="contest-ended">المسابقة الحالية انتهت. يمكنك اللعب للتجربة والمنافسة على لوحة الشرف.</p>
+            <button id="startGameBtn" class="btn-main">ابدأ اللعبة</button>
+        </div>
+    </div>
+
+    <div id="nameEntry" class="screen">
+        <div class="content-box">
+            <h2>أدخل اسمك للمتابعة</h2>
+            <input type="text" id="nameInput" placeholder="اكتب اسمك هنا" maxlength="25">
+            <div class="instructions">
+                <h3>ملاحظات هامة:</h3>
+                <ul>
+                    <li>يجب أن يكون الاسم حقيقيًا للمشاركة في الجوائز.</li>
+                    <li>تأكد من متابعة حساب المسؤول لمعرفة النتائج.</li>
+                    <li>للتواصل مع المسؤول: <a href="https://x.com/_MS_AbuQusay?t=t2wfn5tQwRD4U_KYyWSVNQ&s=09" target="_blank">القارئ الوحيد</a></li>
+                </ul>
+            </div>
+            <button id="confirmNameBtn" class="btn-main">تأكيد وبدء اللعب</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <button class="close-sidebar-btn">&times;</button>
+        <h3>قائمة الجوائز</h3>
+        <ul class="prizes-list">
+            </ul>
+    </div>
+    <div class="sidebar-overlay"></div>
+
+    <div id="gameContainer" class="screen">
+        <button class="open-sidebar-btn">🏆 الجوائز</button>
+        
+        <header class="header">
+            <div class="player-info">
+                <img id="playerAvatar" src="https://drive.google.com/uc?id=1hw5KGsMguy2BMwz69KLDV9F75AikIF9D" alt="صورة اللاعب">
+                <span id="playerName"></span>
+            </div>
+            <div class="game-stats">
+                <div>اللقب: <span id="currentTitle">لا يوجد</span></div>
+                <div>الأخطاء: <span id="wrongAnswersCount">0 / 3</span></div>
+            </div>
+        </header>
+
+        <div class="timer-container">
+            <div class="timer-bar"></div>
+            <span id="timer">90</span>
+        </div>
+
+        <main class="main-content">
+            <div class="helpers">
+                <button id="fiftyFiftyBtn" class="helper-btn" data-cost="40000" data-type="fiftyFifty">50:50</button>
+                <button id="addTimeBtn" class="helper-btn" data-cost="30000" data-type="addTime">+15 ثانية</button>
+                <button id="changeQuestionBtn" class="helper-btn" data-cost="50000" data-type="changeQuestion">تغيير السؤال</button>
+            </div>
+
+            <div class="question-box">
+                <h3 id="questionCounter"></h3>
+                <p id="questionText"></p>
+                <div class="spinner-container" style="display: none;"><div class="spinner"></div></div>
+            </div>
+
+            <div class="options-grid">
+                </div>
+        </main>
+
+        <footer class="game-footer">
+            <p>النقاط الحالية: <span id="currentScore">0</span></p>
+        </footer>
+    </div>
+
+    <div id="endScreen" class="screen">
+        <div class="content-box">
+            <h2 id="endTitle">انتهت اللعبة!</h2>
+            <div class="final-stats">
+                <p>اللقب النهائي: <strong id="finalTitle"></strong></p>
+                <p>الجائزة النهائية: <strong id="finalPrize"></strong></p>
+                <p>مجموع النقاط: <strong id="finalScore"></strong></p>
+                <p>المدة الإجمالية: <strong id="totalTime"></strong></p>
+            </div>
+            <div class="end-buttons">
+                <button id="restartBtn" class="btn-main">العب مرة أخرى</button>
+                <button id="shareBtn" class="btn-secondary">مشاركة النتيجة</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>مشاركة نتيجتك</h3>
+            <textarea id="shareText" readonly></textarea>
+            <div class="share-buttons">
+                <button id="copyShareBtn">نسخ النص</button>
+                <a id="twitterShareBtn" href="#" target="_blank">مشاركة على X</a>
+                <a id="instagramShareBtn" href="https://www.instagram.com/ms_abuqusay?igsh=MXc2ZWptd2FkamN0" target="_blank">مشاركة على Instagram</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
