@@ -1,10 +1,29 @@
- // حالة التطبيق وإعداداته
+// حالة التطبيق وإعداداته
 class QuizGame {
     constructor() {
         this.API_URL = "https://script.google.com/macros/s/AKfycbwS16Exl-EFOufB-ptfDDFepIzZJBcqCSXgCd7dt8DY5RhPQyVW_XkPyynAxN9Av7MA/exec";
         this.QUESTION_TIME = 90;
         this.TOTAL_AVATARS = 20;
         this.LIMIT_PER_DAY = 5;
+        
+        // بنك الأسئلة (تم نقله من Google Apps Script)
+        this.QUESTIONS = [
+            { q: "العاصمة تبع مصر شو هي؟", options: ["الإسكندرية", "القاهرة", "الجيزة", "الأقصر"], correct: 1 },
+            { q: "شو لون الموز لما يستوي؟", options: ["أحمر", "أصفر", "أخضر", "أزرق"], correct: 1 },
+            { q: "أكتر شي منشربه مع الأكل؟", options: ["شاي", "مي", "قهوة", "لبن"], correct: 1 },
+            { q: "الطير اللي بيقول 'كو كو' مين هو؟", options: ["ديك", "حمامة", "بومة", "دجاجة"], correct: 3 },
+            { q: "عدد أيام الأسبوع؟", options: ["5", "6", "7", "8"], correct: 2 },
+            { q: "شو اسم الكوكب اللي إحنا عايشين عليه؟", options: ["المريخ", "عطارد", "الأرض", "زحل"], correct: 2 },
+            { q: "الشي اللي مناكلو وبنلاقي جواتو بذور صغيرة كتيرة (أحمر من جوه)؟", options: ["تفاح", "بطيخ", "موز", "كمثرى"], correct: 1 },
+            { q: "وين منشوف الأسماك؟", options: ["بالسماء", "بالمية", "بالرمل", "بالحديقة"], correct: 1 },
+            { q: "عدد أصابع الإيد وحدة؟", options: ["4", "5", "6", "7"], correct: 1 },
+            { q: "الشي اللي بنحط فيه الأكل عشان ناكله؟", options: ["كرسي", "صحن", "طاولة", "كوب"], correct: 1 },
+            { q: "الشمس بتطلع من وين؟", options: ["الغرب", "الشرق", "الشمال", "الجنوب"], correct: 1 },
+            { q: "الحيوان اللي بقول 'مياو' مين هو؟", options: ["كلب", "قط", "بقرة", "حصان"], correct: 1 },
+            { q: "أكتر شي منستخدمو نكتب فيه؟", options: ["سكين", "قلم", "معلقة", "مسطرة"], correct: 1 },
+            { q: "الفاكهة اللي لونها برتقالي واسمها نفس اللون؟", options: ["تفاح", "برتقال", "مانجو", "جوافة"], correct: 1 },
+            { q: "الشهر اللي بييجي بعد رمضان؟", options: ["محرم", "شوال", "صفر", "رجب"], correct: 1 }
+        ];
         
         this.PRIZES = [
             { points: 100, title: "مشارك واعد" }, 
@@ -44,7 +63,8 @@ class QuizGame {
                 freezeTime: false,
                 changeQuestion: false
             },
-            timeLeft: this.QUESTION_TIME
+            timeLeft: this.QUESTION_TIME,
+            shuffledQuestions: [] // سيتم تعبئتها عند بدء اللعبة
         };
         
         this.currentScoreValue = 0;
@@ -182,14 +202,16 @@ class QuizGame {
         try {
             const response = await this.apiCall({ 
                 action: 'start', 
-                ...this.gameState 
+                deviceId: this.gameState.deviceId,
+                name: this.gameState.name,
+                avatar: this.gameState.avatar
             });
     
             if (response && response.success) {
                 this.resetGameState(response.attemptId);
                 this.setupGameUI();
                 this.showScreen('game');
-                await this.fetchQuestion();
+                this.fetchQuestion(); // لم يعد async
             } else {
                 const errorMsg = response && response.error === 'limit_reached' 
                     ? `لقد وصلت للحد الأقصى للمحاولات (${this.LIMIT_PER_DAY}).` 
@@ -204,28 +226,35 @@ class QuizGame {
         }
     }
     
-    // جلب السؤال التالي
-    async fetchQuestion() {
+    // خلط الأسئلة (بديل للخلط في الخادم)
+    shuffleQuestions() {
+        // نسخ مصفوفة الأسئلة لتجنب تعديل الأصلية
+        const shuffled = [...this.QUESTIONS];
+        
+        // تطبيق خوارزمية Fisher-Yates للخلط
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        
+        return shuffled;
+    }
+    
+    // جلب السؤال التالي (بدون الاتصال بالخادم)
+    fetchQuestion() {
         this.startLoadingQuestion();
         
-        try {
-            const response = await this.apiCall({ 
-                action: 'getQuestion', 
-                attemptId: this.gameState.attemptId 
-            });
-            
-            if (response && response.success) {
-                this.displayQuestion(response.question, response.qNum, response.totalQ);
-                this.startTimer();
-            } else {
-                this.showToast("خطأ في تحميل السؤال.", 'error');
-                this.showScreen('start');
-            }
-        } catch (error) {
-            console.error("Error fetching question:", error);
-            this.showToast("حدث خطأ في الاتصال بالخادم.", "error");
-            this.showScreen('start');
+        // إذا كانت هذه هي المرة الأولى، قم بخلط الأسئلة
+        if (this.gameState.shuffledQuestions.length === 0) {
+            this.gameState.shuffledQuestions = this.shuffleQuestions();
         }
+        
+        const currentQuestion = this.gameState.shuffledQuestions[this.gameState.currentQuestion];
+        const qNum = this.gameState.currentQuestion + 1;
+        const totalQ = this.gameState.shuffledQuestions.length;
+        
+        this.displayQuestion(currentQuestion, qNum, totalQ);
+        this.startTimer();
         
         this.stopLoadingQuestion();
     }
@@ -248,55 +277,43 @@ class QuizGame {
         this.updateUI();
     }
     
-    // التحقق من الإجابة
-    async checkAnswer(selectedIndex, button) {
+    // التحقق من الإجابة (بدون الاتصال بالخادم)
+    checkAnswer(selectedIndex, button) {
         clearInterval(this.timerInterval);
         document.querySelectorAll('.option-btn').forEach(b => {
             b.classList.add('disabled');
         });
     
-        try {
-            const response = await this.apiCall({ 
-                action: 'answer', 
-                attemptId: this.gameState.attemptId, 
-                answerIndex: selectedIndex 
-            });
+        const currentQuestion = this.gameState.shuffledQuestions[this.gameState.currentQuestion];
+        const isCorrect = (currentQuestion.correct === selectedIndex);
     
-            if (response && response.success) {
-                if (response.correct) {
-                    this.playSound('correct');
-                    button.classList.add('correct');
-                    this.updateScore(this.currentScoreValue + this.PRIZES[this.gameState.currentQuestion].points);
-                    this.gameState.currentQuestion++;
-                } else {
-                    this.playSound('wrong');
-                    button.classList.add('wrong');
-                    document.querySelector(`.option-btn[data-index='${response.correctIndex}']`).classList.add('correct');
-                    this.gameState.wrongAnswers = response.wrongAnswers;
-                }
-                
-                this.updateUI();
-                
-                const isGameOver = this.gameState.wrongAnswers >= 3 || 
-                                  this.gameState.currentQuestion >= this.PRIZES.length;
-    
-                setTimeout(() => {
-                    if (isGameOver) {
-                        this.endGame();
-                    } else if (response.correct) {
-                        this.fetchQuestion();
-                    } else {
-                        this.showToast(`إجابة خاطئة! تبقى لديك ${3 - this.gameState.wrongAnswers} محاولات.`, 'error');
-                        setTimeout(() => this.fetchQuestion(), 2000);
-                    }
-                }, 2000);
-            } else {
-                this.showToast("خطأ في التحقق من الإجابة.", "error");
-            }
-        } catch (error) {
-            console.error("Error checking answer:", error);
-            this.showToast("حدث خطأ في الاتصال بالخادم.", "error");
+        if (isCorrect) {
+            this.playSound('correct');
+            button.classList.add('correct');
+            this.updateScore(this.currentScoreValue + this.PRIZES[this.gameState.currentQuestion].points);
+            this.gameState.currentQuestion++;
+        } else {
+            this.playSound('wrong');
+            button.classList.add('wrong');
+            document.querySelector(`.option-btn[data-index='${currentQuestion.correct}']`).classList.add('correct');
+            this.gameState.wrongAnswers++;
         }
+        
+        this.updateUI();
+        
+        const isGameOver = this.gameState.wrongAnswers >= 3 || 
+                          this.gameState.currentQuestion >= this.PRIZES.length;
+    
+        setTimeout(() => {
+            if (isGameOver) {
+                this.endGame();
+            } else if (isCorrect) {
+                this.fetchQuestion();
+            } else {
+                this.showToast(`إجابة خاطئة! تبقى لديك ${3 - this.gameState.wrongAnswers} محاولات.`, 'error');
+                setTimeout(() => this.fetchQuestion(), 2000);
+            }
+        }, 2000);
     }
     
     // إنهاء اللعبة
@@ -561,6 +578,7 @@ class QuizGame {
             freezeTime: false,
             changeQuestion: false
         };
+        this.gameState.shuffledQuestions = []; // سيتم تعبئتها عند الحاجة
         
         this.updateScore(0);
     }
