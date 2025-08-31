@@ -1,98 +1,77 @@
-// حالة التطبيق وإعداداته
 class QuizGame {
     constructor() {
         this.API_URL = "https://script.google.com/macros/s/AKfycbwS16Exl-EFOufB-ptfDDFepIzZJBcqCSXgCd7dt8DY5RhPQyVW_XkPyynAxN9Av7MA/exec";
-        this.QUESTION_TIME = 90;
-        this.TOTAL_AVATARS = 16; // تم التعديل إلى 16 أيقونة
+        this.QUESTION_TIME = 60; // تم تعديل الوقت إلى 60 ثانية كما في HTML
+        this.TOTAL_AVATARS = 16; // تم تعديل العدد ليتوافق مع طلب 16 أيقونة
         this.LIMIT_PER_DAY = 5;
-        
-        // بنك الأسئلة (تم نقله من Google Apps Script)
+        this.MAX_WRONG_ANSWERS = 3;
+
+        // (مُعدل) بنك الأسئلة ليحتوي على 16 سؤالاً
         this.QUESTIONS = [
-            { q: "العاصمة تبع مصر شو هي؟", options: ["الإسكندرية", "القاهرة", "الجيزة", "الأقصر"], correct: 1 },
-            { q: "شو لون الموز لما يستوي؟", options: ["أحمر", "أصفر", "أخضر", "أزرق"], correct: 1 },
-            { q: "أكتر شي منشربه مع الأكل؟", options: ["شاي", "مي", "قهوة", "لبن"], correct: 1 },
-            { q: "الطير اللي بيقول 'كو كو' مين هو؟", options: ["ديك", "حمامة", "بومة", "دجاجة"], correct: 3 },
-            { q: "عدد أيام الأسبوع؟", options: ["5", "6", "7", "8"], correct: 2 },
-            { q: "شو اسم الكوكب اللي إحنا عايشين عليه؟", options: ["المريخ", "عطارد", "الأرض", "زحل"], correct: 2 },
-            { q: "الشي اللي مناكلو وبنلاقي جواتو بذور صغيرة كتيرة (أحمر من جوه)؟", options: ["تفاح", "بطيخ", "موز", "كمثرى"], correct: 1 },
-            { q: "وين منشوف الأسماك؟", options: ["بالسماء", "بالمية", "بالرمل", "بالحديقة"], correct: 1 },
-            { q: "عدد أصابع الإيد وحدة؟", options: ["4", "5", "6", "7"], correct: 1 },
-            { q: "الشي اللي بنحط فيه الأكل عشان ناكله؟", options: ["كرسي", "صحن", "طاولة", "كوب"], correct: 1 },
-            { q: "الشمس بتطلع من وين؟", options: ["الغرب", "الشرق", "الشمال", "الجنوب"], correct: 1 },
-            { q: "الحيوان اللي بقول 'مياو' مين هو؟", options: ["كلب", "قط", "بقرة", "حصان"], correct: 1 },
-            { q: "أكتر شي منستخدمو نكتب فيه؟", options: ["سكين", "قلم", "معلقة", "مسطرة"], correct: 1 },
-            { q: "الفاكهة اللي لونها برتقالي واسمها نفس اللون؟", options: ["تفاح", "برتقال", "مانجو", "جوافة"], correct: 1 },
-            { q: "الشهر اللي بييجي بعد رمضان؟", options: ["محرم", "شوال", "صفر", "رجب"], correct: 1 },
-            // سؤال احتياطي إضافي
-            { q: "عدد أرجل العنكبوت؟", options: ["4", "6", "8", "10"], correct: 2 }
+            { q: "ما هي عاصمة مصر؟", options: ["الإسكندرية", "القاهرة", "الجيزة", "الأقصر"], correct: 1 },
+            { q: "ما هو لون الموز عندما ينضج؟", options: ["أحمر", "أصفر", "أخضر", "أزرق"], correct: 1 },
+            { q: "ما هو المشروب الأكثر شيوعاً مع الطعام؟", options: ["شاي", "ماء", "قهوة", "لبن"], correct: 1 },
+            { q: "ما هو الطائر الذي يشتهر بصوت 'الحفيف'؟", options: ["بومة", "حمامة", "صقر", "نسر"], correct: 1 },
+            { q: "كم عدد أيام الأسبوع؟", options: ["5", "6", "7", "8"], correct: 2 },
+            { q: "ما هو اسم الكوكب الذي نعيش عليه؟", options: ["المريخ", "عطارد", "الأرض", "زحل"], correct: 2 },
+            { q: "ما هي الفاكهة الحمراء من الداخل وتحتوي على بذور سوداء صغيرة؟", options: ["تفاح", "بطيخ", "موز", "كمثرى"], correct: 1 },
+            { q: "أين تعيش الأسماك بشكل أساسي؟", options: ["في السماء", "في الماء", "في الرمل", "في الحديقة"], correct: 1 },
+            { q: "كم عدد أصابع اليد الواحدة؟", options: ["4", "5", "6", "7"], correct: 1 },
+            { q: "ما هو الشيء الذي نضع فيه الطعام لنأكله؟", options: ["كرسي", "صحن", "طاولة", "كوب"], correct: 1 },
+            { q: "من أين تشرق الشمس؟", options: ["الغرب", "الشرق", "الشمال", "الجنوب"], correct: 1 },
+            { q: "ما هو الحيوان الذي يشتهر بصوت 'مواء'؟", options: ["كلب", "قط", "بقرة", "حصان"], correct: 1 },
+            { q: "ما هي الأداة الرئيسية المستخدمة في الكتابة؟", options: ["سكين", "قلم", "ملعقة", "مسطرة"], correct: 1 },
+            { q: "ما هي الفاكهة التي اسمها ولونها 'برتقالي'؟", options: ["تفاح", "برتقال", "مانجو", "جوافة"], correct: 1 },
+            { q: "ما هو الشهر الذي يأتي بعد شهر رمضان؟", options: ["محرم", "شوال", "صفر", "رجب"], correct: 1 },
+            { q: "(سؤال احتياطي) أي حيوان يُعرف بأنه 'ملك الغابة'؟", options: ["النمر", "الفيل", "الأسد", "الذئب"], correct: 2 }
         ];
-        
+
+        // (مُعدل) قائمة الألقاب لتصبح 16
         this.PRIZES = [
-            { points: 100, title: "مشارك واعد" }, 
+            { points: 100, title: "مشارك واعد" },
             { points: 200, title: "مستكشف المعرفة" },
-            { points: 300, title: "باحث مجتهد" }, 
+            { points: 300, title: "باحث مجتهد" },
             { points: 500, title: "مثقف مبتدئ" },
-            { points: 1000, title: "نجم المعرفة البرونزي" }, 
+            { points: 1000, title: "نجم المعرفة البرونزي" },
             { points: 2000, title: "صاحب الفضول" },
-            { points: 4000, title: "متعمق بالحقائق" }, 
+            { points: 4000, title: "متعمق بالحقائق" },
             { points: 8000, title: "خبير المعلومات" },
-            { points: 16000, title: "نجم المعرفة الفضي" }, 
+            { points: 16000, title: "نجم المعرفة الفضي" },
             { points: 32000, title: "سيد الأسئلة" },
-            { points: 64000, title: "عقل متقد" }, 
+            { points: 64000, title: "عقل متقد" },
             { points: 125000, title: "عبقري عصره" },
-            { points: 250000, title: "حكيم المعرفة" }, 
-            { points: 500000, title: "أسطورة المسابقة" },
-            { points: 1000000, title: "نجم المعرفة الذهبي" }
+            { points: 250000, title: "حكيم المعرفة" },
+            { points: 500000, title: "نجم المسابقة" },
+            { points: 1000000, title: "أسطورة المعرفة" },
+            { points: 2000000, title: "نجم المعرفة الذهبي" }
         ];
-        
-        this.HELPER_COSTS = { 
-            fiftyFifty: 20000, 
-            freezeTime: 15000, 
-            changeQuestion: 30000 
+
+        // (مُعدل) تكاليف المساعدات
+        this.HELPER_COSTS = {
+            fiftyFifty: 500,
+            changeQuestion: 1000
         };
-        
+
         // حالة اللعبة
-        this.gameState = {
-            deviceId: this.getDeviceId(),
-            attemptId: null,
-            name: "",
-            avatar: "",
-            currentQuestion: 0,
-            wrongAnswers: 0,
-            startTime: null,
-            helpersUsed: {
-                fiftyFifty: false,
-                freezeTime: false,
-                changeQuestion: false
-            },
-            timeLeft: this.QUESTION_TIME,
-            shuffledQuestions: [], // سيتم تعبئتها عند بدء اللعبة
-            isAnswering: false // منع الضغط المتعدد
-        };
-        
+        this.gameState = {};
         this.currentScoreValue = 0;
         this.timerInterval = null;
-        this.isTimeFrozen = false;
-        
-        // عناصر DOM
+        this.answerSubmitted = false;
+
         this.domElements = {};
-        
-        // تهيئة التطبيق
         this.init();
     }
-    
-    // تهيئة التطبيق
+
     init() {
         this.cacheDomElements();
-        this.populateAvatarGrid();
         this.bindEventListeners();
+        this.populateAvatarGrid();
         this.generatePrizesList();
         this.loadTheme();
         this.showScreen('start');
         this.hideLoader();
     }
-    
-    // تخزين عناصر DOM للوصول السريع
+
     cacheDomElements() {
         this.domElements = {
             screens: {
@@ -100,7 +79,7 @@ class QuizGame {
                 start: document.getElementById('startScreen'),
                 avatar: document.getElementById('avatarScreen'),
                 nameEntry: document.getElementById('nameEntry'),
-                welcome: document.getElementById('welcomeScreen'), // إضافة شاشة الترحيب
+                welcome: document.getElementById('welcomeScreen'), // (جديد)
                 game: document.getElementById('gameContainer'),
                 end: document.getElementById('endScreen'),
                 leaderboard: document.getElementById('leaderboardScreen'),
@@ -118,95 +97,86 @@ class QuizGame {
             prizesList: document.querySelector('.prizes-list'),
             helperBtns: document.querySelectorAll('.helper-btn'),
             nameInput: document.getElementById('nameInput'),
+            nameError: document.getElementById('nameError'),
             confirmAvatarBtn: document.getElementById('confirmAvatarBtn'),
-            confirmWelcomeBtn: document.getElementById('confirmWelcomeBtn'), // زر تأكيد الترحيب
-            welcomeName: document.getElementById('welcomeName'), // اسم اللاعب في شاشة الترحيب
             themeToggleBtn: document.querySelector('.theme-toggle-btn'),
-            openSidebarBtn: document.querySelector('.open-sidebar-btn'),
-            closeSidebarBtn: document.querySelector('.close-sidebar-btn')
+            welcomeMessage: document.getElementById('welcomeMessage'), // (جديد)
         };
     }
-    
-    // ربط مستمعي الأحداث
+
     bindEventListeners() {
-        document.getElementById('startPlayBtn').addEventListener('click', () => {
-            this.playSound('click');
-            this.showScreen('avatar');
-        });
-        
-        this.domElements.confirmAvatarBtn.addEventListener('click', () => {
-            this.playSound('click');
-            this.showScreen('nameEntry');
-        });
-        
-        document.getElementById('confirmNameBtn').addEventListener('click', () => this.validateAndStartGame());
+        document.getElementById('startPlayBtn').addEventListener('click', () => this.showScreen('avatar'));
+        this.domElements.confirmAvatarBtn.addEventListener('click', () => this.showScreen('nameEntry'));
+        document.getElementById('confirmNameBtn').addEventListener('click', () => this.showWelcomeScreen());
+        document.getElementById('welcomeConfirmBtn').addEventListener('click', () => this.startGame());
         document.getElementById('showLeaderboardBtn').addEventListener('click', () => this.displayLeaderboard());
-        document.getElementById('backToStartBtn').addEventListener('click', () => {
-            this.playSound('click');
-            this.showScreen('start');
-        });
-        
-        // إضافة مستمع لشاشة الترحيب
-        this.domElements.confirmWelcomeBtn.addEventListener('click', () => {
-            this.playSound('click');
-            this.showScreen('game');
-            this.fetchQuestion();
-        });
-        
+        document.getElementById('backToStartBtn').addEventListener('click', () => this.showScreen('start'));
         this.domElements.themeToggleBtn.addEventListener('click', () => this.toggleTheme());
         document.getElementById('restartBtn').addEventListener('click', () => window.location.reload());
-        
-        this.domElements.openSidebarBtn.addEventListener('click', () => this.toggleSidebar());
-        this.domElements.closeSidebarBtn.addEventListener('click', () => this.toggleSidebar());
-        this.domElements.sidebarOverlay.addEventListener('click', () => this.toggleSidebar());
-        
-        this.domElements.helperBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => this.useHelper(e));
-        });
-        
+        document.querySelector('.open-sidebar-btn').addEventListener('click', () => this.toggleSidebar(true));
+        document.querySelector('.close-sidebar-btn').addEventListener('click', () => this.toggleSidebar(false));
+        this.domElements.sidebarOverlay.addEventListener('click', () => this.toggleSidebar(false));
+        this.domElements.helperBtns.forEach(btn => btn.addEventListener('click', (e) => this.useHelper(e)));
         document.getElementById('shareXBtn').addEventListener('click', () => this.shareOnX());
         document.getElementById('shareInstagramBtn').addEventListener('click', () => this.shareOnInstagram());
+        this.domElements.nameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.showWelcomeScreen(); });
         
-        // إدخال الاسم - السماح بالإدخال بمجرد الضغط على Enter
-        this.domElements.nameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                this.validateAndStartGame();
-            }
+        // تشغيل صوت النقر لجميع الأزرار
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => this.playSound('click'));
         });
     }
+
+    populateAvatarGrid() {
+        const avatarGrid = document.querySelector('.avatar-grid');
+        avatarGrid.innerHTML = '';
+        for (let i = 1; i <= this.TOTAL_AVATARS; i++) {
+            const img = document.createElement('img');
+            img.src = `assets/avatars/avatar${i}.png`;
+            img.alt = `صورة رمزية ${i}`;
+            img.classList.add('avatar-option');
+            img.addEventListener('click', () => {
+                this.playSound('click');
+                document.querySelectorAll('.avatar-option.selected').forEach(el => el.classList.remove('selected'));
+                img.classList.add('selected');
+                this.gameState.avatar = img.src;
+                this.domElements.confirmAvatarBtn.disabled = false;
+            });
+            avatarGrid.appendChild(img);
+        }
+    }
     
-    // التحقق من الاسم وبدء اللعبة
-    async validateAndStartGame() {
-        this.playSound('click');
+    // (جديد) إظهار شاشة الترحيب
+    showWelcomeScreen() {
         const name = this.domElements.nameInput.value.trim();
-        
         if (name.length < 2) {
-            this.showToast("الرجاء إدخال اسم صحيح (حرفين على الأقل).", 'error');
+            this.domElements.nameError.textContent = "الرجاء إدخال اسم صحيح (حرفين على الأقل).";
+            this.domElements.nameError.classList.add('show');
             return;
         }
-        
+        this.domElements.nameError.classList.remove('show');
         this.gameState.name = name;
-        
+        this.domElements.welcomeMessage.innerHTML = `🌟 مرحبا بك يا ${name}! 🌟`;
+        this.showScreen('welcome');
+    }
+
+    async startGame() {
         this.showScreen('loader');
-        
         try {
-            const response = await this.apiCall({ 
-                action: 'start', 
-                deviceId: this.gameState.deviceId,
+            const response = await this.apiCall({
+                action: 'start',
+                deviceId: this.getDeviceId(),
                 name: this.gameState.name,
-                avatar: this.gameState.avatar
             });
-    
+
             if (response && response.success) {
                 this.resetGameState(response.attemptId);
                 this.setupGameUI();
-                
-                // عرض شاشة الترحيب بدلاً من الذهاب مباشرة إلى اللعبة
-                this.domElements.welcomeName.textContent = this.gameState.name;
-                this.showScreen('welcome');
+                this.showScreen('game');
+                this.fetchQuestion();
             } else {
-                const errorMsg = response && response.error === 'limit_reached' 
-                    ? `لقد وصلت للحد الأقصى للمحاولات (${this.LIMIT_PER_DAY}).` 
+                const errorMsg = response && response.error === 'limit_reached'
+                    ? `لقد استنفدت محاولاتك اليومية (${this.LIMIT_PER_DAY}).`
                     : "حدث خطأ عند بدء اللعبة.";
                 this.showToast(errorMsg, 'error');
                 this.showScreen('start');
@@ -217,354 +187,211 @@ class QuizGame {
             this.showScreen('start');
         }
     }
-    
-    // ملء شبكة الصور الرمزية (16 أيقونة فقط)
-    populateAvatarGrid() {
-        const avatarGrid = document.querySelector('.avatar-grid');
-        avatarGrid.innerHTML = '';
-        
-        for (let i = 1; i <= this.TOTAL_AVATARS; i++) {
-            const img = document.createElement('img');
-            img.src = `assets/avatars/avatar${i}.png`;
-            img.alt = `صورة رمزية ${i}`;
-            img.classList.add('avatar-option');
-            img.addEventListener('click', () => {
-                this.playSound('click');
-                document.querySelectorAll('.avatar-option').forEach(el => {
-                    el.classList.remove('selected');
-                });
-                img.classList.add('selected');
-                this.gameState.avatar = img.src;
-                this.domElements.confirmAvatarBtn.disabled = false;
-            });
-            avatarGrid.appendChild(img);
-        }
-    }
-    
-    // بدء اللعبة
-    async startGame() {
-        // تم نقل المنطق إلى validateAndStartGame
-    }
-    
-    // خلط الأسئلة (بديل للخلط في الخادم)
+
     shuffleQuestions() {
-        // نسخ مصفوفة الأسئلة لتجنب تعديل الأصلية
         const shuffled = [...this.QUESTIONS];
-        
-        // تطبيق خوارزمية Fisher-Yates للخلط
         for (let i = shuffled.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
-        
         return shuffled;
     }
-    
-    // جلب السؤال التالي (بدون الاتصال بالخادم)
+
     fetchQuestion() {
-        this.startLoadingQuestion();
-        
-        // إذا كانت هذه هي المرة الأولى، قم بخلط الأسئلة
         if (this.gameState.shuffledQuestions.length === 0) {
             this.gameState.shuffledQuestions = this.shuffleQuestions();
         }
-        
-        const currentQuestion = this.gameState.shuffledQuestions[this.gameState.currentQuestion];
-        const qNum = this.gameState.currentQuestion + 1;
-        const totalQ = this.gameState.shuffledQuestions.length;
-        
-        this.displayQuestion(currentQuestion, qNum, totalQ);
-        this.startTimer();
-        
-        this.stopLoadingQuestion();
+        const currentQuestionData = this.gameState.shuffledQuestions[this.gameState.currentQuestion];
+        this.displayQuestion(currentQuestionData);
     }
-    
-    // عرض السؤال
-    displayQuestion(question, qNum, totalQ) {
-        this.domElements.questionText.textContent = question.q;
-        document.getElementById('questionCounter').textContent = `السؤال ${qNum} / ${totalQ}`;
+
+    displayQuestion(questionData) {
+        this.answerSubmitted = false; // (جديد) السماح بإجابة جديدة
+        this.domElements.questionText.textContent = questionData.q;
+        document.getElementById('questionCounter').textContent = `السؤال ${this.gameState.currentQuestion + 1} / ${this.QUESTIONS.length}`;
         this.domElements.optionsGrid.innerHTML = '';
-        
-        question.options.forEach((option, index) => {
+        questionData.options.forEach((option, index) => {
             const button = document.createElement('button');
-            button.classList.add('option-btn');
+            button.className = 'option-btn';
             button.textContent = option;
             button.dataset.index = index;
             button.addEventListener('click', () => this.checkAnswer(index, button));
             this.domElements.optionsGrid.appendChild(button);
         });
-        
         this.updateUI();
+        this.startTimer();
     }
-    
-    // التحقق من الإجابة (بدون الاتصال بالخادم)
-    checkAnswer(selectedIndex, button) {
-        // منع الضغط المتعدد على الإجابات
-        if (this.gameState.isAnswering) return;
-        this.gameState.isAnswering = true;
+
+    checkAnswer(selectedIndex, selectedButton) {
+        if (this.answerSubmitted) return; // (جديد) منع الإجابات المتكررة
+        this.answerSubmitted = true;
         
         clearInterval(this.timerInterval);
-        document.querySelectorAll('.option-btn').forEach(b => {
-            b.classList.add('disabled');
-        });
-    
+        document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
+
         const currentQuestion = this.gameState.shuffledQuestions[this.gameState.currentQuestion];
         const isCorrect = (currentQuestion.correct === selectedIndex);
-    
+
         if (isCorrect) {
             this.playSound('correct');
-            button.classList.add('correct');
-            this.updateScore(this.currentScoreValue + this.PRIZES[this.gameState.currentQuestion].points);
+            selectedButton.classList.add('correct');
+            const pointsEarned = this.PRIZES[this.gameState.currentQuestion]?.points || 0;
+            this.updateScore(this.currentScoreValue + pointsEarned);
             this.gameState.currentQuestion++;
         } else {
             this.playSound('wrong');
-            button.classList.add('wrong');
+            selectedButton.classList.add('wrong');
             document.querySelector(`.option-btn[data-index='${currentQuestion.correct}']`).classList.add('correct');
             this.gameState.wrongAnswers++;
         }
-        
         this.updateUI();
+
+        const isGameOver = this.gameState.wrongAnswers >= this.MAX_WRONG_ANSWERS || this.gameState.currentQuestion >= this.QUESTIONS.length;
         
-        const isGameOver = this.gameState.wrongAnswers >= 3 || 
-                          this.gameState.currentQuestion >= this.PRIZES.length;
-    
         setTimeout(() => {
-            this.gameState.isAnswering = false; // إعادة تمكين الإجابات
-            
             if (isGameOver) {
                 this.endGame();
-            } else if (isCorrect) {
-                this.fetchQuestion();
             } else {
-                this.showToast(`إجابة خاطئة! تبقى لديك ${3 - this.gameState.wrongAnswers} محاولات.`, 'error');
-                setTimeout(() => this.fetchQuestion(), 2000);
+                this.fetchQuestion();
             }
         }, 2000);
     }
     
-    // إنهاء اللعبة
-    async endGame() {
+    // (مُعدل) endGame لظهور النتائج فوراً
+    endGame() {
         clearInterval(this.timerInterval);
-        const totalTime = (new Date() - new Date(this.gameState.startTime)) / 1000;
-        const finalTitle = this.gameState.currentQuestion > 0 
-            ? this.PRIZES[this.gameState.currentQuestion - 1].title 
-            : "لا يوجد";
-        
+        const totalTimeSeconds = (new Date() - new Date(this.gameState.startTime)) / 1000;
+        const finalTitle = this.gameState.currentQuestion > 0 ? this.PRIZES[this.gameState.currentQuestion - 1].title : "لا يوجد";
+
         // حفظ البيانات النهائية للمشاركة
-        this.gameState.finalTitle = finalTitle;
-        this.gameState.finalScore = this.currentScoreValue;
+        this.gameState.finalStats = {
+            name: this.gameState.name,
+            title: finalTitle,
+            score: this.currentScoreValue,
+            time: this.formatTime(totalTimeSeconds)
+        };
         
-        try {
-            await this.apiCall({ 
-                action: 'end', 
-                attemptId: this.gameState.attemptId, 
-                score: this.currentScoreValue, 
-                finalTitle, 
-                totalTime 
-            });
-            
-            document.getElementById('finalName').textContent = this.gameState.name;
-            document.getElementById('finalTitle').textContent = finalTitle;
-            document.getElementById('finalScore').textContent = this.formatNumber(this.currentScoreValue);
-            
-            // تحويل المدة إلى دقائق وثواني
-            const minutes = Math.floor(totalTime / 60);
-            const seconds = Math.round(totalTime % 60);
-            document.getElementById('totalTime').textContent = `${minutes} دقائق و ${seconds} ثانية`;
-            
-            this.showScreen('end');
-        } catch (error) {
-            console.error("Error ending game:", error);
-            this.showToast("حدث خطأ في حفظ النتائج.", "error");
-        }
+        // إظهار النتائج فوراً
+        document.getElementById('finalName').textContent = this.gameState.finalStats.name;
+        document.getElementById('finalTitle').textContent = this.gameState.finalStats.title;
+        document.getElementById('finalScore').textContent = this.formatNumber(this.gameState.finalStats.score);
+        document.getElementById('totalTime').textContent = this.gameState.finalStats.time;
+        this.showScreen('end');
+        
+        // إرسال البيانات للخادم في الخلفية
+        this.apiCall({
+            action: 'end',
+            attemptId: this.gameState.attemptId,
+            name: this.gameState.name,
+            score: this.currentScoreValue,
+            finalTitle: finalTitle,
+            totalTime: totalTimeSeconds
+        }).catch(error => console.error("Failed to save score:", error));
     }
     
-    // استخدام مساعدة
+    // (مُعدل) useHelper لتفعيل الميزات
     useHelper(event) {
         const btn = event.currentTarget;
         const type = btn.dataset.type;
         const cost = this.HELPER_COSTS[type];
-    
+
         if (this.currentScoreValue < cost) {
             this.showToast("نقاطك غير كافية!", "error");
             return;
         }
-    
-        this.playSound('click');
+
         this.updateScore(this.currentScoreValue - cost);
         this.gameState.helpersUsed[type] = true;
         btn.disabled = true;
-    
-        this.showToast(`تم استخدام مساعدة! خصم ${this.formatNumber(cost)} نقطة.`, "info");
-    
-        if (type === 'freezeTime') {
-            this.isTimeFrozen = true;
-            document.querySelector('.timer-container').classList.add('frozen');
-            setTimeout(() => {
-                this.isTimeFrozen = false;
-                document.querySelector('.timer-container').classList.remove('frozen');
-            }, 10000);
-        } else if (type === 'fiftyFifty') {
-            this.useFiftyFiftyHelper();
+        this.showToast(`تم استخدام المساعدة!`, "success");
+
+        if (type === 'fiftyFifty') {
+            const currentQuestion = this.gameState.shuffledQuestions[this.gameState.currentQuestion];
+            const correctIndex = currentQuestion.correct;
+            const options = Array.from(document.querySelectorAll('.option-btn'));
+            let wrongOptions = options.filter(opt => parseInt(opt.dataset.index) !== correctIndex);
+            
+            // إخفاء إجابتين خاطئتين عشوائياً
+            wrongOptions.sort(() => 0.5 - Math.random());
+            wrongOptions[0].classList.add('hidden');
+            wrongOptions[1].classList.add('hidden');
         } else if (type === 'changeQuestion') {
-            this.useChangeQuestionHelper();
+            if (this.gameState.currentQuestion < this.QUESTIONS.length - 1) {
+                this.gameState.currentQuestion++; // تخطي السؤال الحالي
+                this.fetchQuestion();
+            } else {
+                 this.showToast("لا يمكن تغيير السؤال الأخير!", "warning");
+            }
         }
-        
         this.updateUI();
     }
-    
-    // استخدام مساعدة 50:50
-    useFiftyFiftyHelper() {
-        const currentQuestion = this.gameState.shuffledQuestions[this.gameState.currentQuestion];
-        const correctIndex = currentQuestion.correct;
-        const options = document.querySelectorAll('.option-btn');
-        
-        // إنشاء قائمة بالخيارات الخاطئة
-        const wrongIndices = [];
-        options.forEach((option, index) => {
-            if (index !== correctIndex) {
-                wrongIndices.push(index);
-            }
-        });
-        
-        // اختيار خيارين خاطئين عشوائيًا لإخفائهم
-        const indicesToRemove = this.shuffleArray([...wrongIndices]).slice(0, 2);
-        
-        options.forEach((option, index) => {
-            if (indicesToRemove.includes(index)) {
-                option.style.opacity = '0.3';
-                option.style.pointerEvents = 'none';
-            }
-        });
-    }
-    
-    // استخدام مساعدة تغيير السؤال
-    useChangeQuestionHelper() {
-        // إذا لم يتبق أسئلة كافية، لا تفعل anything
-        if (this.gameState.currentQuestion >= this.QUESTIONS.length - 1) {
-            this.showToast("لا توجد أسئلة إضافية متاحة", "info");
-            return;
-        }
-        
-        // استبدال السؤال الحالي بسؤال آخر
-        const nextQuestionIndex = this.gameState.currentQuestion + 1;
-        if (nextQuestionIndex < this.QUESTIONS.length) {
-            // تبديل الأسئلة في المصفوفة
-            [this.gameState.shuffledQuestions[this.gameState.currentQuestion], 
-             this.gameState.shuffledQuestions[nextQuestionIndex]] = 
-            [this.gameState.shuffledQuestions[nextQuestionIndex], 
-             this.gameState.shuffledQuestions[this.gameState.currentQuestion]];
-            
-            this.showToast("تم تغيير السؤال!", "info");
-            this.fetchQuestion();
-        }
-    }
-    
-    // خلط مصفوفة (للمساعدات)
-    shuffleArray(array) {
-        const newArray = [...array];
-        for (let i = newArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-        }
-        return newArray;
-    }
-    
-    // بدء المؤقت
+
     startTimer() {
         clearInterval(this.timerInterval);
-        this.isTimeFrozen = false;
-        document.querySelector('.timer-container').classList.remove('frozen');
         this.gameState.timeLeft = this.QUESTION_TIME;
         const timerBar = document.querySelector('.timer-bar');
-        const timerDisplay = document.getElementById('timer');
-        
+        const timerDisplay = document.querySelector('.timer-text');
+
         this.timerInterval = setInterval(() => {
-            if (this.isTimeFrozen) return;
-            
             this.gameState.timeLeft--;
             timerDisplay.textContent = this.gameState.timeLeft;
             timerBar.style.width = `${(this.gameState.timeLeft / this.QUESTION_TIME) * 100}%`;
-            
+
             if (this.gameState.timeLeft <= 0) {
                 clearInterval(this.timerInterval);
                 this.playSound('wrong');
                 this.showToast("انتهى الوقت!", "error");
                 this.gameState.wrongAnswers++;
+                document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
+                const correctIndex = this.gameState.shuffledQuestions[this.gameState.currentQuestion].correct;
+                document.querySelector(`.option-btn[data-index='${correctIndex}']`).classList.add('correct');
+                
                 this.updateUI();
                 
-                if (this.gameState.wrongAnswers >= 3) {
-                    setTimeout(() => this.endGame(), 1000);
-                } else {
-                    setTimeout(() => this.fetchQuestion(), 1000);
-                }
+                setTimeout(() => {
+                    if (this.gameState.wrongAnswers >= this.MAX_WRONG_ANSWERS) {
+                        this.endGame();
+                    } else {
+                        this.fetchQuestion();
+                    }
+                }, 2000);
             }
         }, 1000);
     }
     
-    // تحديث النقاط
     updateScore(newScore) {
-        const start = this.currentScoreValue;
-        const diff = newScore - start;
-        
-        if (diff === 0) {
-            this.domElements.scoreDisplay.textContent = this.formatNumber(newScore);
-            return;
-        }
-        
-        let step = 0;
-        const duration = 500;
-        const interval = setInterval(() => {
-            step += 20;
-            const progress = Math.min(step / duration, 1);
-            const animatedScore = Math.floor(start + diff * progress);
-            this.domElements.scoreDisplay.textContent = this.formatNumber(animatedScore);
-            
-            if (progress >= 1) {
-                clearInterval(interval);
-                this.currentScoreValue = newScore;
-                this.updateUI(); // تحديث أدوات المساعدة بعد استقرار النقاط
-            }
-        }, 20);
+        this.currentScoreValue = newScore;
+        this.domElements.scoreDisplay.textContent = this.formatNumber(this.currentScoreValue);
+        this.updateUI();
     }
-    
-    // تحديث واجهة المستخدم
+
     updateUI() {
-        document.getElementById('wrongAnswersCount').textContent = `${this.gameState.wrongAnswers} / 3`;
-        document.getElementById('currentTitle').textContent = this.gameState.currentQuestion > 0 
-            ? this.PRIZES[this.gameState.currentQuestion - 1].title 
-            : "لا يوجد";
-        
+        document.getElementById('wrongAnswersCount').textContent = `${this.gameState.wrongAnswers} / ${this.MAX_WRONG_ANSWERS}`;
+        const currentTitle = this.gameState.currentQuestion > 0 ? this.PRIZES[this.gameState.currentQuestion - 1].title : "لا يوجد";
+        document.getElementById('currentTitle').textContent = currentTitle;
+
         this.updatePrizesList();
+
         this.domElements.helperBtns.forEach(btn => {
             const type = btn.dataset.type;
-            if (!this.gameState.helpersUsed[type] && this.currentScoreValue >= this.HELPER_COSTS[type]) {
-                btn.disabled = false;
-            } else {
-                btn.disabled = true;
-            }
+            btn.disabled = this.gameState.helpersUsed[type] || this.currentScoreValue < this.HELPER_COSTS[type];
         });
     }
-    
-    // إنشاء قائمة الجوائز
+
     generatePrizesList() {
         this.domElements.prizesList.innerHTML = '';
-        
         [...this.PRIZES].reverse().forEach((prize, index) => {
             const li = document.createElement('li');
             li.innerHTML = `<span>${this.PRIZES.length - index}. ${prize.title}</span> <strong>${this.formatNumber(prize.points)}</strong>`;
             this.domElements.prizesList.appendChild(li);
         });
     }
-    
-    // تحديث قائمة الجوائز
+
     updatePrizesList() {
         const items = this.domElements.prizesList.querySelectorAll('li');
-        
         items.forEach((item, index) => {
             item.classList.remove('current', 'past');
             const prizeIndex = this.PRIZES.length - 1 - index;
-            
             if (prizeIndex === this.gameState.currentQuestion) {
                 item.classList.add('current');
             } else if (prizeIndex < this.gameState.currentQuestion) {
@@ -572,52 +399,28 @@ class QuizGame {
             }
         });
     }
-    
-    // عرض لوحة الصدارة
+
     async displayLeaderboard() {
-        this.playSound('click');
         this.showScreen('leaderboard');
-        
         const contentDiv = document.getElementById('leaderboardContent');
         contentDiv.innerHTML = '<div class="spinner"></div>';
-        
+
         try {
             const response = await this.apiCall({ action: 'getLeaderboard' });
-    
             if (response && response.success && response.leaderboard) {
                 let tableHTML = '<p>لوحة الصدارة فارغة حاليًا!</p>';
-                
                 if (response.leaderboard.length > 0) {
-                    tableHTML = `
-                        <table class="leaderboard-table">
+                    tableHTML = `<table class="leaderboard-table">
+                        <tr><th>الترتيب</th><th>الاسم</th><th>النقاط</th><th>اللقب</th></tr>
+                        ${response.leaderboard.map(row => `
                             <tr>
-                                <th>الترتيب</th>
-                                <th>الاسم</th>
-                                <th>النقاط</th>
-                                <th>اللقب</th>
-                                <th>التاريخ</th>
-                            </tr>
-                    `;
-                    
-                    const medals = ['🥇', '🥈', '🥉'];
-                    
-                    response.leaderboard.forEach(row => {
-                        const rank = medals[row[0] - 1] || row[0];
-                        const date = new Date(row[4]).toLocaleDateString('ar-EG');
-                        tableHTML += `
-                            <tr>
-                                <td>${rank}</td>
+                                <td>${['🥇', '🥈', '🥉'][row[0] - 1] || row[0]}</td>
                                 <td>${row[1]}</td>
                                 <td>${this.formatNumber(row[2])}</td>
                                 <td>${row[3]}</td>
-                                <td>${date}</td>
-                            </tr>
-                        `;
-                    });
-                    
-                    tableHTML += '</table>';
+                            </tr>`).join('')}
+                    </table>`;
                 }
-                
                 contentDiv.innerHTML = tableHTML;
             } else {
                 contentDiv.innerHTML = '<p>حدث خطأ في تحميل لوحة الصدارة.</p>';
@@ -628,209 +431,147 @@ class QuizGame {
         }
     }
     
-    // المشاركة على X
-    shareOnX() {
-        this.playSound('click');
-        const shareText = this.getShareText();
-        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
-        window.open(url, '_blank');
-    }
-    
-    // المشاركة على إنستغرام
-    shareOnInstagram() {
-        this.playSound('click');
-        
-        const shareText = this.getShareText();
-        navigator.clipboard.writeText(shareText)
-            .then(() => {
-                this.showToast("تم نسخ النتيجة! يمكنك الآن لصقها في قصة إنستغرام.", "success");
-                
-                // محاولة فتح إنستغرام مباشرة (إن أمكن)
-                setTimeout(() => {
-                    window.open('instagram://story', '_blank');
-                }, 1000);
-            })
-            .catch((err) => {
-                console.error("Failed to copy text: ", err);
-                this.showToast("فشل نسخ النتيجة.", "error");
-            });
-    }
-    
-    // نص المشاركة
+    // (مُعدل) getShareText لنص المشاركة
     getShareText() {
-        const minutes = Math.floor((new Date() - new Date(this.gameState.startTime)) / 60000);
-        const seconds = Math.round(((new Date() - new Date(this.gameState.startTime)) % 60000) / 1000);
-        
-        return `✨ نتائجي في مسابقة "من سيربح اللقب" ✨
-الاسم: ${this.gameState.name}
-اللقب: ${this.gameState.finalTitle}
-النقاط: ${this.formatNumber(this.gameState.finalScore)}
-المدة: ${minutes} دقائق و ${seconds} ثانية
-🔗 جرب حظك أنت أيضاً: https://abuqusayms.github.io/Tbate-Game/`;
+        const { name, title, score, time } = this.gameState.finalStats;
+        return `✨ نتائجي في مسابقة "من سيربح اللقب" ✨\n` +
+               `الاسم: ${name}\n` +
+               `اللقب: ${title}\n` +
+               `النقاط: ${this.formatNumber(score)}\n` +
+               `المدة: ${time}\n\n` +
+               `🔗 جرب حظك أنت أيضاً: https://abuqusayms.github.io/Tbate-Game/`;
     }
     
-    // إعادة تعيين حالة اللعبة
+    shareOnX() {
+        const text = encodeURIComponent(this.getShareText());
+        window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+    }
+
+    shareOnInstagram() {
+        navigator.clipboard.writeText(this.getShareText())
+            .then(() => this.showToast("تم نسخ النتيجة! الصقها في قصتك أو رسائلك على إنستغرام.", "success"))
+            .catch(() => this.showToast("فشل نسخ النتيجة.", "error"));
+    }
+
     resetGameState(attemptId) {
-        this.gameState.attemptId = attemptId;
-        this.gameState.currentQuestion = 0;
-        this.gameState.wrongAnswers = 0;
-        this.gameState.startTime = new Date().toISOString();
-        this.gameState.helpersUsed = {
-            fiftyFifty: false,
-            freezeTime: false,
-            changeQuestion: false
+        this.gameState = {
+            deviceId: this.getDeviceId(),
+            attemptId: attemptId,
+            name: this.gameState.name,
+            avatar: this.gameState.avatar,
+            currentQuestion: 0,
+            wrongAnswers: 0,
+            startTime: new Date().toISOString(),
+            helpersUsed: { fiftyFifty: false, changeQuestion: false },
+            shuffledQuestions: [],
         };
-        this.gameState.shuffledQuestions = []; // سيتم تعبئتها عند الحاجة
-        this.gameState.isAnswering = false; // إعادة تعيين حالة الإجابة
-        
         this.updateScore(0);
     }
-    
-    // إعداد واجهة اللعبة
+
     setupGameUI() {
         document.getElementById('playerAvatar').src = this.gameState.avatar;
-        document.getElementById('playerAvatar').alt = `صورة ${this.gameState.name}`;
         document.getElementById('playerName').textContent = this.gameState.name;
     }
-    
-    // تبديل المظهر
+
     toggleTheme() {
-        this.playSound('click');
         const newTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
         document.body.dataset.theme = newTheme;
         localStorage.setItem('theme', newTheme);
-        
         this.domElements.themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
-        this.domElements.themeToggleBtn.setAttribute('aria-label', 
-            newTheme === 'dark' ? 'تبديل إلى الوضع الداكن' : 'تبديل إلى الوضع الفاتح');
     }
-    
-    // تحميل المظهر
+
     loadTheme() {
         const savedTheme = localStorage.getItem('theme') || 'dark';
         document.body.dataset.theme = savedTheme;
-        
         this.domElements.themeToggleBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
-        this.domElements.themeToggleBtn.setAttribute('aria-label', 
-            savedTheme === 'dark' ? 'تبديل إلى الوضع الداكن' : 'تبديل إلى الوضع الفاتح');
     }
-    
-    // تبديل الشريط الجانبي
-    toggleSidebar() {
-        this.playSound('click');
-        this.domElements.sidebar.classList.toggle('open');
-        this.domElements.sidebarOverlay.classList.toggle('active');
-        
-        const isOpen = this.domElements.sidebar.classList.contains('open');
-        this.domElements.openSidebarBtn.setAttribute('aria-expanded', isOpen);
+
+    toggleSidebar(open) {
+        this.domElements.sidebar.classList.toggle('open', open);
+        this.domElements.sidebarOverlay.classList.toggle('active', open);
+        document.querySelector('.open-sidebar-btn').setAttribute('aria-expanded', open);
     }
-    
-    // تشغيل الصوت
+
     playSound(sound) {
-        if (this.domElements.sounds[sound]) {
-            this.domElements.sounds[sound].currentTime = 0;
-            
-            this.domElements.sounds[sound].play().catch(error => {
-                console.warn(`Failed to play sound: ${error}`);
-            });
+        const soundElement = this.domElements.sounds[sound];
+        if (soundElement) {
+            soundElement.currentTime = 0;
+            soundElement.play().catch(e => console.warn(`Sound play failed: ${e.message}`));
         }
     }
     
-    // عرض شاشة
+    // (مُعدل) showScreen لإصلاح خطأ aria
     showScreen(screenName) {
+        if (document.activeElement) document.activeElement.blur(); // (جديد) إزالة التركيز
+        
         Object.values(this.domElements.screens).forEach(screen => {
             screen.classList.remove('active');
-            screen.inert = true;
+            screen.setAttribute('aria-hidden', 'true');
         });
-        
-        if (this.domElements.screens[screenName]) {
-            this.domElements.screens[screenName].classList.add('active');
-            this.domElements.screens[screenName].inert = false;
+        const activeScreen = this.domElements.screens[screenName];
+        if (activeScreen) {
+            activeScreen.classList.add('active');
+            activeScreen.setAttribute('aria-hidden', 'false');
+            // نقل التركيز إلى أول عنصر تفاعلي لتحسين الوصولية
+            const firstFocusable = activeScreen.querySelector('button, [href], input, select, textarea');
+            if(firstFocusable) firstFocusable.focus();
         }
     }
-    
-    // إخفاء شاشة التحميل
+
     hideLoader() {
         this.domElements.screens.loader.classList.remove('active');
-        this.domElements.screens.loader.inert = true;
     }
-    
-    // بدء تحميل السؤال
-    startLoadingQuestion() {
-        this.domElements.questionText.style.display = 'none';
-        this.domElements.optionsGrid.style.display = 'none';
-        document.querySelector('.spinner-container').style.display = 'flex';
-    }
-    
-    // إنهاء تحميل السؤال
-    stopLoadingQuestion() {
-        this.domElements.questionText.style.display = 'block';
-        this.domElements.optionsGrid.style.display = 'grid';
-        document.querySelector('.spinner-container').style.display = 'none';
-    }
-    
-    // عرض الإشعارات
+
     showToast(message, type = 'info') {
+        const toastContainer = document.getElementById('toast-container');
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
         toast.textContent = message;
         toast.setAttribute('role', 'alert');
-        
-        const toastContainer = document.getElementById('toast-container');
         toastContainer.appendChild(toast);
-        
-        // إظهار Toast بanimation
-        setTimeout(() => toast.classList.add('show'), 10);
-        
-        // إخفاء Toast بعد 3 ثوان
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
+        setTimeout(() => toast.remove(), 3000);
     }
-    
-    // استدعاء API
+
     async apiCall(payload) {
         try {
             const response = await fetch(this.API_URL, {
                 method: 'POST',
                 mode: 'cors',
-                headers: { 
-                    'Content-Type': 'text/plain;charset=utf-8' 
-                },
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(payload)
             });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return await response.json();
         } catch (error) {
             console.error('API Error:', error);
-            this.showToast("حدث خطأ في الاتصال بالخادم.", "error");
-            return { success: false, error: error.message };
+            throw error;
         }
     }
-    
-    // الحصول على معرف الجهاز
+
     getDeviceId() {
         let id = localStorage.getItem('deviceId');
-        
         if (!id) {
             id = `id_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
             localStorage.setItem('deviceId', id);
         }
-        
         return id;
     }
     
-    // تنسيق الأرقام
+    // (جديد) تنسيق الوقت
+    formatTime(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = Math.floor(totalSeconds % 60);
+        if (minutes > 0) {
+            return `${minutes} دقيقة و ${seconds} ثانية`;
+        }
+        return `${seconds} ثانية`;
+    }
+
     formatNumber(num) {
         return new Intl.NumberFormat('ar-EG').format(num);
     }
 }
-// بدء التطبيق عندما تكون الصفحة جاهزة
+
 document.addEventListener('DOMContentLoaded', () => {
     new QuizGame();
 });
