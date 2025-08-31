@@ -77,16 +77,12 @@ class QuizGame {
                 start: document.getElementById('startScreen'),
                 avatar: document.getElementById('avatarScreen'),
                 nameEntry: document.getElementById('nameEntry'),
-                welcome: document.getElementById('welcomeScreen'), // (جديد)
+                welcome: document.getElementById('welcomeScreen'),
                 game: document.getElementById('gameContainer'),
                 end: document.getElementById('endScreen'),
                 leaderboard: document.getElementById('leaderboardScreen'),
             },
-            sounds: {
-                correct: document.getElementById('correct-sound'),
-                wrong: document.getElementById('wrong-sound'),
-                click: document.getElementById('click-sound'),
-            },
+            // تم حذف كائن الأصوات من هنا
             sidebar: document.querySelector('.sidebar'),
             sidebarOverlay: document.querySelector('.sidebar-overlay'),
             questionText: document.getElementById('questionText'),
@@ -98,58 +94,48 @@ class QuizGame {
             nameError: document.getElementById('nameError'),
             confirmAvatarBtn: document.getElementById('confirmAvatarBtn'),
             themeToggleBtn: document.querySelector('.theme-toggle-btn'),
-            welcomeMessage: document.getElementById('welcomeMessage'), // (جديد)
+            welcomeMessage: document.getElementById('welcomeMessage'),
         };
     }
 
     bindEventListeners() {
         document.getElementById('startPlayBtn').addEventListener('click', () => {
-            this.playSound('click');
             this.showScreen('avatar');
         });
 
         this.domElements.confirmAvatarBtn.addEventListener('click', () => {
-            this.playSound('click');
             this.showScreen('nameEntry');
         });
 
         document.getElementById('confirmNameBtn').addEventListener('click', () => {
-            this.playSound('click');
             this.showWelcomeScreen();
         });
 
         document.getElementById('welcomeConfirmBtn').addEventListener('click', () => {
-            this.playSound('click');
             this.startGame();
         });
 
         document.getElementById('showLeaderboardBtn').addEventListener('click', () => {
-            this.playSound('click');
             this.displayLeaderboard();
         });
 
         document.getElementById('backToStartBtn').addEventListener('click', () => {
-            this.playSound('click');
             this.showScreen('start');
         });
 
         this.domElements.themeToggleBtn.addEventListener('click', () => {
-            this.playSound('click');
             this.toggleTheme();
         });
 
         document.getElementById('restartBtn').addEventListener('click', () => {
-            this.playSound('click');
             window.location.reload();
         });
         
         document.querySelector('.open-sidebar-btn').addEventListener('click', () => {
-            this.playSound('click');
             this.toggleSidebar(true);
         });
         
         document.querySelector('.close-sidebar-btn').addEventListener('click', () => {
-            this.playSound('click');
             this.toggleSidebar(false);
         });
 
@@ -158,10 +144,8 @@ class QuizGame {
         document.getElementById('shareXBtn').addEventListener('click', () => this.shareOnX());
         document.getElementById('shareInstagramBtn').addEventListener('click', () => this.shareOnInstagram());
         this.domElements.nameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.showWelcomeScreen(); });
-        
-        // تم حذف الكود العام الذي كان يسبب المشكلة من هنا
     }
-
+    
     populateAvatarGrid() {
         const avatarGrid = document.querySelector('.avatar-grid');
         avatarGrid.innerHTML = '';
@@ -171,7 +155,7 @@ class QuizGame {
             img.alt = `صورة رمزية ${i}`;
             img.classList.add('avatar-option');
             img.addEventListener('click', () => {
-                this.playSound('click');
+                // تم حذف سطر الصوت من هنا
                 document.querySelectorAll('.avatar-option.selected').forEach(el => el.classList.remove('selected'));
                 img.classList.add('selected');
                 this.gameState.avatar = img.src;
@@ -258,7 +242,7 @@ class QuizGame {
     }
 
     checkAnswer(selectedIndex, selectedButton) {
-        if (this.answerSubmitted) return; // (جديد) منع الإجابات المتكررة
+        if (this.answerSubmitted) return;
         this.answerSubmitted = true;
         
         clearInterval(this.timerInterval);
@@ -268,13 +252,13 @@ class QuizGame {
         const isCorrect = (currentQuestion.correct === selectedIndex);
 
         if (isCorrect) {
-            this.playSound('correct');
+            // تم حذف سطر الصوت من هنا
             selectedButton.classList.add('correct');
             const pointsEarned = this.PRIZES[this.gameState.currentQuestion]?.points || 0;
             this.updateScore(this.currentScoreValue + pointsEarned);
             this.gameState.currentQuestion++;
         } else {
-            this.playSound('wrong');
+            // تم حذف سطر الصوت من هنا
             selectedButton.classList.add('wrong');
             document.querySelector(`.option-btn[data-index='${currentQuestion.correct}']`).classList.add('correct');
             this.gameState.wrongAnswers++;
@@ -374,16 +358,15 @@ class QuizGame {
         const timerDisplay = document.querySelector('.timer-text');
 
         this.timerInterval = setInterval(() => {
-            if (this.isTimeFrozen) return; // توقف عن العد إذا كان الوقت مجمداً
+            if (this.isTimeFrozen) return;
 
             this.gameState.timeLeft--;
             timerDisplay.textContent = this.gameState.timeLeft;
             timerBar.style.width = `${(this.gameState.timeLeft / this.QUESTION_TIME) * 100}%`;
 
             if (this.gameState.timeLeft <= 0) {
-                // ... بقية الدالة كما هي ...
                 clearInterval(this.timerInterval);
-                this.playSound('wrong');
+                // تم حذف سطر الصوت من هنا
                 this.showToast("انتهى الوقت!", "error");
                 this.gameState.wrongAnswers++;
                 document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
