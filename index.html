@@ -3,70 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="description" content="لعبة مسابقة من سيربح اللقب - اختبر معلوماتك واربح الجوائز">
-    <title>من سيربح اللقب؟ - لعبة المسابقة التفاعلية</title>
+    <title>من سيربح اللقب؟</title>
     
-    <!-- تحميل مسبق للموارد الهامة لتحسين الأداء -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="preload" as="style" href="style.css">
-    <link rel="preload" as="script" href="script.js">
     
     <link rel="stylesheet" href="style.css">
-    
-    <!-- بيانات منظمة لتحسين محركات البحث (SEO) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "VideoGame",
-      "name": "من سيربح اللقب؟",
-      "description": "لعبة مسابقة تفاعلية لاختبار المعلومات العامة والفوز بالجوائز",
-      "applicationCategory": "GameApplication",
-      "operatingSystem": "Web Browser",
-      "author": {
-        "@type": "Person",
-        "name": "القارئ الوحيد"
-      }
-    }
-    </script>
 </head>
 <body data-theme="dark">
-    <!-- حاوية الإشعارات المنبثقة -->
-    <div id="toast-container" aria-live="assertive"></div>
 
-    <!-- الحاوية الرئيسية التي سيعمل بداخلها JavaScript لعرض الشاشات -->
-    <div id="main-content">
-        <!-- شاشة التحميل الأولية -->
-        <div id="loader" class="screen active" role="status" aria-label="جاري التحميل">
-            <div class="spinner"></div>
-        </div>
-    </div>
+    <div id="toast-container"></div>
     
-    <!-- الشريط الجانبي للجوائز (يتم التحكم به عبر JS) -->
-    <aside class="sidebar" id="prizesSidebar" aria-hidden="true">
+    <!-- هذه الحاوية الرئيسية التي سيعمل عليها JavaScript -->
+    <div id="main-content"></div>
+
+    <!-- الشريط الجانبي منفصل ليتم التحكم به بشكل أفضل -->
+    <aside class="sidebar" id="prizesSidebar">
         <div class="sidebar-header">
             <h3>الجوائز</h3>
             <button class="close-sidebar-btn" aria-label="إغلاق قائمة الجوائز">&times;</button>
         </div>
-        <div class="sidebar-content">
-            <ul class="prizes-list"></ul>
-        </div>
+        <ul class="prizes-list"></ul>
     </aside>
-    <div class="sidebar-overlay" aria-hidden="true"></div>
+    <div class="sidebar-overlay"></div>
 
-    <!-- عناصر الصوت (يتم التحكم بها عبر JS) -->
-    <audio id="correct-sound" preload="auto">
-        <source src="assets/sounds/correct.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="wrong-sound" preload="auto">
-        <source src="assets/sounds/wrong.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="click-sound" preload="auto">
-        <source src="assets/sounds/click.mp3" type="audio/mpeg">
-    </audio>
+    <!-- عناصر الصوت مخفية -->
+    <audio id="correct-sound" src="assets/sounds/correct.mp3" preload="auto"></audio>
+    <audio id="wrong-sound" src="assets/sounds/wrong.mp3" preload="auto"></audio>
+    <audio id="click-sound" src="assets/sounds/click.mp3" preload="auto"></audio>
 
-    <!-- تحميل ملف JavaScript في نهاية الصفحة لتحسين سرعة العرض -->
-    <script src="script.js" defer></script>
+    <script src="script.js"></script>
 </body>
 </html>
+
