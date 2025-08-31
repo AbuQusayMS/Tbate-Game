@@ -252,19 +252,21 @@ class QuizGame {
         const isCorrect = (currentQuestion.correct === selectedIndex);
 
         if (isCorrect) {
-            // تم حذف سطر الصوت من هنا
             selectedButton.classList.add('correct');
             const pointsEarned = this.PRIZES[this.gameState.currentQuestion]?.points || 0;
             this.updateScore(this.currentScoreValue + pointsEarned);
-            this.gameState.currentQuestion++;
         } else {
-            // تم حذف سطر الصوت من هنا
             selectedButton.classList.add('wrong');
             document.querySelector(`.option-btn[data-index='${currentQuestion.correct}']`).classList.add('correct');
             this.gameState.wrongAnswers++;
         }
+        
+        // (هذا هو التصحيح) ننقل السؤال التالي في كل الحالات
+        this.gameState.currentQuestion++;
+        
         this.updateUI();
 
+        // الآن نتحقق مما إذا انتهت اللعبة
         const isGameOver = this.gameState.wrongAnswers >= this.MAX_WRONG_ANSWERS || this.gameState.currentQuestion >= this.QUESTIONS.length;
         
         setTimeout(() => {
