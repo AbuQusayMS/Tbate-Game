@@ -1,13 +1,13 @@
 class QuizGame {
     constructor() {
-        this.API_URL = "https://script.google.com/macros/s/AKfycbws3UCPa7R_71UpmIg_K9HKKcHP-2phpyByCd12j30xHyB3tV0USRAutElkseNsi7gi/exec";
-        this.QUESTION_TIME = 60; // تم تعديل الوقت إلى 60 ثانية كما في HTML
-        this.TOTAL_AVATARS = 16; // تم تعديل العدد ليتوافق مع طلب 16 أيقونة
+        this.API_URL = "https://script.google.com/macros/s/AKfycbwS16Exl-EFOufB-ptfDDFepIzZJBcqCSXgCd7dt8DY5RhPQyVW_XkPyynAxN9Av7MA/exec";
+        this.QUESTION_TIME = 60;
+        this.TOTAL_AVATARS = 16;
         this.LIMIT_PER_DAY = 5;
         this.MAX_WRONG_ANSWERS = 3;
 
-        // (مُعدل) بنك الأسئلة ليحتوي على 16 سؤالاً
-        this.QUESTIONS = [
+        // (مُعدل) فصل السؤال الاحتياطي
+        const allQuestions = [
             { q: "ما هي عاصمة مصر؟", options: ["الإسكندرية", "القاهرة", "الجيزة", "الأقصر"], correct: 1 },
             { q: "ما هو لون الموز عندما ينضج؟", options: ["أحمر", "أصفر", "أخضر", "أزرق"], correct: 1 },
             { q: "ما هو المشروب الأكثر شيوعاً مع الطعام؟", options: ["شاي", "ماء", "قهوة", "لبن"], correct: 1 },
@@ -25,48 +25,46 @@ class QuizGame {
             { q: "ما هو الشهر الذي يأتي بعد شهر رمضان؟", options: ["محرم", "شوال", "صفر", "رجب"], correct: 1 },
             { q: "(سؤال احتياطي) أي حيوان يُعرف بأنه 'ملك الغابة'؟", options: ["النمر", "الفيل", "الأسد", "الذئب"], correct: 2 }
         ];
+        
+        this.backupQuestion = allQuestions.pop();
+        this.QUESTIONS = allQuestions;
 
-        // (مُعدل) قائمة الألقاب لتصبح 16
         this.PRIZES = [
-            { points: 100, title: "مشارك واعد" },
-            { points: 200, title: "مستكشف المعرفة" },
-            { points: 300, title: "باحث مجتهد" },
-            { points: 500, title: "مثقف مبتدئ" },
-            { points: 1000, title: "نجم المعرفة البرونزي" },
-            { points: 2000, title: "صاحب الفضول" },
-            { points: 4000, title: "متعمق بالحقائق" },
-            { points: 8000, title: "خبير المعلومات" },
-            { points: 16000, title: "نجم المعرفة الفضي" },
-            { points: 32000, title: "سيد الأسئلة" },
-            { points: 64000, title: "عقل متقد" },
-            { points: 125000, title: "عبقري عصره" },
-            { points: 250000, title: "حكيم المعرفة" },
-            { points: 500000, title: "نجم المسابقة" },
-            { points: 1000000, title: "أسطورة المعرفة" },
-            { points: 2000000, title: "نجم المعرفة الذهبي" }
+            { points: 100, title: "مشارك واعد" }, { points: 200, title: "مستكشف المعرفة" },
+            { points: 300, title: "باحث مجتهد" }, { points: 500, title: "مثقف مبتدئ" },
+            { points: 1000, title: "نجم المعرفة البرونزي" }, { points: 2000, title: "صاحب الفضول" },
+            { points: 4000, title: "متعمق بالحقائق" }, { points: 8000, title: "خبير المعلومات" },
+            { points: 16000, title: "نجم المعرفة الفضي" }, { points: 32000, title: "سيد الأسئلة" },
+            { points: 64000, title: "عقل متقد" }, { points: 125000, title: "عبقري عصره" },
+            { points: 250000, title: "حكيم المعرفة" }, { points: 500000, title: "نجم المسابقة" },
+            { points: 1000000, title: "أسطورة المعرفة" }
         ];
-
-        // (مُعدل) تكاليف المساعدات
+        
         this.HELPER_COSTS = {
             fiftyFifty: 500,
+            freezeTime: 750,
             changeQuestion: 1000
         };
 
-        // حالة اللعبة
+        // --- (هذا هو التصحيح) ---
+        // كل هذه الأسطر يجب أن تكون هنا بالداخل
+        this.isTimeFrozen = false;
         this.gameState = {};
         this.currentScoreValue = 0;
         this.timerInterval = null;
         this.answerSubmitted = false;
-
         this.domElements = {};
+
+        // هذا السطر يستدعي الدالة init ويجب أن يكون آخر شيء
         this.init();
-    }
+    } // <-- نهاية الـ constructor
 
     init() {
         this.cacheDomElements();
         this.bindEventListeners();
         this.populateAvatarGrid();
         this.generatePrizesList();
+        this.displayHelperCosts(); // (جديد) عرض تكاليف المساعدات
         this.loadTheme();
         this.showScreen('start');
         this.hideLoader();
@@ -289,7 +287,7 @@ class QuizGame {
         }).catch(error => console.error("Failed to save score:", error));
     }
     
-    // (مُعدل) useHelper لتفعيل الميزات
+    // (مُعدل بالكامل) لتفعيل كل الميزات بشكل صحيح
     useHelper(event) {
         const btn = event.currentTarget;
         const type = btn.dataset.type;
@@ -311,21 +309,27 @@ class QuizGame {
             const options = Array.from(document.querySelectorAll('.option-btn'));
             let wrongOptions = options.filter(opt => parseInt(opt.dataset.index) !== correctIndex);
             
-            // إخفاء إجابتين خاطئتين عشوائياً
             wrongOptions.sort(() => 0.5 - Math.random());
             wrongOptions[0].classList.add('hidden');
             wrongOptions[1].classList.add('hidden');
+
+        } else if (type === 'freezeTime') {
+            this.isTimeFrozen = true;
+            document.querySelector('.timer-bar').classList.add('frozen'); // لإعطاء لون مختلف
+            setTimeout(() => {
+                this.isTimeFrozen = false;
+                document.querySelector('.timer-bar').classList.remove('frozen');
+            }, 10000); // 10 ثوان
+
         } else if (type === 'changeQuestion') {
-            if (this.gameState.currentQuestion < this.QUESTIONS.length - 1) {
-                this.gameState.currentQuestion++; // تخطي السؤال الحالي
-                this.fetchQuestion();
-            } else {
-                 this.showToast("لا يمكن تغيير السؤال الأخير!", "warning");
-            }
+            // استبدال السؤال الحالي بالاحتياطي
+            this.gameState.shuffledQuestions[this.gameState.currentQuestion] = this.backupQuestion;
+            this.fetchQuestion(); // إعادة تحميل السؤال
         }
         this.updateUI();
     }
 
+    // (مُعدل) لدعم ميزة تجميد الوقت
     startTimer() {
         clearInterval(this.timerInterval);
         this.gameState.timeLeft = this.QUESTION_TIME;
@@ -333,11 +337,14 @@ class QuizGame {
         const timerDisplay = document.querySelector('.timer-text');
 
         this.timerInterval = setInterval(() => {
+            if (this.isTimeFrozen) return; // توقف عن العد إذا كان الوقت مجمداً
+
             this.gameState.timeLeft--;
             timerDisplay.textContent = this.gameState.timeLeft;
             timerBar.style.width = `${(this.gameState.timeLeft / this.QUESTION_TIME) * 100}%`;
 
             if (this.gameState.timeLeft <= 0) {
+                // ... بقية الدالة كما هي ...
                 clearInterval(this.timerInterval);
                 this.playSound('wrong');
                 this.showToast("انتهى الوقت!", "error");
@@ -486,17 +493,20 @@ class QuizGame {
         this.domElements.themeToggleBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
     }
 
+    // (مُعدل) لإصلاح خطأ aria-hidden عبر إدارة التركيز
     toggleSidebar(open) {
-        this.domElements.sidebar.classList.toggle('open', open);
-        this.domElements.sidebarOverlay.classList.toggle('active', open);
-        document.querySelector('.open-sidebar-btn').setAttribute('aria-expanded', open);
-    }
-
-    playSound(sound) {
-        const soundElement = this.domElements.sounds[sound];
-        if (soundElement) {
-            soundElement.currentTime = 0;
-            soundElement.play().catch(e => console.warn(`Sound play failed: ${e.message}`));
+        if (open) {
+            this.domElements.sidebar.classList.add('open');
+            this.domElements.sidebarOverlay.classList.add('active');
+            document.querySelector('.open-sidebar-btn').setAttribute('aria-expanded', 'true');
+            // عند الفتح، انقل التركيز إلى زر الإغلاق
+            setTimeout(() => document.querySelector('.close-sidebar-btn').focus(), 10);
+        } else {
+            this.domElements.sidebar.classList.remove('open');
+            this.domElements.sidebarOverlay.classList.remove('active');
+            document.querySelector('.open-sidebar-btn').setAttribute('aria-expanded', 'false');
+            // عند الإغلاق، أعد التركيز إلى الزر الذي فتح القائمة
+            document.querySelector('.open-sidebar-btn').focus();
         }
     }
     
@@ -569,6 +579,20 @@ class QuizGame {
 
     formatNumber(num) {
         return new Intl.NumberFormat('ar-EG').format(num);
+    }
+
+// (جديد) دالة لعرض تكاليف المساعدات
+    displayHelperCosts() {
+        this.domElements.helperBtns.forEach(btn => {
+            const type = btn.dataset.type;
+            const cost = this.HELPER_COSTS[type];
+            if (cost) {
+                const costEl = btn.querySelector('.helper-cost');
+                if (costEl) {
+                    costEl.textContent = `(${cost})`;
+                }
+            }
+        });
     }
 }
 
