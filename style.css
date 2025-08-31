@@ -453,12 +453,14 @@ input[type="text"]:focus {
   color: var(--gold-color);
 }
 
-/* (مُعدل) تنسيق المساعدات */
+/* (مُعدل) تنسيق المساعدات لإعادة الشبكة الثلاثية */
 .helpers {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* إعادة الشبكة إلى 3 أعمدة */
   gap: var(--space-3);
 }
+
+/* (مُعدل) زر المساعدة ليشمل التكلفة */
 .helper-btn {
   padding: var(--space-2);
   background-color: var(--secondary-color);
@@ -467,22 +469,37 @@ input[type="text"]:focus {
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: all var(--transition-fast);
+  display: flex; /* لتوسيط المحتوى */
+  flex-direction: column; /* لترتيب الأيقونة فوق التكلفة */
+  align-items: center; /* توسيط أفقي */
+  justify-content: center; /* توسيط عمودي */
+  font-size: 1.1rem; /* تكبير الأيقونة والنص */
+}
+
+/* (جديد) تنسيق تكلفة المساعدة */
+.helper-cost {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--gold-color);
+  margin-top: var(--space-1);
 }
 .helper-btn:not(:disabled):hover {
   background-color: var(--accent-color);
   color: var(--color-white);
 }
 
-/* (مُعدل) المؤقت */
+/* (مُعدل) المؤقت لضمان ظهوره على الهاتف */
 .timer-container {
-  width: 100%;
-  background-color: var(--secondary-color);
-  border-radius: var(--radius-full);
-  margin: var(--space-4) 0;
-  position: relative;
-  height: 2rem;
-  overflow: hidden;
-  border: 2px solid var(--border-color);
+    width: 100%;
+    background-color: var(--secondary-color);
+    border-radius: var(--radius-full);
+    margin: var(--space-4) 0;
+    position: relative;
+    height: 2rem;
+    min-height: 2rem; /* ضمان عدم انكماش الشريط */
+    flex-shrink: 0; /* منع الانكماش داخل حاوية flex */
+    overflow: hidden;
+    border: 2px solid var(--border-color);
 }
 .timer-bar {
   height: 100%;
