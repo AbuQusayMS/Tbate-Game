@@ -6,284 +6,67 @@
     <meta name="description" content="لعبة مسابقة من سيربح اللقب - اختبر معلوماتك واربح الجوائز">
     <title>من سيربح اللقب؟ - لعبة المسابقة التفاعلية</title>
     
-    <!-- Preload الخطوط الرئيسية -->
+    <!-- تحميل مسبق للموارد الهامة لتحسين الأداء -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    
-    <!-- Preload العناصر الهامة -->
     <link rel="preload" as="style" href="style.css">
     <link rel="preload" as="script" href="script.js">
     
     <link rel="stylesheet" href="style.css">
     
-    <!-- Structured data for SEO -->
+    <!-- بيانات منظمة لتحسين محركات البحث (SEO) -->
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "VideoGame",
-        "name": "من سيربح اللقب؟",
-        "description": "لعبة مسابقة تفاعلية لاختبار المعلومات العامة والفوز بالجوائز",
-        "applicationCategory": "GameApplication",
-        "operatingSystem": "Web Browser",
-        "author": {
-            "@type": "Organization",
-            "name": "مسابقة المعرفة"
-        }
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "من سيربح اللقب؟",
+      "description": "لعبة مسابقة تفاعلية لاختبار المعلومات العامة والفوز بالجوائز",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Web Browser",
+      "author": {
+        "@type": "Person",
+        "name": "القارئ الوحيد"
+      }
     }
     </script>
 </head>
-<body data-theme="dark" aria-live="polite">
-    <!-- نظام الإشعارات -->
-    <div id="toast-container" class="toast-container" aria-live="assertive"></div>
+<body data-theme="dark">
+    <!-- حاوية الإشعارات المنبثقة -->
+    <div id="toast-container" aria-live="assertive"></div>
 
-    <!-- شاشة التحميل -->
-    <div id="loader" class="screen active" role="status" aria-label="جاري التحميل">
-        <div class="spinner" aria-hidden="true"></div>
-        <span class="sr-only">جاري تحميل اللعبة، الرجاء الانتظار...</span>
-    </div>
-
-    <!-- شاشة البداية -->
-    <div id="startScreen" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h1 class="game-title">
-                    <span aria-hidden="true">👑</span>
-                    من سيربح اللقب؟
-                    <span class="sr-only">لعبة مسابقة المعلومات</span>
-                </h1>
-            </header>
-            
-            <div class="button-group">
-                <button id="startPlayBtn" class="btn-main">
-                    ابدأ اللعب
-                </button>
-                <button id="showLeaderboardBtn" class="btn-secondary">
-                    لوحة الصدارة
-                </button>
-            </div>
+    <!-- الحاوية الرئيسية التي سيعمل بداخلها JavaScript لعرض الشاشات -->
+    <div id="main-content">
+        <!-- شاشة التحميل الأولية -->
+        <div id="loader" class="screen active" role="status" aria-label="جاري التحميل">
+            <div class="spinner"></div>
         </div>
     </div>
     
-    <!-- شاشة اختيار الصورة الرمزية -->
-    <div id="avatarScreen" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h2>اختر صورة رمزية</h2>
-            </header>
-            
-            <div class="avatar-grid" role="group" aria-label="خيارات الصور الرمزية"></div>
-            
-            <div class="button-group">
-                <button id="confirmAvatarBtn" class="btn-main" disabled>
-                    التالي
-                    <span class="sr-only">اختيار الصورة الرمزية المحددة</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- شاشة إدخال الاسم -->
-    <div id="nameEntry" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h2>أدخل اسمك للمتابعة</h2>
-            </header>
-            
-            <div class="input-group">
-                <label for="nameInput" class="sr-only">اسم اللاعب</label>
-                <input 
-                    type="text" 
-                    id="nameInput" 
-                    placeholder="اكتب اسمك هنا" 
-                    maxlength="25" 
-                    autocomplete="name"
-                    aria-required="true"
-                >
-                <div id="nameError" class="error-message" aria-live="polite"></div>
-            </div>
-            
-            <div class="button-group">
-                <button id="confirmNameBtn" class="btn-main">
-                    تأكيد وبدء اللعب
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- الشريط الجانبي للجوائز -->
-    <aside class="sidebar" id="prizesSidebar" aria-hidden="true" aria-label="قائمة الجوائز">
+    <!-- الشريط الجانبي للجوائز (يتم التحكم به عبر JS) -->
+    <aside class="sidebar" id="prizesSidebar" aria-hidden="true">
         <div class="sidebar-header">
             <h3>الجوائز</h3>
-            <button class="close-sidebar-btn" aria-label="إغلاق قائمة الجوائز">
-                &times;
-            </button>
+            <button class="close-sidebar-btn" aria-label="إغلاق قائمة الجوائز">&times;</button>
         </div>
-        
         <div class="sidebar-content">
-            <ul class="prizes-list" aria-label="قائمة مستويات الجوائز"></ul>
+            <ul class="prizes-list"></ul>
         </div>
     </aside>
-    
     <div class="sidebar-overlay" aria-hidden="true"></div>
 
-    <!-- شاشة اللعبة الرئيسية -->
-    <main id="gameContainer" class="screen" aria-hidden="true">
-        <div class="top-bar">
-            <button class="theme-toggle-btn" aria-label="تبديل وضع السطوع والظلام">
-                <span aria-hidden="true">☀️</span>
-            </button>
-            <button class="open-sidebar-btn" aria-expanded="false" aria-controls="prizesSidebar">
-                <span aria-hidden="true">🏆</span>
-                الجوائز
-            </button>
-        </div>
-        
-        <header class="game-header">
-            <div class="player-info">
-                <div class="player-main">
-                    <img id="playerAvatar" src="" alt="" aria-hidden="true">
-                    <span id="playerName" aria-label="اسم اللاعب"></span>
-                </div>
-                <div class="player-stats">
-                    <span>
-                        اللقب: 
-                        <strong id="currentTitle" aria-live="polite">لا يوجد</strong>
-                    </span>
-                    <span>
-                        النقاط: 
-                        <strong id="currentScore" aria-live="polite">0</strong>
-                    </span>
-                    <span>
-                        الأخطاء: 
-                        <strong id="wrongAnswersCount" aria-live="assertive">0 / 3</strong>
-                    </span>
-                </div>
-            </div>
-            
-            <div class="helpers" aria-label="خيارات المساعدة">
-                <button class="helper-btn" data-type="fiftyFifty" disabled aria-describedby="fiftyFiftyDesc">
-                    50:50 
-                    <span class="helper-cost">(20K)</span>
-                </button>
-                <div id="fiftyFiftyDesc" class="sr-only">يزيل خيارين خاطئين من السؤال الحالي</div>
-                
-                <button class="helper-btn" data-type="freezeTime" disabled aria-describedby="freezeTimeDesc">
-                    <span aria-hidden="true">❄️</span>
-                    10ث 
-                    <span class="helper-cost">(15K)</span>
-                </button>
-                <div id="freezeTimeDesc" class="sr-only">يتوقف المؤقت لمدة 10 ثوان</div>
-                
-                <button class="helper-btn" data-type="changeQuestion" disabled aria-describedby="changeQuestionDesc">
-                    <span aria-hidden="true">🔄</span>
-                    سؤال 
-                    <span class="helper-cost">(30K)</span>
-                </button>
-                <div id="changeQuestionDesc" class="sr-only">يغير السؤال الحالي إلى سؤال آخر</div>
-            </div>
-        </header>
-
-        <div class="timer-container" aria-label="مؤقت السؤال">
-            <div class="timer-bar" role="progressbar" aria-valuemin="0" aria-valuemax="90" aria-valuenow="90"></div>
-            <span id="timer">90</span>
-        </div>
-
-        <div class="main-content">
-            <section class="question-box" aria-labelledby="questionCounter">
-                <h3 id="questionCounter"></h3>
-                <p id="questionText" aria-live="polite"></p>
-                <div class="spinner-container" aria-hidden="true">
-                    <div class="spinner"></div>
-                    <span class="sr-only">جاري تحميل السؤال التالي</span>
-                </div>
-            </section>
-            
-            <section class="options-container" aria-labelledby="questionText">
-                <div class="options-grid" role="group" aria-label="خيارات الإجابة"></div>
-            </section>
-        </div>
-    </main>
-
-    <!-- شاشة النتائج النهائية -->
-    <div id="endScreen" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h2>النتائج النهائية</h2>
-            </header>
-            
-            <div class="final-stats" aria-labelledby="finalStatsHeading">
-                <h3 id="finalStatsHeading" class="sr-only">الإحصائيات النهائية</h3>
-                <p>الاسم: <strong id="finalName"></strong></p>
-                <p>اللقب: <strong id="finalTitle"></strong></p>
-                <p>النقاط: <strong id="finalScore"></strong></p>
-                <p>المدة: <strong id="totalTime"></strong></p>
-            </div>
-            
-            <section class="share-section" aria-labelledby="shareHeading">
-                <h3 id="shareHeading">مشاركة النتيجة</h3>
-                <div class="share-buttons">
-                    <button id="shareXBtn" class="share-btn x" aria-label="مشاركة النتيجة على X">
-                        X
-                    </button>
-                    <button id="shareInstagramBtn" class="share-btn instagram" aria-label="مشاركة النتيجة على Instagram">
-                        Instagram
-                    </button>
-                </div>
-            </section>
-            
-            <div class="button-group">
-                <button id="restartBtn" class="btn-main">
-                    جولة جديدة
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- شاشة لوحة الصدارة -->
-    <div id="leaderboardScreen" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h2>
-                    <span aria-hidden="true">🏆</span>
-                    لوحة الصدارة
-                    <span aria-hidden="true">🏆</span>
-                </h2>
-            </header>
-            
-            <div id="leaderboardContent" aria-live="polite"></div>
-            
-            <div class="button-group">
-                <button id="backToStartBtn" class="btn-secondary">
-                    العودة
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- عناصر الصوت -->
-    <audio id="correct-sound" preload="metadata" aria-hidden="true">
+    <!-- عناصر الصوت (يتم التحكم بها عبر JS) -->
+    <audio id="correct-sound" preload="auto">
         <source src="assets/sounds/correct.mp3" type="audio/mpeg">
-        <source src="assets/sounds/correct.ogg" type="audio/ogg">
-        المتصفح لا يدعم عنصر الصوت.
     </audio>
-    
-    <audio id="wrong-sound" preload="metadata" aria-hidden="true">
+    <audio id="wrong-sound" preload="auto">
         <source src="assets/sounds/wrong.mp3" type="audio/mpeg">
-        <source src="assets/sounds/wrong.ogg" type="audio/ogg">
-        المتصفح لا يدعم عنصر الصوت.
     </audio>
-    
-    <audio id="click-sound" preload="metadata" aria-hidden="true">
+    <audio id="click-sound" preload="auto">
         <source src="assets/sounds/click.mp3" type="audio/mpeg">
-        <source src="assets/sounds/click.ogg" type="audio/ogg">
-        المتصفح لا يدعم عنصر الصوت.
     </audio>
 
-    <!-- تحميل脚本 مع attributes للأداء -->
+    <!-- تحميل ملف JavaScript في نهاية الصفحة لتحسين سرعة العرض -->
     <script src="script.js" defer></script>
-    
-    <!-- عناصر للقراء الشاشة -->
-    <div class="sr-only" aria-live="polite" id="liveAnnouncements"></div>
 </body>
 </html>
