@@ -23,7 +23,7 @@ class QuizGame {
             { q: "ما هي الأداة الرئيسية المستخدمة في الكتابة؟", options: ["سكين", "قلم", "ملعقة", "مسطرة"], correct: 1 },
             { q: "ما هي الفاكهة التي اسمها ولونها 'برتقالي'؟", options: ["تفاح", "برتقال", "مانجو", "جوافة"], correct: 1 },
             { q: "ما هو الشهر الذي يأتي بعد شهر رمضان؟", options: ["محرم", "شوال", "صفر", "رجب"], correct: 1 },
-            { q: "(سؤال احتياطي) أي حيوان يُعرف بأنه 'ملك الغابة'؟", options: ["النمر", "الفيل", "الأسد", "الذئب"], correct: 2 }
+            { q: "أي حيوان يُعرف بأنه 'ملك الغابة'؟", options: ["النمر", "الفيل", "الأسد", "الذئب"], correct: 2 }
         ];
         
         this.backupQuestion = allQuestions.pop();
@@ -41,9 +41,9 @@ class QuizGame {
         ];
         
         this.HELPER_COSTS = {
-            fiftyFifty: 500,
-            freezeTime: 750,
-            changeQuestion: 1000
+            fiftyFifty: 64,000,
+            freezeTime: 16,000,
+            changeQuestion: 125,000
         };
 
         // --- (هذا هو التصحيح) ---
@@ -515,18 +515,31 @@ class QuizGame {
 
     // (مُعدل) لإصلاح خطأ aria-hidden عبر إدارة التركيز
     toggleSidebar(open) {
+        // Cache the button that opens the sidebar
+        const openBtn = document.querySelector('.open-sidebar-btn');
+
         if (open) {
             this.domElements.sidebar.classList.add('open');
             this.domElements.sidebarOverlay.classList.add('active');
-            document.querySelector('.open-sidebar-btn').setAttribute('aria-expanded', 'true');
-            // عند الفتح، انقل التركيز إلى زر الإغلاق
-            setTimeout(() => document.querySelector('.close-sidebar-btn').focus(), 10);
+            openBtn.setAttribute('aria-expanded', 'true');
+            
+            // For better accessibility, move focus to the close button inside the sidebar
+            setTimeout(() => {
+                const closeBtn = this.domElements.sidebar.querySelector('.close-sidebar-btn');
+                if (closeBtn) {
+                    closeBtn.focus();
+                }
+            }, 100); // A small delay ensures the sidebar is visible before focusing
+
         } else {
             this.domElements.sidebar.classList.remove('open');
             this.domElements.sidebarOverlay.classList.remove('active');
-            document.querySelector('.open-sidebar-btn').setAttribute('aria-expanded', 'false');
-            // عند الإغلاق، أعد التركيز إلى الزر الذي فتح القائمة
-            document.querySelector('.open-sidebar-btn').focus();
+            openBtn.setAttribute('aria-expanded', 'false');
+            
+            // (The Fix) When closing, return focus to the button that opened it
+            if (openBtn) {
+                openBtn.focus();
+            }
         }
     }
     
