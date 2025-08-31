@@ -6,18 +6,15 @@
     <meta name="description" content="لعبة مسابقة من سيربح اللقب - اختبر معلوماتك واربح الجوائز">
     <title>من سيربح اللقب؟ - لعبة المسابقة التفاعلية</title>
     
-    <!-- Preload الخطوط الرئيسية -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     
-    <!-- Preload العناصر الهامة -->
     <link rel="preload" as="style" href="style.css">
     <link rel="preload" as="script" href="script.js">
     
     <link rel="stylesheet" href="style.css">
     
-    <!-- Structured data for SEO -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -34,17 +31,14 @@
     </script>
 </head>
 <body data-theme="dark" aria-live="polite">
-    <!-- نظام الإشعارات -->
     <div id="toast-container" class="toast-container" aria-live="assertive"></div>
 
-    <!-- شاشة التحميل -->
     <div id="loader" class="screen active" role="status" aria-label="جاري التحميل">
         <div class="spinner" aria-hidden="true"></div>
         <span class="sr-only">جاري تحميل اللعبة، الرجاء الانتظار...</span>
     </div>
 
-    <!-- شاشة البداية -->
-    <div id="startScreen" class="screen" inert>
+    <div id="startScreen" class="screen" aria-hidden="true">
         <div class="content-box">
             <header class="screen-header">
                 <h1 class="game-title">
@@ -65,14 +59,14 @@
         </div>
     </div>
     
-    <!-- شاشة اختيار الصورة الرمزية -->
-    <div id="avatarScreen" class="screen" inert>
+    <div id="avatarScreen" class="screen" aria-hidden="true">
         <div class="content-box">
             <header class="screen-header">
                 <h2>اختر صورة رمزية</h2>
             </header>
             
-            <div class="avatar-grid" role="group" aria-label="خيارات الصور الرمزية"></div>
+            <div class="avatar-grid" role="group" aria-label="خيارات الصور الرمزية">
+                </div>
             
             <div class="button-group">
                 <button id="confirmAvatarBtn" class="btn-main" disabled>
@@ -83,8 +77,7 @@
         </div>
     </div>
 
-    <!-- شاشة إدخال الاسم -->
-    <div id="nameEntry" class="screen" inert>
+    <div id="nameEntry" class="screen" aria-hidden="true">
         <div class="content-box">
             <header class="screen-header">
                 <h2>أدخل اسمك للمتابعة</h2>
@@ -92,11 +85,11 @@
             
             <div class="input-group">
                 <label for="nameInput" class="sr-only">اسم اللاعب</label>
-                <input 
-                    type="text" 
-                    id="nameInput" 
-                    placeholder="اكتب اسمك هنا" 
-                    maxlength="25" 
+                <input  
+                    type="text"  
+                    id="nameInput"  
+                    placeholder="اكتب اسمك هنا"  
+                    maxlength="25"  
                     autocomplete="name"
                     aria-required="true"
                 >
@@ -105,125 +98,97 @@
             
             <div class="button-group">
                 <button id="confirmNameBtn" class="btn-main">
-                    تأكيد وبدء اللعب
+                    تأكيد اللعب
                 </button>
             </div>
         </div>
     </div>
-
-    <!-- شاشة الترحيب الجديدة -->
-    <div id="welcomeScreen" class="screen" inert>
-        <div class="content-box welcome-content">
-            <div class="welcome-header">
-                <span class="welcome-icon">🌟</span>
-                <h2>مرحباً بك يا <span id="welcomeName"></span>!</h2>
-                <span class="welcome-icon">🌟</span>
-            </div>
+    
+    <div id="welcomeScreen" class="screen" aria-hidden="true">
+        <div class="content-box">
+            <header class="screen-header">
+                <h2 id="welcomeMessage"></h2> 
+            </header>
             
-            <div class="welcome-tips">
+            <div class="welcome-content">
                 <p>📌 قبل أن تبدأ رحلتك، تذكّر:</p>
                 <ul>
                     <li>اكتب اسمك المعروف على منصة X أو إنستغرام.</li>
                     <li>لديك فقط 5 محاولات يومياً، فاستغلها بحكمة.</li>
                     <li>لا تتسرع في الإجابة… فالوقت بين يديك.</li>
+                    <li>في حال واجهت أي مشكلة، راسل المسؤول: <a href="https://x.com/_MS_AbuQusay?t=kRL3hiAkrWtOis70PYNz-w&s=09" target="_blank" rel="noopener noreferrer">القارئ الوحيد</a>.</li>
                 </ul>
             </div>
             
-            <div class="support-info">
-                <p>في حال واجهت أي مشكلة، راسل المسؤول: 
-                    <a href="https://x.com/_MS_AbuQusay?t=kRL3hiAkrWtOis70PYNz-w&s=09" target="_blank" rel="noopener noreferrer">القارئ الوحيد</a>
-                </p>
-            </div>
-            
             <div class="button-group">
-                <button id="confirmWelcomeBtn" class="btn-main">تم</button>
+                <button id="welcomeConfirmBtn" class="btn-main">تم</button>
             </div>
         </div>
     </div>
 
-    <!-- الشريط الجانبي للجوائز -->
-    <aside class="sidebar" id="prizesSidebar" inert aria-label="قائمة الجوائز">
+    <aside class="sidebar" id="prizesSidebar" aria-hidden="true" aria-label="قائمة الألقاب">
         <div class="sidebar-header">
-            <h3>الجوائز</h3>
-            <button class="close-sidebar-btn" aria-label="إغلاق قائمة الجوائز">
+            <h3>الألقاب</h3>
+            <button class="close-sidebar-btn" aria-label="إغلاق قائمة الألقاب">
                 &times;
             </button>
         </div>
         
         <div class="sidebar-content">
-            <ul class="prizes-list" aria-label="قائمة مستويات الجوائز"></ul>
+            <ul class="prizes-list" aria-label="قائمة مستويات الألقاب"></ul>
         </div>
     </aside>
     
-    <div class="sidebar-overlay" inert></div>
+    <div class="sidebar-overlay" aria-hidden="true"></div>
 
-    <!-- شاشة اللعبة الرئيسية -->
-    <main id="gameContainer" class="screen" inert>
+    <main id="gameContainer" class="screen" aria-hidden="true">
         <div class="top-bar">
             <button class="theme-toggle-btn" aria-label="تبديل وضع السطوع والظلام">
                 <span aria-hidden="true">☀️</span>
             </button>
             <button class="open-sidebar-btn" aria-expanded="false" aria-controls="prizesSidebar">
                 <span aria-hidden="true">🏆</span>
-                الجوائز
+                الألقاب
             </button>
         </div>
         
         <header class="game-header">
             <div class="player-info">
                 <div class="player-main">
-                    <img id="playerAvatar" src="" alt="صورة اللاعب" crossorigin="anonymous">
-                    <span id="playerName"></span>
+                    <img id="playerAvatar" src="" alt="" aria-hidden="true">
+                    <span id="playerName" aria-label="اسم اللاعب"></span>
                 </div>
                 <div class="player-stats">
-                    <div class="stat-item">
-                        <span>اللقب:</span>
-                        <strong id="currentTitle" aria-live="polite">لا يوجد</strong>
-                    </div>
-                    <div class="stat-item">
-                        <span>النقاط:</span>
-                        <strong id="currentScore" aria-live="polite">0</strong>
-                    </div>
-                    <div class="stat-item">
-                        <span>الأخطاء:</span>
-                        <strong id="wrongAnswersCount" aria-live="assertive">0 / 3</strong>
-                    </div>
+                    <div class="stat-item">اللقب: <strong id="currentTitle" aria-live="polite">لا يوجد</strong></div>
+                    <div class="stat-item">النقاط: <strong id="currentScore" aria-live="polite">0</strong></div>
+                    <div class="stat-item">الأخطاء: <strong id="wrongAnswersCount" aria-live="assertive">0 / 3</strong></div>
                 </div>
             </div>
             
             <div class="helpers" aria-label="خيارات المساعدة">
                 <button class="helper-btn" data-type="fiftyFifty" disabled aria-describedby="fiftyFiftyDesc">
-                    50:50 
-                    <span class="helper-cost">(20K)</span>
+                    50:50
                 </button>
-                <div id="fiftyFiftyDesc" class="sr-only">يزيل خيارين خاطئين من السؤال الحالي</div>
-                
-                <button class="helper-btn" data-type="freezeTime" disabled aria-describedby="freezeTimeDesc">
-                    <span aria-hidden="true">❄️</span>
-                    10ث 
-                    <span class="helper-cost">(15K)</span>
-                </button>
-                <div id="freezeTimeDesc" class="sr-only">يتوقف المؤقت لمدة 10 ثوان</div>
+                <div id="fiftyFiftyDesc" class="sr-only">يزيل خيارين خاطئين</div>
                 
                 <button class="helper-btn" data-type="changeQuestion" disabled aria-describedby="changeQuestionDesc">
                     <span aria-hidden="true">🔄</span>
-                    سؤال 
-                    <span class="helper-cost">(30K)</span>
+                    تغيير
                 </button>
-                <div id="changeQuestionDesc" class="sr-only">يغير السؤال الحالي إلى سؤال آخر</div>
+                <div id="changeQuestionDesc" class="sr-only">يغير السؤال الحالي</div>
             </div>
         </header>
 
         <div class="timer-container" aria-label="مؤقت السؤال">
-            <div class="timer-bar" role="progressbar" aria-valuemin="0" aria-valuemax="90" aria-valuenow="90"></div>
-            <span id="timer">90</span>
+            <div class="timer-bar" role="progressbar" aria-valuemin="0" aria-valuemax="60" aria-valuenow="60"></div>
+            <span id="timer" class="timer-text">60</span>
         </div>
 
         <div class="main-content">
             <section class="question-box" aria-labelledby="questionCounter">
                 <h3 id="questionCounter"></h3>
                 <p id="questionText" aria-live="polite"></p>
-                <div class="spinner-container" inert>
+                <div class="spinner-container" aria-hidden="true">
                     <div class="spinner"></div>
                     <span class="sr-only">جاري تحميل السؤال التالي</span>
                 </div>
@@ -235,36 +200,22 @@
         </div>
     </main>
 
-    <!-- شاشة النتائج النهائية -->
-    <div id="endScreen" class="screen" inert>
+    <div id="endScreen" class="screen" aria-hidden="true">
         <div class="content-box">
             <header class="screen-header">
-                <h2>النتائج النهائية</h2>
+                <h2>🏆 النتائج النهائية 🏆</h2>
             </header>
             
             <div class="final-stats" aria-labelledby="finalStatsHeading">
                 <h3 id="finalStatsHeading" class="sr-only">الإحصائيات النهائية</h3>
-                <div class="stat-row">
-                    <span class="stat-icon">✍️</span>
-                    <span>الاسم: <strong id="finalName"></strong></span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-icon">🏅</span>
-                    <span>اللقب: <strong id="finalTitle"></strong></span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-icon">⭐</span>
-                    <span>النقاط: <strong id="finalScore"></strong></span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-icon">⏱️</span>
-                    <span>المدة: <strong id="totalTime"></strong></span>
-                </div>
+                <p>✍️ الاسم: <strong id="finalName"></strong></p>
+                <p>🏅 اللقب: <strong id="finalTitle"></strong></p>
+                <p>⭐ النقاط: <strong id="finalScore"></strong></p>
+                <p>⏱️ المدة: <strong id="totalTime"></strong></p>
             </div>
             
             <section class="share-section" aria-labelledby="shareHeading">
-                <h3 id="shareHeading">مشاركة النتيجة</h3>
-                <p class="share-description">يمكنك مشاركة إنجازك مباشرة على:</p>
+                <h3 id="shareHeading">📢 مشاركة النتائج</h3>
                 <div class="share-buttons">
                     <button id="shareXBtn" class="share-btn x" aria-label="مشاركة النتيجة على X">
                         X
@@ -283,8 +234,7 @@
         </div>
     </div>
     
-    <!-- شاشة لوحة الصدارة -->
-    <div id="leaderboardScreen" class="screen" inert>
+    <div id="leaderboardScreen" class="screen" aria-hidden="true">
         <div class="content-box">
             <header class="screen-header">
                 <h2>
@@ -294,7 +244,8 @@
                 </h2>
             </header>
             
-            <div id="leaderboardContent" aria-live="polite"></div>
+            <div id="leaderboardContent" aria-live="polite">
+                </div>
             
             <div class="button-group">
                 <button id="backToStartBtn" class="btn-secondary">
@@ -304,23 +255,12 @@
         </div>
     </div>
 
-    <!-- عناصر الصوت المعدلة لمنع أخطاء 404 -->
-    <audio id="correct-sound" preload="auto" aria-hidden="true">
-        <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAADwADw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PD//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8AAABQTEFNRTMuMTAwBKkAAAAAAAAAADUgJAOHQQAB9AAADwPATJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tQZAAG8SobSgAAC1hI2lAAAFpVm0AAAABFhaCAAAAKXCLswAAAEUB4B4DwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAAAAP/7UEQADPCyG0oAAAtWUNpIAABasWbQAAAAEsLQQAABLgl2YAAAf/8pBi" type="audio/mpeg">
-    </audio>
-    
-    <audio id="wrong-sound" preload="auto" aria-hidden="true">
-        <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAADwADw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PD//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8AAABQTEFNRTMuMTAwBKkAAAAAAAAAADUgJAOHQQAB9AAADwPATJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tQZAAG8SobSgAAC1hI2lAAAFpVm0AAAABFhaCAAAAKXCLswAAAEUB4B4DwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAAAAP/7UEQADPCyG0oAAAtWUNpIAABasWbQAAAAEsLQQAABLgl2YAAAf/8pBi" type="audio/mpeg">
-    </audio>
-    
-    <audio id="click-sound" preload="auto" aria-hidden="true">
-        <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAADwADw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PD//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8AAABQTEFNRTMuMTAwBKkAAAAAAAAAADUgJAOHQQAB9AAADwPATJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tQZAAG8SobSgAAC1hI2lAAAFpVm0AAAABFhaCAAAAKXCLswAAAEUB4B4DwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAPAPAeA8ADwDwAAAAP/7UEQADPCyG0oAAAtWUNpIAABasWbQAAAAEsLQQAABLgl2YAAAf/8pBi" type="audio/mpeg">
-    </audio>
+    <audio id="correct-sound" preload="auto" src="assets/sounds/correct.mp3"></audio>
+    <audio id="wrong-sound" preload="auto" src="assets/sounds/wrong.mp3"></audio>
+    <audio id="click-sound" preload="auto" src="assets/sounds/click.mp3"></audio>
 
-    <!-- تحميل script مع attributes للأداء -->
     <script src="script.js" defer></script>
     
-    <!-- عناصر للقراء الشاشة -->
     <div class="sr-only" aria-live="polite" id="liveAnnouncements"></div>
 </body>
 </html>
