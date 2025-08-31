@@ -1,6 +1,6 @@
 class QuizGame {
     constructor() {
-        this.API_URL = "https://script.google.com/macros/s/AKfycbwS16Exl-EFOufB-ptfDDFepIzZJBcqCSXgCd7dt8DY5RhPQyVW_XkPyynAxN9Av7MA/exec";
+        this.API_URL = "https://script.google.com/macros/s/AKfycbwi72l54yg_38WH81fa2ZQFJ9PjC0z_PxaYTUpr7zgmy7haTcjgwTVU9YsHP0h0Fmrh/exec";
         this.QUESTION_TIME = 60; // تم تعديل الوقت إلى 60 ثانية كما في HTML
         this.TOTAL_AVATARS = 16; // تم تعديل العدد ليتوافق مع طلب 16 أيقونة
         this.LIMIT_PER_DAY = 5;
