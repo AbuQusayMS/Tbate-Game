@@ -164,16 +164,23 @@
                     <div class="stat-item">الأخطاء: <strong id="wrongAnswersCount" aria-live="assertive">0 / 3</strong></div>
                 </div>
             </div>
-            
+
             <div class="helpers" aria-label="خيارات المساعدة">
                 <button class="helper-btn" data-type="fiftyFifty" disabled aria-describedby="fiftyFiftyDesc">
                     50:50
+                    <span class="helper-cost"></span>
                 </button>
                 <div id="fiftyFiftyDesc" class="sr-only">يزيل خيارين خاطئين</div>
-                
+    
+                <button class="helper-btn" data-type="freezeTime" disabled aria-describedby="freezeTimeDesc">
+                   ❄️ 10ث
+                    <span class="helper-cost"></span>
+                </button>
+                <div id="freezeTimeDesc" class="sr-only">يوقف المؤقت لمدة 10 ثوان</div>
+
                 <button class="helper-btn" data-type="changeQuestion" disabled aria-describedby="changeQuestionDesc">
-                    <span aria-hidden="true">🔄</span>
-                    تغيير
+                   🔄 تغيير
+                <span class="helper-cost"></span>
                 </button>
                 <div id="changeQuestionDesc" class="sr-only">يغير السؤال الحالي</div>
             </div>
