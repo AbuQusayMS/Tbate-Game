@@ -103,26 +103,63 @@ class QuizGame {
     }
 
     bindEventListeners() {
-        document.getElementById('startPlayBtn').addEventListener('click', () => this.showScreen('avatar'));
-        this.domElements.confirmAvatarBtn.addEventListener('click', () => this.showScreen('nameEntry'));
-        document.getElementById('confirmNameBtn').addEventListener('click', () => this.showWelcomeScreen());
-        document.getElementById('welcomeConfirmBtn').addEventListener('click', () => this.startGame());
-        document.getElementById('showLeaderboardBtn').addEventListener('click', () => this.displayLeaderboard());
-        document.getElementById('backToStartBtn').addEventListener('click', () => this.showScreen('start'));
-        this.domElements.themeToggleBtn.addEventListener('click', () => this.toggleTheme());
-        document.getElementById('restartBtn').addEventListener('click', () => window.location.reload());
-        document.querySelector('.open-sidebar-btn').addEventListener('click', () => this.toggleSidebar(true));
-        document.querySelector('.close-sidebar-btn').addEventListener('click', () => this.toggleSidebar(false));
+        document.getElementById('startPlayBtn').addEventListener('click', () => {
+            this.playSound('click');
+            this.showScreen('avatar');
+        });
+
+        this.domElements.confirmAvatarBtn.addEventListener('click', () => {
+            this.playSound('click');
+            this.showScreen('nameEntry');
+        });
+
+        document.getElementById('confirmNameBtn').addEventListener('click', () => {
+            this.playSound('click');
+            this.showWelcomeScreen();
+        });
+
+        document.getElementById('welcomeConfirmBtn').addEventListener('click', () => {
+            this.playSound('click');
+            this.startGame();
+        });
+
+        document.getElementById('showLeaderboardBtn').addEventListener('click', () => {
+            this.playSound('click');
+            this.displayLeaderboard();
+        });
+
+        document.getElementById('backToStartBtn').addEventListener('click', () => {
+            this.playSound('click');
+            this.showScreen('start');
+        });
+
+        this.domElements.themeToggleBtn.addEventListener('click', () => {
+            this.playSound('click');
+            this.toggleTheme();
+        });
+
+        document.getElementById('restartBtn').addEventListener('click', () => {
+            this.playSound('click');
+            window.location.reload();
+        });
+        
+        document.querySelector('.open-sidebar-btn').addEventListener('click', () => {
+            this.playSound('click');
+            this.toggleSidebar(true);
+        });
+        
+        document.querySelector('.close-sidebar-btn').addEventListener('click', () => {
+            this.playSound('click');
+            this.toggleSidebar(false);
+        });
+
         this.domElements.sidebarOverlay.addEventListener('click', () => this.toggleSidebar(false));
         this.domElements.helperBtns.forEach(btn => btn.addEventListener('click', (e) => this.useHelper(e)));
         document.getElementById('shareXBtn').addEventListener('click', () => this.shareOnX());
         document.getElementById('shareInstagramBtn').addEventListener('click', () => this.shareOnInstagram());
         this.domElements.nameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.showWelcomeScreen(); });
         
-        // تشغيل صوت النقر لجميع الأزرار
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('click', () => this.playSound('click'));
-        });
+        // تم حذف الكود العام الذي كان يسبب المشكلة من هنا
     }
 
     populateAvatarGrid() {
