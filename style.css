@@ -155,7 +155,7 @@ body {
   border-radius: var(--radius-2xl);
   padding: var(--space-6);
   width: 100%;
-  max-width: 28rem;
+  max-width: 38rem;
   box-shadow: var(--shadow-xl);
   text-align: center;
   border: 1px solid var(--border-color);
