@@ -128,10 +128,8 @@ class QuizGame {
         this.domElements.themeToggleBtn.addEventListener('click', () => {
             this.toggleTheme();
         });
-
-        document.getElementById('restartBtn').addEventListener('click', () => {
-            window.location.reload();
-        });
+        
+        document.getElementById('statsBtn').addEventListener('click', () => this.displayLeaderboard());
         
         document.querySelector('.open-sidebar-btn').addEventListener('click', () => {
             this.toggleSidebar(true);
