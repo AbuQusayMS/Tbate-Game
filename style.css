@@ -637,7 +637,7 @@ input[type="text"]:focus {
     display: flex;
     flex-direction: column;
     max-height: 100%;
-    width: 90%;
+    width: 95%;
 }
 
 /* مُعدل: إضافة خصائص التمرير إلى القاعدة الموجودة */
