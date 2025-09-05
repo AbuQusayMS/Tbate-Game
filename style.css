@@ -712,3 +712,19 @@ input[type="text"]:focus {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* إصلاح مشكلة التمرير في لوحة الصدارة على الهاتف */
+
+/* 1. تحديد ارتفاع الصندوق ليناسب الشاشة ويستخدم Flexbox */
+#leaderboardScreen .content-box {
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh; /* نحدد أقصى ارتفاع بـ 85% من طول الشاشة */
+}
+
+/* 2. جعل منطقة عرض النتائج قابلة للتمرير */
+#leaderboardContent {
+    overflow-y: auto;  /* إضافة شريط تمرير عمودي عند الحاجة */
+    flex-grow: 1;      /* جعلها تملأ المساحة المتاحة بين العنوان والزر */
+    padding: 0 0.5rem; /* إضافة مسافة داخلية بسيطة لتبدو أفضل */
+}
