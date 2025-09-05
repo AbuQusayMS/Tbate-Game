@@ -621,23 +621,46 @@ input[type="text"]:focus {
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
 }
 
-/* لوحة الصدارة */
+/* ============================
+   إصلاح تمرير لوحة الصدارة
+   ============================ */
+
+/* جديد: إلغاء التوسيط العمودي لشاشة لوحة الصدارة للسماح بالتمرير */
+#leaderboardScreen {
+    align-items: flex-start; /* بدلًا من التوسيط، ابدأ من الأعلى */
+    padding-top: 5vh;      /* أضف مسافة من أعلى الشاشة */
+    padding-bottom: 5vh;   /* أضف مسافة من أسفل الشاشة */
+}
+
+/* جديد: جعل الصندوق يأخذ الارتفاع المتاح ويستخدم Flexbox */
+#leaderboardScreen .content-box {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    width: 90%;
+}
+
+/* مُعدل: إضافة خصائص التمرير إلى القاعدة الموجودة */
 #leaderboardContent {
     width: 100%;
+    overflow-y: auto;  /* <-- الخاصية الأهم للتمرير */
+    flex-grow: 1;      /* <-- لجعلها تملأ المساحة */
 }
+
+/* هذا الكود يبقى كما هو */
 .leaderboard-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: var(--space-6) 0;
-  font-size: 0.875rem;
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-6) 0;
+    font-size: 0.875rem;
 }
 .leaderboard-table th, .leaderboard-table td {
-  padding: var(--space-3);
-  text-align: center;
-  border-bottom: 1px solid var(--border-color);
+    padding: var(--space-3);
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
 }
 .leaderboard-table th {
-  background-color: var(--secondary-color);
+    background-color: var(--secondary-color);
 }
 
 /* نظام الإشعارات (Toasts) */
