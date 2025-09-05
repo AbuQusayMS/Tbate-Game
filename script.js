@@ -1,1 +1,664 @@
-const _0x588bfb=_0x3275;(function(_0x250792,_0x5b755e){const _0x240150=_0x3275,_0x18db59=_0x250792();while(!![]){try{const _0x139ddd=-parseInt(_0x240150(0x19c))/0x1+-parseInt(_0x240150(0xe5))/0x2+-parseInt(_0x240150(0x10d))/0x3+-parseInt(_0x240150(0x113))/0x4+parseInt(_0x240150(0x150))/0x5*(parseInt(_0x240150(0x138))/0x6)+parseInt(_0x240150(0x119))/0x7*(-parseInt(_0x240150(0x1d9))/0x8)+parseInt(_0x240150(0x1de))/0x9;if(_0x139ddd===_0x5b755e)break;else _0x18db59['push'](_0x18db59['shift']());}catch(_0x2c720e){_0x18db59['push'](_0x18db59['shift']());}}}(_0x2f78,0x8b911));function _0x2f78(){const _0xed3697=['getElementById','Failed\x20to\x20save\x20score:','trim','.prizes-list','دمر\x20البلد\x20المسؤول\x20عن\x20موت\x20رئيسة\x20دار\x20الأيتام','أنه\x20كان\x20أفضل\x20حاكم\x20في\x20تاريخه','getShareText','totalTime','backupQuestion','</span>\x20<strong>','success','showToast','keypress','القدرة\x20على\x20تدمير\x20الأشياء\x20بقوة\x20العقل','117604MThgjw','welcome','إخفاء\x20المانا','leaderboardScreen','انتهى\x20الوقت!','aria-expanded','type','getLeaderboard','points','helperBtns','scoreDisplay','.options-grid','setAttribute','questionCounter','welcomeMessage','leaderboard','classList','error','السؤال\x20','أنه\x20لم\x20يكن\x20مناسبًا\x20له\x20كثيرًا','now','updateUI','currentScore','hidden','.close-sidebar-btn','length','options','showScreen','شكل\x20وهمي','ما\x20هي\x20الفئة\x20التي\x20تم\x20تصنيفها\x20لـ\x20\x27أسد\x20العالم\x27\x20الذي\x20تم\x20بيعه\x20في\x20المزاد؟','map','ما\x20هو\x20الاسم\x20الذي\x20أطلقه\x20آرثر\x20على\x20تقنيته\x20الداخلية\x20للبرق\x20التي\x20طوّرها\x20بعد\x20التدريب\x20مع\x20الجد\x20فيريون؟','open','الدير','Error\x20loading\x20leaderboard:','أرثر','show','playerAvatar','shareOnInstagram','frozen','2975820EVnolr','finalStats','.helper-cost','التخفي','values','wrongAnswers','1111460UlXozP','https://script.google.com/macros/s/AKfycbxswUSDuszaAyDlNBCi3ugsu11NQW6g0vu1BQI0XM58xbTk8G5eE5gV8PNSbSshCmkBDw/exec','مورداين','displayLeaderboard','option-btn','سيلفي','26775OwjNVM','start','currentTitle','لأنه\x20لا\x20يستطيع\x20مقايضة\x20شخص\x20يثق\x20به','ماذا\x20كان\x20أول\x20شيء\x20فعله\x20آرثر\x20بعد\x20أن\x20تم\x20تعيينه\x20ملكاً\x20في\x20حياته\x20السابقة؟','title','finalTitle','الفئة\x20D','انكسر\x20إلى\x20قطعتين','القدرة\x20على\x20إطلاق\x20نية\x20قتل\x20قوية','ما\x20هو\x20الوصف\x20الذي\x20استخدمه\x20آرثر\x20لوصف\x20نفسه\x20في\x20حياته\x20السابقة\x20عندما\x20كان\x20ملكاً؟','active','شول','رينولدز\x20ليوين','json','populateAvatarGrid','<div\x20class=\x22spinner\x22></div>','الفئة\x20E','changeQuestion','attemptId','helpersUsed','format','تقنية\x20للتواصل\x20مع\x20المانا\x20لتشكيل\x20تيارات\x20كهربائية','toast-container','المدة:\x20','الفئة\x20A','أغرونا','optionsGrid','true','setupGameUI','loadTheme','6CnRfoR','LIMIT_PER_DAY','toggleTheme','formatNumber','كيزيس','timeLeft','من\x20هي\x20الشخصية\x20التي\x20تم\x20استدعاؤها\x20من\x20قبل\x20آرثر\x20في\x20قتال\x20الدانجون\x20وقامت\x20بإغماء\x20الفارس؟','shuffleQuestions','ما\x20هي\x20قدرة\x20\x27التشويه\x27\x20التي\x20استخدمها\x20آرثر\x20في\x20المزاد\x20لتخويف\x20سيباستيان؟','querySelectorAll','QUESTIONS','theme','للحصول\x20على\x20القوة\x20ليصبح\x20ملكاً','catch','القدرة\x20على\x20فصل\x20نفسه\x20عن\x20الزمان\x20والمكان\x20للحظة\x20قصيرة','حدث\x20خطأ\x20عند\x20بدء\x20اللعبة.','aria-hidden','QUESTION_TIME','ما\x20هو\x20السبب\x20الرئيسي\x20الذي\x20جعل\x20آرثر\x20يتدرب\x20\x27مثل\x20المجنون\x27\x20في\x20حياته\x20السابقة؟','useHelper','addEventListener','تيار\x20البرق','answerSubmitted','timerInterval','162415aYegKL','إبطال\x20السحر','shareInstagramBtn','finalName','style','screens','querySelector','.avatar-grid','أنه\x20لم\x20يكن\x20ملكاً\x20جيداً\x20في\x20كثير\x20من\x20الجوانب','MAX_WRONG_ANSWERS','أنه\x20كان\x20ملكًا\x20جيدًا\x20وناضجًا','light','alert','لديها\x20كفاءة\x20عالية\x20في\x20أوردة\x20المانا','بعد\x20قتال\x20آرثر\x20لمدير\x20النقابة،\x20ما\x20هي\x20الفئة\x20التي\x20حصل\x20عليها\x20في\x20نقابة\x20المغامرين؟','false','apiCall','className','click','ويندسوم','welcomeScreen','أنه\x20لم\x20يكن\x20يحب\x20منصبه\x20كملك','🌟\x20مرحبا\x20بك\x20يا\x20','.option-btn','أنشأ\x20جيشاً\x20قوياً','generatePrizesList','\x20/\x20','HELPER_COSTS','أنه\x20لا\x20يزال\x20غير\x20معتاد\x20عليه','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','updatePrizesList','id_','prizesList','ميكا','cacheDomElements','تقنية\x20لإطلاق\x20الصواعق\x20من\x20مسافة\x20بعيدة','dark','random','انبعث\x20منه\x20دخان\x20أبيض','deviceId','تزوج\x20وأنجب\x20أطفالاً','!\x20🌟','toISOString','ما\x20هي\x20المهارة\x20التي\x20يتدرب\x20عليها\x20آرثر\x20ليتعلم\x20كيف\x20يحلل\x20ويبطل\x20سحر\x20خصومه؟','الرياح','.open-sidebar-btn','getItem','shareOnX','blur','join','resetGameState','selected','stringify','لأنه\x20كان\x20يريد\x20المال\x20بدلاً\x20من\x20الوحش','name','\x20دقيقة\x20و\x20','past','تقنية\x20لتسريع\x20ردود\x20الأفعال\x20إلى\x20مدى\x20خارق','startPlayBtn','text/plain;charset=utf-8','<span>','.png','startTime','remove','checkAnswer','assets/avatars/avatar','currentScoreValue','updateScore','ما\x20هي\x20قدرة\x20\x27نبض\x20الرعد\x27\x20التي\x20طورها\x20آرثر؟','displayQuestion','getDeviceId','correct','currentQuestion','\x20ثانية','وميض\x20الرياح','🔗\x20جرب\x20حظك\x20أنت\x20أيضاً:\x20https://abuqusayms.github.io/Tbate-Game/','418411Uugnyx','setItem','shuffledQuestions','isTimeFrozen','from','key','<p>لوحة\x20الصدارة\x20فارغة\x20حاليًا!</p>','.timer-bar','اللقب:\x20','nameInput','forEach','gameState','API\x20Error:','Error\x20starting\x20game:','sidebar','value','div','clipboard','✨\x20نتائجي\x20في\x20مسابقة\x20\x22من\x20سيربح\x20اللقب\x22\x20✨\x0a','الفئة\x20B','لديها\x20موهبة\x20فطرية\x20في\x20القتال','game','startTimer','writeText','textContent','التلاعب\x20بالزمان','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','img','current','القدرة\x20على\x20التخفي\x20والتسلل','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</table>','confirmNameBtn','API_URL','substr','nameEntry','Enter','loader','TOTAL_AVATARS','src','score','add','https://twitter.com/intent/tweet?text=','formatTime','<p>حدث\x20خطأ\x20في\x20تحميل\x20لوحة\x20الصدارة.</p>','لا\x20يوجد','info','تمتلك\x20قوة\x20إرادة\x20هائلة','نقاطك\x20غير\x20كافية!','sidebarOverlay','toString','PRIZES','innerHTML','بنى\x20قصراً\x20كبيراً','isCorrect','لأنه\x20كان\x20يرى\x20أن\x20أسد\x20العالم\x20ضعيف','bindEventListeners','dataset','createElement','ar-EG','fiftyFifty','welcomeConfirmBtn','1488yvNiET','غراي','NumberFormat','limit_reached','الفئة\x20C','26978850MYmJoB','body','wrongAnswersCount','cors','init','nameError','_blank','confirmAvatarBtn','sort','backToStartBtn','POST','wrong','ليصبح\x20أقوى\x20ساحر\x20في\x20العالم','showWelcomeScreen','text','appendChild','status','.sidebar','سيباستيان','endScreen','leaderboardContent','النقاط:\x20','floor','disabled','fetchQuestion','.helper-btn','gameContainer','focus','button,\x20[href],\x20input,\x20select,\x20textarea','.theme-toggle-btn','endGame','بايرون','avatar','then','themeToggleBtn','تم\x20نسخ\x20النتيجة!\x20الصقها\x20في\x20قصتك\x20أو\x20رسائلك\x20على\x20إنستغرام.','[data-correct=\x22true\x22]','startGame','الاسم:\x20','toggleSidebar','domElements','صاعقة\x20السماء','activeElement','end','width','</strong>'];_0x2f78=function(){return _0xed3697;};return _0x2f78();}function _0x3275(_0x56bfd0,_0x1ce922){const _0x2f78a1=_0x2f78();return _0x3275=function(_0x327503,_0x26525b){_0x327503=_0x327503-0xac;let _0x454a44=_0x2f78a1[_0x327503];return _0x454a44;},_0x3275(_0x56bfd0,_0x1ce922);}class QuizGame{constructor(){const _0x18a71b=_0x3275;this[_0x18a71b(0x1bc)]=_0x18a71b(0x114),this[_0x18a71b(0x149)]=0x3c,this[_0x18a71b(0x1c1)]=0x10,this[_0x18a71b(0x139)]=0x1,this['MAX_WRONG_ANSWERS']=0x3;const _0x5c9c99=[{'q':_0x18a71b(0x14a),'options':[_0x18a71b(0x144),'رغبة\x20في\x20الانتقام\x20لموت\x20رئيسة\x20دار\x20الأيتام','ليثبت\x20نفسه\x20أمام\x20الملوك\x20الآخرين',_0x18a71b(0xb5)],'correct':0x1},{'q':_0x18a71b(0x104),'options':[_0x18a71b(0x19a),'نبض\x20الرعد',_0x18a71b(0xd2),_0x18a71b(0x14d)],'correct':0x1},{'q':_0x18a71b(0x194),'options':[_0x18a71b(0x189),_0x18a71b(0x173),'تقنية\x20لزيادة\x20سرعة\x20الحركة\x20والقفز',_0x18a71b(0x12f)],'correct':0x0},{'q':_0x18a71b(0x17b),'options':[_0x18a71b(0x1b5),_0x18a71b(0x151),_0x18a71b(0x110),_0x18a71b(0xe7)],'correct':0x1},{'q':_0x18a71b(0x140),'options':[_0x18a71b(0xe4),_0x18a71b(0x146),_0x18a71b(0x122),_0x18a71b(0x1b9)],'correct':0x1},{'q':'ماذا\x20حدث\x20لسيف\x20آرثر\x20السحري،\x20قصيدة\x20الفجر،\x20عندما\x20حاول\x20سحبه\x20في\x20البداية؟','options':[_0x18a71b(0x121),'أصابه\x20بجرح\x20في\x20يده\x20وامتص\x20دمه',_0x18a71b(0x176),'لم\x20يتزحزح\x20من\x20مكانه\x20حتى\x20استخدم\x20إرادة\x20سيلفيا'],'correct':0x1},{'q':_0x18a71b(0x11d),'options':[_0x18a71b(0x168),_0x18a71b(0x1d0),_0x18a71b(0xdb),_0x18a71b(0x178)],'correct':0x2},{'q':_0x18a71b(0x123),'options':[_0x18a71b(0x15a),_0x18a71b(0x158),_0x18a71b(0xdc),_0x18a71b(0x165)],'correct':0x1},{'q':'ما\x20هو\x20الاسم\x20الحقيقي\x20لمدير\x20قاعة\x20نقابة\x20المغامرين\x20في\x20مدينة\x20زيروس؟','options':[_0x18a71b(0xbb),'لوكاس\x20وايكس','كاسبيان\x20بلادهيرت',_0x18a71b(0x126)],'correct':0x2},{'q':_0x18a71b(0x15e),'options':[_0x18a71b(0x12a),_0x18a71b(0x1dd),_0x18a71b(0x1af),_0x18a71b(0x132)],'correct':0x2},{'q':'ما\x20هي\x20الصفة\x20التي\x20وصف\x20بها\x20آرثر\x20جسمه\x20بعد\x20القتال\x20مع\x20مدير\x20النقابة؟','options':['أنه\x20ناضج\x20ومناسب\x20لمهاراته','أنه\x20ضعيف\x20ولا\x20يستمع\x20لأوامره',_0x18a71b(0xf8),_0x18a71b(0x16c)],'correct':0x2},{'q':'ما\x20هو\x20السبب\x20الذي\x20جعل\x20آرثر\x20يرفض\x20عرض\x20الملك\x20بمقايضة\x20سيلفي\x20بشبل\x20أسد\x20العالم؟','options':[_0x18a71b(0x185),_0x18a71b(0x11c),'لأنه\x20لم\x20يكن\x20يريد\x20إهانة\x20الملك',_0x18a71b(0x1d2)],'correct':0x1},{'q':_0x18a71b(0x102),'options':[_0x18a71b(0x12a),_0x18a71b(0x120),_0x18a71b(0x1af),_0x18a71b(0x132)],'correct':0x2},{'q':_0x18a71b(0x13e),'options':[_0x18a71b(0x101),_0x18a71b(0x118),'لايت\x20فليكر','لا\x20أحد'],'correct':0x3},{'q':'ما\x20هي\x20الميزة\x20التي\x20تمتلكها\x20ليليا،\x20والتي\x20تجعلها\x20قادرة\x20على\x20استيعاب\x20المانا\x20من\x20محيطها\x20بشكل\x20عالي؟','options':[_0x18a71b(0x1b0),_0x18a71b(0x1ca),_0x18a71b(0x15d),'لديها\x20نواة\x20مانا\x20متقدمة'],'correct':0x2},{'q':'ما\x20هو\x20العنصر\x20الذي\x20تتخصص\x20به\x20ليليا؟','options':['الماء','النار','الأرض',_0x18a71b(0x17c)],'correct':0x0}];this[_0x18a71b(0xdf)]=_0x5c9c99['pop'](),this[_0x18a71b(0x142)]=_0x5c9c99,this[_0x18a71b(0x1ce)]=[{'points':0x64,'title':'كاديل'},{'points':0xc8,'title':'سيريس'},{'points':0x12c,'title':'اوتو'},{'points':0x1f4,'title':_0x18a71b(0x171)},{'points':0x3e8,'title':_0x18a71b(0x1da)},{'points':0x7d0,'title':_0x18a71b(0xc8)},{'points':0xfa0,'title':'سيلفي'},{'points':0x1f40,'title':'فاراي'},{'points':0x3e80,'title':_0x18a71b(0x125)},{'points':0x7d00,'title':_0x18a71b(0x106)},{'points':0xfa00,'title':_0x18a71b(0x163)},{'points':0x1e848,'title':_0x18a71b(0x115)},{'points':0x3d090,'title':_0x18a71b(0x13c)},{'points':0x7a120,'title':_0x18a71b(0x133)},{'points':0xf4240,'title':_0x18a71b(0x108)}],this['HELPER_COSTS']={'fiftyFifty':0x64,'freezeTime':0x64,'changeQuestion':0x64},this[_0x18a71b(0x19f)]=![],this[_0x18a71b(0x1a7)]={},this[_0x18a71b(0x192)]=0x0,this[_0x18a71b(0x14f)]=null,this['answerSubmitted']=![],this['domElements']={},this[_0x18a71b(0xad)]();}[_0x588bfb(0xad)](){const _0x4f01ea=_0x588bfb;this['cacheDomElements'](),this['bindEventListeners'](),this[_0x4f01ea(0x128)](),this[_0x4f01ea(0x169)](),this['displayHelperCosts'](),this[_0x4f01ea(0x137)](),this[_0x4f01ea(0x100)](_0x4f01ea(0x11a)),this['hideLoader']();}[_0x588bfb(0x172)](){const _0x482542=_0x588bfb;this[_0x482542(0xd1)]={'screens':{'loader':document[_0x482542(0xd7)](_0x482542(0x1c0)),'start':document[_0x482542(0xd7)]('startScreen'),'avatar':document[_0x482542(0xd7)]('avatarScreen'),'nameEntry':document[_0x482542(0xd7)]('nameEntry'),'welcome':document[_0x482542(0xd7)](_0x482542(0x164)),'game':document[_0x482542(0xd7)](_0x482542(0xc3)),'end':document[_0x482542(0xd7)](_0x482542(0xbc)),'leaderboard':document[_0x482542(0xd7)](_0x482542(0xe8))},'sidebar':document[_0x482542(0x156)](_0x482542(0xba)),'sidebarOverlay':document[_0x482542(0x156)]('.sidebar-overlay'),'questionText':document[_0x482542(0xd7)]('questionText'),'optionsGrid':document[_0x482542(0x156)](_0x482542(0xf0)),'scoreDisplay':document[_0x482542(0xd7)](_0x482542(0xfb)),'prizesList':document[_0x482542(0x156)](_0x482542(0xda)),'helperBtns':document[_0x482542(0x141)](_0x482542(0xc2)),'nameInput':document[_0x482542(0xd7)](_0x482542(0x1a5)),'nameError':document[_0x482542(0xd7)](_0x482542(0xae)),'confirmAvatarBtn':document[_0x482542(0xd7)](_0x482542(0xb0)),'themeToggleBtn':document[_0x482542(0x156)](_0x482542(0xc6)),'welcomeMessage':document[_0x482542(0xd7)](_0x482542(0xf3))};}[_0x588bfb(0x1d3)](){const _0x51b122=_0x588bfb;document['getElementById'](_0x51b122(0x18a))[_0x51b122(0x14c)](_0x51b122(0x162),()=>{const _0x4983dd=_0x51b122;this[_0x4983dd(0x100)]('avatar');}),this[_0x51b122(0xd1)][_0x51b122(0xb0)]['addEventListener'](_0x51b122(0x162),()=>{const _0x20ac4a=_0x51b122;this[_0x20ac4a(0x100)](_0x20ac4a(0x1be));}),document[_0x51b122(0xd7)](_0x51b122(0x1bb))[_0x51b122(0x14c)](_0x51b122(0x162),()=>{const _0x58d193=_0x51b122;this[_0x58d193(0xb6)]();}),document[_0x51b122(0xd7)](_0x51b122(0x1d8))[_0x51b122(0x14c)](_0x51b122(0x162),()=>{const _0x22a677=_0x51b122;this[_0x22a677(0xce)]();}),document[_0x51b122(0xd7)]('showLeaderboardBtn')[_0x51b122(0x14c)]('click',()=>{this['displayLeaderboard']();}),document[_0x51b122(0xd7)](_0x51b122(0xb2))[_0x51b122(0x14c)](_0x51b122(0x162),()=>{const _0x314243=_0x51b122;this[_0x314243(0x100)](_0x314243(0x11a));}),this[_0x51b122(0xd1)][_0x51b122(0xcb)][_0x51b122(0x14c)](_0x51b122(0x162),()=>{const _0x41571b=_0x51b122;this[_0x41571b(0x13a)]();}),document[_0x51b122(0xd7)]('statsBtn')[_0x51b122(0x14c)](_0x51b122(0x162),()=>this[_0x51b122(0x116)]()),document[_0x51b122(0x156)](_0x51b122(0x17d))['addEventListener'](_0x51b122(0x162),()=>{const _0x3882b9=_0x51b122;this[_0x3882b9(0xd0)](!![]);}),document[_0x51b122(0x156)](_0x51b122(0xfd))[_0x51b122(0x14c)](_0x51b122(0x162),()=>{this['toggleSidebar'](![]);}),this[_0x51b122(0xd1)]['sidebarOverlay'][_0x51b122(0x14c)](_0x51b122(0x162),()=>this['toggleSidebar'](![])),this[_0x51b122(0xd1)][_0x51b122(0xee)][_0x51b122(0x1a6)](_0x3ceadc=>_0x3ceadc[_0x51b122(0x14c)](_0x51b122(0x162),_0x105bac=>this[_0x51b122(0x14b)](_0x105bac))),document[_0x51b122(0xd7)]('shareXBtn')[_0x51b122(0x14c)](_0x51b122(0x162),()=>this[_0x51b122(0x17f)]()),document[_0x51b122(0xd7)](_0x51b122(0x152))[_0x51b122(0x14c)]('click',()=>this['shareOnInstagram']()),this[_0x51b122(0xd1)][_0x51b122(0x1a5)][_0x51b122(0x14c)](_0x51b122(0xe3),_0x381f42=>{const _0x17b251=_0x51b122;if(_0x381f42[_0x17b251(0x1a1)]===_0x17b251(0x1bf))this[_0x17b251(0xb6)]();});}['populateAvatarGrid'](){const _0x135ee1=_0x588bfb,_0x52ff1e=document[_0x135ee1(0x156)](_0x135ee1(0x157));_0x52ff1e[_0x135ee1(0x1cf)]='';for(let _0x14e430=0x1;_0x14e430<=this[_0x135ee1(0x1c1)];_0x14e430++){const _0x5c7c4a=document[_0x135ee1(0x1d5)](_0x135ee1(0x1b7));_0x5c7c4a[_0x135ee1(0x1c2)]=_0x135ee1(0x191)+_0x14e430+_0x135ee1(0x18d),_0x5c7c4a['alt']='صورة\x20رمزية\x20'+_0x14e430,_0x5c7c4a['classList'][_0x135ee1(0x1c4)]('avatar-option'),_0x5c7c4a['addEventListener'](_0x135ee1(0x162),()=>{const _0xbb049=_0x135ee1;document['querySelectorAll']('.avatar-option.selected')[_0xbb049(0x1a6)](_0x43881c=>_0x43881c[_0xbb049(0xf5)]['remove']('selected')),_0x5c7c4a[_0xbb049(0xf5)][_0xbb049(0x1c4)](_0xbb049(0x183)),this[_0xbb049(0x1a7)][_0xbb049(0xc9)]=_0x5c7c4a[_0xbb049(0x1c2)],this['domElements'][_0xbb049(0xb0)][_0xbb049(0xc0)]=![];}),_0x52ff1e[_0x135ee1(0xb8)](_0x5c7c4a);}}[_0x588bfb(0xb6)](){const _0x485186=_0x588bfb,_0x45afec=this[_0x485186(0xd1)][_0x485186(0x1a5)][_0x485186(0x1ab)][_0x485186(0xd9)]();if(_0x45afec[_0x485186(0xfe)]<0x2){this[_0x485186(0xd1)][_0x485186(0xae)][_0x485186(0x1b4)]='الرجاء\x20إدخال\x20اسم\x20صحيح\x20(حرفين\x20على\x20الأقل).',this[_0x485186(0xd1)][_0x485186(0xae)][_0x485186(0xf5)][_0x485186(0x1c4)](_0x485186(0x109));return;}this[_0x485186(0xd1)][_0x485186(0xae)][_0x485186(0xf5)][_0x485186(0x18f)](_0x485186(0x109)),this[_0x485186(0x1a7)][_0x485186(0x186)]=_0x45afec,this[_0x485186(0xd1)][_0x485186(0xf3)]['innerHTML']=_0x485186(0x166)+_0x45afec+_0x485186(0x179),this[_0x485186(0x100)](_0x485186(0xe6));}async[_0x588bfb(0xce)](){const _0x581373=_0x588bfb;this[_0x581373(0x100)](_0x581373(0x1c0));try{const _0x41ef20=await this['apiCall']({'action':_0x581373(0x11a),'deviceId':this[_0x581373(0x196)](),'name':this[_0x581373(0x1a7)]['name']});if(_0x41ef20&&_0x41ef20['success'])this['resetGameState'](_0x41ef20['attemptId']),this[_0x581373(0x136)](),this[_0x581373(0x100)](_0x581373(0x1b1)),this[_0x581373(0xc1)]();else{const _0x12de09=_0x41ef20&&_0x41ef20[_0x581373(0xf6)]===_0x581373(0x1dc)?'لقد\x20استنفدت\x20محاولاتك\x20اليومية\x20('+this[_0x581373(0x139)]+').':_0x581373(0x147);this['showToast'](_0x12de09,_0x581373(0xf6)),this['showScreen'](_0x581373(0x11a));}}catch(_0x36335f){console['error'](_0x581373(0x1a9),_0x36335f),this[_0x581373(0xe2)]('حدث\x20خطأ\x20في\x20الاتصال\x20بالخادم.',_0x581373(0xf6)),this[_0x581373(0x100)](_0x581373(0x11a));}}[_0x588bfb(0x13f)](){const _0xe8b28a=_0x588bfb,_0x3e4320=[...this['QUESTIONS']];for(let _0x5958da=_0x3e4320[_0xe8b28a(0xfe)]-0x1;_0x5958da>0x0;_0x5958da--){const _0x3e36c9=Math[_0xe8b28a(0xbf)](Math[_0xe8b28a(0x175)]()*(_0x5958da+0x1));[_0x3e4320[_0x5958da],_0x3e4320[_0x3e36c9]]=[_0x3e4320[_0x3e36c9],_0x3e4320[_0x5958da]];}return _0x3e4320;}['fetchQuestion'](){const _0x4b6613=_0x588bfb;this[_0x4b6613(0x1a7)]['shuffledQuestions'][_0x4b6613(0xfe)]===0x0&&(this['gameState'][_0x4b6613(0x19e)]=this[_0x4b6613(0x13f)]());const _0x1ba10b=this['gameState']['shuffledQuestions'][this[_0x4b6613(0x1a7)][_0x4b6613(0x198)]];this['displayQuestion'](_0x1ba10b);}[_0x588bfb(0x195)](_0x2d4674){const _0x456116=_0x588bfb;this[_0x456116(0x14e)]=![],this[_0x456116(0xd1)]['questionText'][_0x456116(0x1b4)]=_0x2d4674['q'],document[_0x456116(0xd7)](_0x456116(0xf2))[_0x456116(0x1b4)]=_0x456116(0xf7)+(this[_0x456116(0x1a7)][_0x456116(0x198)]+0x1)+'\x20/\x20'+this[_0x456116(0x142)][_0x456116(0xfe)],this[_0x456116(0xd1)]['optionsGrid']['innerHTML']='';let _0x1d8f98=_0x2d4674[_0x456116(0xff)][_0x456116(0x103)]((_0x1610f1,_0x1b7473)=>({'text':_0x1610f1,'isCorrect':_0x1b7473===_0x2d4674['correct']}));for(let _0x5d4f7f=_0x1d8f98[_0x456116(0xfe)]-0x1;_0x5d4f7f>0x0;_0x5d4f7f--){const _0x213cdd=Math[_0x456116(0xbf)](Math[_0x456116(0x175)]()*(_0x5d4f7f+0x1));[_0x1d8f98[_0x5d4f7f],_0x1d8f98[_0x213cdd]]=[_0x1d8f98[_0x213cdd],_0x1d8f98[_0x5d4f7f]];}_0x1d8f98[_0x456116(0x1a6)](_0x3edd9e=>{const _0x5e76fd=_0x456116,_0x3ead78=document[_0x5e76fd(0x1d5)]('button');_0x3ead78[_0x5e76fd(0x161)]=_0x5e76fd(0x117),_0x3ead78[_0x5e76fd(0x1b4)]=_0x3edd9e[_0x5e76fd(0xb7)],_0x3edd9e[_0x5e76fd(0x1d1)]&&(_0x3ead78[_0x5e76fd(0x1d4)][_0x5e76fd(0x197)]='true'),_0x3ead78[_0x5e76fd(0x14c)](_0x5e76fd(0x162),()=>this[_0x5e76fd(0x190)](_0x3edd9e['isCorrect'],_0x3ead78)),this[_0x5e76fd(0xd1)][_0x5e76fd(0x134)]['appendChild'](_0x3ead78);}),this['updateUI'](),this[_0x456116(0x1b2)]();}['checkAnswer'](_0x503a28,_0x549c24){const _0x5348a5=_0x588bfb;if(this['answerSubmitted'])return;this[_0x5348a5(0x14e)]=!![],clearInterval(this[_0x5348a5(0x14f)]),document[_0x5348a5(0x141)]('.option-btn')[_0x5348a5(0x1a6)](_0x597be7=>_0x597be7[_0x5348a5(0xf5)][_0x5348a5(0x1c4)](_0x5348a5(0xc0)));if(_0x503a28){_0x549c24['classList'][_0x5348a5(0x1c4)](_0x5348a5(0x197));const _0x3d9991=this[_0x5348a5(0x1ce)][this[_0x5348a5(0x1a7)]['currentQuestion']]?.[_0x5348a5(0xed)]||0x0;this[_0x5348a5(0x193)](this[_0x5348a5(0x192)]+_0x3d9991);}else{_0x549c24[_0x5348a5(0xf5)][_0x5348a5(0x1c4)](_0x5348a5(0xb4));const _0x3dabba=this[_0x5348a5(0xd1)][_0x5348a5(0x134)][_0x5348a5(0x156)](_0x5348a5(0xcd));_0x3dabba&&_0x3dabba[_0x5348a5(0xf5)]['add']('correct'),this['gameState'][_0x5348a5(0x112)]++;}this[_0x5348a5(0x1a7)][_0x5348a5(0x198)]++,this[_0x5348a5(0xfa)]();const _0x236bb9=this[_0x5348a5(0x1a7)][_0x5348a5(0x112)]>=this['MAX_WRONG_ANSWERS']||this[_0x5348a5(0x1a7)][_0x5348a5(0x198)]>=this[_0x5348a5(0x142)][_0x5348a5(0xfe)];setTimeout(()=>{const _0x1c1a38=_0x5348a5;_0x236bb9?this[_0x1c1a38(0xc7)]():this[_0x1c1a38(0xc1)]();},0x7d0);}['endGame'](){const _0x527822=_0x588bfb;clearInterval(this[_0x527822(0x14f)]);const _0x2765c0=(new Date()-new Date(this[_0x527822(0x1a7)][_0x527822(0x18e)]))/0x3e8,_0x37a188=this['gameState'][_0x527822(0x198)]>0x0?this[_0x527822(0x1ce)][this['gameState'][_0x527822(0x198)]-0x1][_0x527822(0x11e)]:_0x527822(0x1c8);this[_0x527822(0x1a7)][_0x527822(0x10e)]={'name':this[_0x527822(0x1a7)][_0x527822(0x186)],'title':_0x37a188,'score':this[_0x527822(0x192)],'time':this['formatTime'](_0x2765c0)},document[_0x527822(0xd7)](_0x527822(0x153))[_0x527822(0x1b4)]=this[_0x527822(0x1a7)]['finalStats'][_0x527822(0x186)],document[_0x527822(0xd7)](_0x527822(0x11f))[_0x527822(0x1b4)]=this[_0x527822(0x1a7)][_0x527822(0x10e)][_0x527822(0x11e)],document['getElementById']('finalScore')[_0x527822(0x1b4)]=this['formatNumber'](this[_0x527822(0x1a7)][_0x527822(0x10e)][_0x527822(0x1c3)]),document[_0x527822(0xd7)](_0x527822(0xde))[_0x527822(0x1b4)]=this['gameState'][_0x527822(0x10e)]['time'],this[_0x527822(0x100)](_0x527822(0xd4)),this['apiCall']({'action':_0x527822(0xd4),'attemptId':this[_0x527822(0x1a7)][_0x527822(0x12c)],'name':this[_0x527822(0x1a7)][_0x527822(0x186)],'score':this[_0x527822(0x192)],'finalTitle':_0x37a188,'totalTime':_0x2765c0})[_0x527822(0x145)](_0x4ecbba=>console[_0x527822(0xf6)](_0x527822(0xd8),_0x4ecbba));}[_0x588bfb(0x14b)](_0x2c069f){const _0x2b7a4d=_0x588bfb,_0xe0397f=_0x2c069f['currentTarget'],_0x27a0bf=_0xe0397f[_0x2b7a4d(0x1d4)]['type'],_0x459d82=this[_0x2b7a4d(0x16b)][_0x27a0bf];if(this[_0x2b7a4d(0x192)]<_0x459d82){this[_0x2b7a4d(0xe2)](_0x2b7a4d(0x1cb),_0x2b7a4d(0xf6));return;}this['updateScore'](this[_0x2b7a4d(0x192)]-_0x459d82),this[_0x2b7a4d(0x1a7)][_0x2b7a4d(0x12d)][_0x27a0bf]=!![],_0xe0397f[_0x2b7a4d(0xc0)]=!![],this[_0x2b7a4d(0xe2)]('تم\x20استخدام\x20المساعدة!',_0x2b7a4d(0xe1));if(_0x27a0bf===_0x2b7a4d(0x1d7)){const _0x2e6da9=Array[_0x2b7a4d(0x1a0)](this[_0x2b7a4d(0xd1)][_0x2b7a4d(0x134)][_0x2b7a4d(0x141)](_0x2b7a4d(0x167)));let _0x3874a5=_0x2e6da9['filter'](_0x581283=>_0x581283[_0x2b7a4d(0x1d4)]['correct']!==_0x2b7a4d(0x135));_0x3874a5[_0x2b7a4d(0xb1)](()=>0.5-Math[_0x2b7a4d(0x175)]()),_0x3874a5[_0x2b7a4d(0xfe)]>0x1&&(_0x3874a5[0x0]['classList'][_0x2b7a4d(0x1c4)](_0x2b7a4d(0xfc)),_0x3874a5[0x1]['classList'][_0x2b7a4d(0x1c4)](_0x2b7a4d(0xfc)));}else{if(_0x27a0bf==='freezeTime')this[_0x2b7a4d(0x19f)]=!![],document[_0x2b7a4d(0x156)]('.timer-bar')['classList']['add'](_0x2b7a4d(0x10c)),setTimeout(()=>{const _0x47a502=_0x2b7a4d;this[_0x47a502(0x19f)]=![],document[_0x47a502(0x156)]('.timer-bar')[_0x47a502(0xf5)][_0x47a502(0x18f)](_0x47a502(0x10c));},0x2710);else _0x27a0bf===_0x2b7a4d(0x12b)&&(this[_0x2b7a4d(0x1a7)][_0x2b7a4d(0x19e)][this[_0x2b7a4d(0x1a7)][_0x2b7a4d(0x198)]]=this[_0x2b7a4d(0xdf)],this[_0x2b7a4d(0xc1)]());}this['updateUI']();}[_0x588bfb(0x1b2)](){const _0x433262=_0x588bfb;clearInterval(this[_0x433262(0x14f)]),this[_0x433262(0x1a7)][_0x433262(0x13d)]=this[_0x433262(0x149)];const _0x21e91a=document[_0x433262(0x156)](_0x433262(0x1a3)),_0x506f99=document['querySelector']('.timer-text');this[_0x433262(0x14f)]=setInterval(()=>{const _0x35bde3=_0x433262;if(this['isTimeFrozen'])return;this['gameState']['timeLeft']--,_0x506f99[_0x35bde3(0x1b4)]=this[_0x35bde3(0x1a7)]['timeLeft'],_0x21e91a[_0x35bde3(0x154)][_0x35bde3(0xd5)]=this[_0x35bde3(0x1a7)][_0x35bde3(0x13d)]/this[_0x35bde3(0x149)]*0x64+'%';if(this[_0x35bde3(0x1a7)][_0x35bde3(0x13d)]<=0x0){clearInterval(this['timerInterval']),this[_0x35bde3(0xe2)](_0x35bde3(0xe9),_0x35bde3(0xf6)),this[_0x35bde3(0x1a7)][_0x35bde3(0x112)]++,document[_0x35bde3(0x141)](_0x35bde3(0x167))[_0x35bde3(0x1a6)](_0xd99b6c=>_0xd99b6c[_0x35bde3(0xf5)]['add'](_0x35bde3(0xc0)));const _0x195f7d=this[_0x35bde3(0xd1)][_0x35bde3(0x134)][_0x35bde3(0x156)](_0x35bde3(0xcd));_0x195f7d&&_0x195f7d['classList'][_0x35bde3(0x1c4)](_0x35bde3(0x197)),this['updateUI'](),setTimeout(()=>{const _0x2988e9=_0x35bde3;this[_0x2988e9(0x1a7)][_0x2988e9(0x112)]>=this['MAX_WRONG_ANSWERS']?this[_0x2988e9(0xc7)]():(this['gameState'][_0x2988e9(0x198)]++,this[_0x2988e9(0xc1)]());},0x7d0);}},0x3e8);}['updateScore'](_0x44df09){const _0x538c06=_0x588bfb;this['currentScoreValue']=_0x44df09,this[_0x538c06(0xd1)][_0x538c06(0xef)]['textContent']=this[_0x538c06(0x13b)](this['currentScoreValue']),this['updateUI']();}[_0x588bfb(0xfa)](){const _0x66ed4c=_0x588bfb;document[_0x66ed4c(0xd7)](_0x66ed4c(0x1e0))['textContent']=this['gameState'][_0x66ed4c(0x112)]+_0x66ed4c(0x16a)+this[_0x66ed4c(0x159)];const _0x3f04e2=this[_0x66ed4c(0x1a7)][_0x66ed4c(0x198)]>0x0?this[_0x66ed4c(0x1ce)][this['gameState'][_0x66ed4c(0x198)]-0x1][_0x66ed4c(0x11e)]:_0x66ed4c(0x1c8);document[_0x66ed4c(0xd7)](_0x66ed4c(0x11b))[_0x66ed4c(0x1b4)]=_0x3f04e2,this[_0x66ed4c(0x16e)](),this[_0x66ed4c(0xd1)][_0x66ed4c(0xee)]['forEach'](_0x357391=>{const _0x44ac21=_0x66ed4c,_0x410dfd=_0x357391[_0x44ac21(0x1d4)][_0x44ac21(0xeb)];_0x357391[_0x44ac21(0xc0)]=this[_0x44ac21(0x1a7)][_0x44ac21(0x12d)][_0x410dfd]||this[_0x44ac21(0x192)]<this[_0x44ac21(0x16b)][_0x410dfd];});}[_0x588bfb(0x169)](){const _0x107706=_0x588bfb;this[_0x107706(0xd1)]['prizesList'][_0x107706(0x1cf)]='',[...this[_0x107706(0x1ce)]]['reverse']()[_0x107706(0x1a6)]((_0x16f398,_0x377f80)=>{const _0x580937=_0x107706,_0x19913f=document[_0x580937(0x1d5)]('li');_0x19913f['innerHTML']=_0x580937(0x18c)+(this[_0x580937(0x1ce)][_0x580937(0xfe)]-_0x377f80)+'.\x20'+_0x16f398[_0x580937(0x11e)]+_0x580937(0xe0)+this[_0x580937(0x13b)](_0x16f398[_0x580937(0xed)])+_0x580937(0xd6),this['domElements']['prizesList']['appendChild'](_0x19913f);});}[_0x588bfb(0x16e)](){const _0x36b077=_0x588bfb,_0x3a8b13=this['domElements'][_0x36b077(0x170)][_0x36b077(0x141)]('li');_0x3a8b13['forEach']((_0x4ea33e,_0x21fb04)=>{const _0x54b0d3=_0x36b077;_0x4ea33e[_0x54b0d3(0xf5)][_0x54b0d3(0x18f)](_0x54b0d3(0x1b8),'past');const _0x252bf2=this[_0x54b0d3(0x1ce)]['length']-0x1-_0x21fb04;if(_0x252bf2===this['gameState'][_0x54b0d3(0x198)])_0x4ea33e[_0x54b0d3(0xf5)]['add'](_0x54b0d3(0x1b8));else _0x252bf2<this[_0x54b0d3(0x1a7)][_0x54b0d3(0x198)]&&_0x4ea33e[_0x54b0d3(0xf5)]['add'](_0x54b0d3(0x188));});}async['displayLeaderboard'](){const _0x294f47=_0x588bfb;this[_0x294f47(0x100)](_0x294f47(0xf4));const _0x125b81=document[_0x294f47(0xd7)](_0x294f47(0xbd));_0x125b81[_0x294f47(0x1cf)]=_0x294f47(0x129);try{const _0x28264b=await this[_0x294f47(0x160)]({'action':_0x294f47(0xec)});if(_0x28264b&&_0x28264b[_0x294f47(0xe1)]&&_0x28264b['leaderboard']){let _0x231884=_0x294f47(0x1a2);_0x28264b[_0x294f47(0xf4)][_0x294f47(0xfe)]>0x0&&(_0x231884='<table\x20class=\x22leaderboard-table\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr><th>الترتيب</th><th>الاسم</th><th>النقاط</th><th>اللقب</th></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0x28264b[_0x294f47(0xf4)][_0x294f47(0x103)](_0x428b17=>_0x294f47(0x1b6)+(['🥇','🥈','🥉'][_0x428b17[0x0]-0x1]||_0x428b17[0x0])+_0x294f47(0x16d)+_0x428b17[0x1]+_0x294f47(0x16d)+this[_0x294f47(0x13b)](_0x428b17[0x2])+_0x294f47(0x16d)+_0x428b17[0x3]+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>')[_0x294f47(0x181)]('')+_0x294f47(0x1ba)),_0x125b81['innerHTML']=_0x231884;}else _0x125b81[_0x294f47(0x1cf)]='<p>حدث\x20خطأ\x20في\x20تحميل\x20لوحة\x20الصدارة.</p>';}catch(_0x313a00){console[_0x294f47(0xf6)](_0x294f47(0x107),_0x313a00),_0x125b81[_0x294f47(0x1cf)]=_0x294f47(0x1c7);}}[_0x588bfb(0xdd)](){const _0x539d24=_0x588bfb,{name:_0x139568,title:_0x1bdc6c,score:_0x24ebea,time:_0x355850}=this[_0x539d24(0x1a7)][_0x539d24(0x10e)];return _0x539d24(0x1ae)+(_0x539d24(0xcf)+_0x139568+'\x0a')+(_0x539d24(0x1a4)+_0x1bdc6c+'\x0a')+(_0x539d24(0xbe)+this['formatNumber'](_0x24ebea)+'\x0a')+(_0x539d24(0x131)+_0x355850+'\x0a\x0a')+_0x539d24(0x19b);}[_0x588bfb(0x17f)](){const _0x3bc487=_0x588bfb,_0x3f9845=encodeURIComponent(this[_0x3bc487(0xdd)]());window['open'](_0x3bc487(0x1c5)+_0x3f9845,_0x3bc487(0xaf));}[_0x588bfb(0x10b)](){const _0x26703d=_0x588bfb;navigator[_0x26703d(0x1ad)][_0x26703d(0x1b3)](this['getShareText']())[_0x26703d(0xca)](()=>this[_0x26703d(0xe2)](_0x26703d(0xcc),_0x26703d(0xe1)))[_0x26703d(0x145)](()=>this[_0x26703d(0xe2)]('فشل\x20نسخ\x20النتيجة.',_0x26703d(0xf6)));}[_0x588bfb(0x182)](_0x5e4114){const _0x33f8e3=_0x588bfb;this[_0x33f8e3(0x1a7)]={'deviceId':this['getDeviceId'](),'attemptId':_0x5e4114,'name':this[_0x33f8e3(0x1a7)]['name'],'avatar':this[_0x33f8e3(0x1a7)][_0x33f8e3(0xc9)],'currentQuestion':0x0,'wrongAnswers':0x0,'startTime':new Date()[_0x33f8e3(0x17a)](),'helpersUsed':{'fiftyFifty':![],'changeQuestion':![]},'shuffledQuestions':[]},this[_0x33f8e3(0x193)](0x0);}[_0x588bfb(0x136)](){const _0x2c3ae1=_0x588bfb;document[_0x2c3ae1(0xd7)](_0x2c3ae1(0x10a))['src']=this[_0x2c3ae1(0x1a7)]['avatar'],document[_0x2c3ae1(0xd7)]('playerName')[_0x2c3ae1(0x1b4)]=this[_0x2c3ae1(0x1a7)][_0x2c3ae1(0x186)];}[_0x588bfb(0x13a)](){const _0x31a6aa=_0x588bfb,_0x3c99d5=document['body'][_0x31a6aa(0x1d4)][_0x31a6aa(0x143)]==='dark'?_0x31a6aa(0x15b):'dark';document[_0x31a6aa(0x1df)][_0x31a6aa(0x1d4)][_0x31a6aa(0x143)]=_0x3c99d5,localStorage[_0x31a6aa(0x19d)](_0x31a6aa(0x143),_0x3c99d5),this[_0x31a6aa(0xd1)]['themeToggleBtn'][_0x31a6aa(0x1b4)]=_0x3c99d5==='dark'?'☀️':'🌙';}['loadTheme'](){const _0x116b84=_0x588bfb,_0x23b109=localStorage[_0x116b84(0x17e)]('theme')||_0x116b84(0x174);document[_0x116b84(0x1df)][_0x116b84(0x1d4)][_0x116b84(0x143)]=_0x23b109,this[_0x116b84(0xd1)]['themeToggleBtn'][_0x116b84(0x1b4)]=_0x23b109==='dark'?'☀️':'🌙';}[_0x588bfb(0xd0)](_0x21c58c){const _0x52a906=_0x588bfb,_0x450fb5=document[_0x52a906(0x156)](_0x52a906(0x17d));_0x21c58c?(this[_0x52a906(0xd1)]['sidebar']['classList'][_0x52a906(0x1c4)](_0x52a906(0x105)),this[_0x52a906(0xd1)][_0x52a906(0x1cc)][_0x52a906(0xf5)]['add']('active'),_0x450fb5[_0x52a906(0xf1)](_0x52a906(0xea),_0x52a906(0x135)),setTimeout(()=>{const _0x1be0e4=_0x52a906,_0x258b31=this[_0x1be0e4(0xd1)][_0x1be0e4(0x1aa)][_0x1be0e4(0x156)](_0x1be0e4(0xfd));_0x258b31&&_0x258b31[_0x1be0e4(0xc4)]();},0x64)):(this[_0x52a906(0xd1)][_0x52a906(0x1aa)]['classList']['remove'](_0x52a906(0x105)),this[_0x52a906(0xd1)][_0x52a906(0x1cc)][_0x52a906(0xf5)]['remove']('active'),_0x450fb5[_0x52a906(0xf1)](_0x52a906(0xea),'false'),_0x450fb5&&_0x450fb5[_0x52a906(0xc4)]());}['showScreen'](_0x4bb13f){const _0x5d91c0=_0x588bfb;if(document[_0x5d91c0(0xd3)])document[_0x5d91c0(0xd3)][_0x5d91c0(0x180)]();Object[_0x5d91c0(0x111)](this[_0x5d91c0(0xd1)]['screens'])[_0x5d91c0(0x1a6)](_0x5950f7=>{const _0x3bab73=_0x5d91c0;_0x5950f7[_0x3bab73(0xf5)][_0x3bab73(0x18f)](_0x3bab73(0x124)),_0x5950f7[_0x3bab73(0xf1)](_0x3bab73(0x148),_0x3bab73(0x135));});const _0x3c691d=this[_0x5d91c0(0xd1)][_0x5d91c0(0x155)][_0x4bb13f];if(_0x3c691d){_0x3c691d[_0x5d91c0(0xf5)][_0x5d91c0(0x1c4)]('active'),_0x3c691d[_0x5d91c0(0xf1)](_0x5d91c0(0x148),_0x5d91c0(0x15f));const _0x5835ab=_0x3c691d[_0x5d91c0(0x156)](_0x5d91c0(0xc5));if(_0x5835ab)_0x5835ab[_0x5d91c0(0xc4)]();}}['hideLoader'](){const _0x4e6f2a=_0x588bfb;this[_0x4e6f2a(0xd1)][_0x4e6f2a(0x155)][_0x4e6f2a(0x1c0)][_0x4e6f2a(0xf5)][_0x4e6f2a(0x18f)]('active');}[_0x588bfb(0xe2)](_0x494953,_0x6ed75a=_0x588bfb(0x1c9)){const _0x5f38ed=_0x588bfb,_0x5d15de=document[_0x5f38ed(0xd7)](_0x5f38ed(0x130)),_0x1a2262=document['createElement'](_0x5f38ed(0x1ac));_0x1a2262[_0x5f38ed(0x161)]='toast\x20'+_0x6ed75a,_0x1a2262[_0x5f38ed(0x1b4)]=_0x494953,_0x1a2262[_0x5f38ed(0xf1)]('role',_0x5f38ed(0x15c)),_0x5d15de[_0x5f38ed(0xb8)](_0x1a2262),setTimeout(()=>_0x1a2262[_0x5f38ed(0x18f)](),0xbb8);}async['apiCall'](_0x51466a){const _0x2111dd=_0x588bfb;try{const _0x66c64d=await fetch(this['API_URL'],{'method':_0x2111dd(0xb3),'mode':_0x2111dd(0xac),'headers':{'Content-Type':_0x2111dd(0x18b)},'body':JSON[_0x2111dd(0x184)](_0x51466a)});if(!_0x66c64d['ok'])throw new Error('HTTP\x20error!\x20status:\x20'+_0x66c64d[_0x2111dd(0xb9)]);return await _0x66c64d[_0x2111dd(0x127)]();}catch(_0x1d5e38){console[_0x2111dd(0xf6)](_0x2111dd(0x1a8),_0x1d5e38);throw _0x1d5e38;}}[_0x588bfb(0x196)](){const _0x4b6085=_0x588bfb;let _0x149ffb=localStorage[_0x4b6085(0x17e)](_0x4b6085(0x177));return!_0x149ffb&&(_0x149ffb=_0x4b6085(0x16f)+Date[_0x4b6085(0xf9)]()+'_'+Math[_0x4b6085(0x175)]()[_0x4b6085(0x1cd)](0x24)[_0x4b6085(0x1bd)](0x2,0x9),localStorage['setItem'](_0x4b6085(0x177),_0x149ffb)),_0x149ffb;}[_0x588bfb(0x1c6)](_0x1fcde1){const _0x2d0a83=_0x588bfb,_0x30f23e=Math[_0x2d0a83(0xbf)](_0x1fcde1/0x3c),_0x3274bc=Math[_0x2d0a83(0xbf)](_0x1fcde1%0x3c);if(_0x30f23e>0x0)return _0x30f23e+_0x2d0a83(0x187)+_0x3274bc+_0x2d0a83(0x199);return _0x3274bc+_0x2d0a83(0x199);}['formatNumber'](_0x378168){const _0x5ddeb8=_0x588bfb;return new Intl[(_0x5ddeb8(0x1db))](_0x5ddeb8(0x1d6))[_0x5ddeb8(0x12e)](_0x378168);}['displayHelperCosts'](){const _0x28a033=_0x588bfb;this['domElements'][_0x28a033(0xee)]['forEach'](_0x1244c7=>{const _0x2f8256=_0x28a033,_0x3748c3=_0x1244c7[_0x2f8256(0x1d4)]['type'],_0x57379f=this['HELPER_COSTS'][_0x3748c3];if(_0x57379f){const _0x360e7d=_0x1244c7[_0x2f8256(0x156)](_0x2f8256(0x10f));_0x360e7d&&(_0x360e7d[_0x2f8256(0x1b4)]='('+_0x57379f+')');}});}}document['addEventListener']('DOMContentLoaded',()=>{new QuizGame();});
+class QuizGame {
+    constructor() {
+        this.API_URL = "https://script.google.com/macros/s/AKfycbxswUSDuszaAyDlNBCi3ugsu11NQW6g0vu1BQI0XM58xbTk8G5eE5gV8PNSbSshCmkBDw/exec";
+        this.QUESTION_TIME = 60;
+        this.TOTAL_AVATARS = 16;
+        this.LIMIT_PER_DAY = 1;
+        this.MAX_WRONG_ANSWERS = 3;
+
+        // (مُعدل) فصل السؤال الاحتياط
+        const allQuestions = [
+            { q: "سؤال 1", options: ["خطأ", "خطأ", "صح", "خطأ"], correct: 2 },
+            { q: "سؤال 2", options: ["صح", "خطأ", "خطأ", "خطأ"], correct: 0 },
+            { q: "سؤال 3", options: ["خطأ", "صح", "خطأ", "خطأ"], correct: 1 },
+            { q: "سؤال 4", options: ["خطأ", "خطأ", "صح", "خطأ"], correct: 2 },
+            { q: "سؤال 5", options: ["خطأ", "صح", "خطأ", "خطأ"], correct: 1 },
+            { q: "سؤال 6", options: ["صح", "خطأ", "خطأ", "خطأ"], correct: 0 },
+            { q: "سؤال 7", options: ["خطأ", "خطأ", "خطأ", "صح"], correct: 3 },
+            { q: "سؤال 8", options: ["خطأ", "خطأ", "صح", "خطأ"], correct: 2 },
+            { q: "سؤال 9", options: ["خطأ", "خطأ", "صح", "خطأ"], correct: 2 },
+            { q: "سؤال 10", options: ["صح", "خطأ", "خطأ", "خطأ"], correct: 0 },
+            { q: "سؤال 11", options: ["خطأ", "خطأ", "صح", "خطأ"], correct: 2 },
+            { q: "سؤال 12", options: ["خطأ", "خطأ", "خطأ", "صح"], correct: 3 },
+            { q: "سؤال 13", options: ["صح", "خطأ", "خطأ", "خطأ"], correct: 0 },
+            { q: "سؤال 14", options: ["خطأ", "صح", "خطأ", "خطأ"], correct: 1 },
+            { q: "سؤال 15", options: ["صح", "خطأ", "خطأ", "خطأ"], correct: 0 },
+            { q: "سؤال 16", options: ["خطأ", "خطأ", "صح", "خطأ"], correct: 2 }
+        ];ش
+        
+        this.backupQuestion = allQuestions.pop();
+        this.QUESTIONS = allQuestions;
+
+        this.PRIZES = [
+            { points: 100, title: "كاديل" },
+            { points: 200, title: "سيريس" },
+            { points: 300, title: "اوتو" },
+            { points: 500, title: "ميكا" },
+            { points: 1000, title: "غراي" },
+            { points: 2000, title: "بايرون" },
+            { points: 4000, title: "سيلفي" },
+            { points: 8000, title: "فاراي" },
+            { points: 16000, title: "شول" },
+            { points: 32000, title: "الدير" },
+            { points: 64000, title: "ويندسوم" },
+            { points: 125000, title: "مورداين" },
+            { points: 250000, title: "كيزيس" },
+            { points: 500000, title: "أغرونا" },
+            { points: 1000000, title: "أرثر" }
+        ];
+
+        this.HELPER_COSTS = {
+           fiftyFifty: 100,
+           freezeTime: 100,
+           changeQuestion: 100
+        };
+
+        // --- (هذا هو التصحيح) ---
+        // كل هذه الأسطر يجب أن تكون هنا بالداخل
+        this.isTimeFrozen = false;
+        this.gameState = {};
+        this.currentScoreValue = 0;
+        this.timerInterval = null;
+        this.answerSubmitted = false;
+        this.domElements = {};
+
+        // هذا السطر يستدعي الدالة init ويجب أن يكون آخر شيء
+        this.init();
+    } // <-- نهاية الـ constructor
+
+    init() {
+        this.cacheDomElements();
+        this.bindEventListeners();
+        this.populateAvatarGrid();
+        this.generatePrizesList();
+        this.displayHelperCosts(); // (جديد) عرض تكاليف المساعدات
+        this.loadTheme();
+        this.showScreen('start');
+        this.hideLoader();
+    }
+
+    cacheDomElements() {
+        this.domElements = {
+            screens: {
+                loader: document.getElementById('loader'),
+                start: document.getElementById('startScreen'),
+                avatar: document.getElementById('avatarScreen'),
+                nameEntry: document.getElementById('nameEntry'),
+                welcome: document.getElementById('welcomeScreen'),
+                game: document.getElementById('gameContainer'),
+                end: document.getElementById('endScreen'),
+                leaderboard: document.getElementById('leaderboardScreen'),
+            },
+            // تم حذف كائن الأصوات من هنا
+            sidebar: document.querySelector('.sidebar'),
+            sidebarOverlay: document.querySelector('.sidebar-overlay'),
+            questionText: document.getElementById('questionText'),
+            optionsGrid: document.querySelector('.options-grid'),
+            scoreDisplay: document.getElementById('currentScore'),
+            prizesList: document.querySelector('.prizes-list'),
+            helperBtns: document.querySelectorAll('.helper-btn'),
+            nameInput: document.getElementById('nameInput'),
+            nameError: document.getElementById('nameError'),
+            confirmAvatarBtn: document.getElementById('confirmAvatarBtn'),
+            themeToggleBtn: document.querySelector('.theme-toggle-btn'),
+            welcomeMessage: document.getElementById('welcomeMessage'),
+        };
+    }
+
+    bindEventListeners() {
+        document.getElementById('startPlayBtn').addEventListener('click', () => {
+            this.showScreen('avatar');
+        });
+
+        this.domElements.confirmAvatarBtn.addEventListener('click', () => {
+            this.showScreen('nameEntry');
+        });
+
+        document.getElementById('confirmNameBtn').addEventListener('click', () => {
+            this.showWelcomeScreen();
+        });
+
+        document.getElementById('welcomeConfirmBtn').addEventListener('click', () => {
+            this.startGame();
+        });
+
+        document.getElementById('showLeaderboardBtn').addEventListener('click', () => {
+            this.displayLeaderboard();
+        });
+
+        document.getElementById('backToStartBtn').addEventListener('click', () => {
+            this.showScreen('start');
+        });
+
+        this.domElements.themeToggleBtn.addEventListener('click', () => {
+            this.toggleTheme();
+        });
+        
+        document.getElementById('statsBtn').addEventListener('click', () => this.displayLeaderboard());
+        
+        document.querySelector('.open-sidebar-btn').addEventListener('click', () => {
+            this.toggleSidebar(true);
+        });
+        
+        document.querySelector('.close-sidebar-btn').addEventListener('click', () => {
+            this.toggleSidebar(false);
+        });
+
+        this.domElements.sidebarOverlay.addEventListener('click', () => this.toggleSidebar(false));
+        this.domElements.helperBtns.forEach(btn => btn.addEventListener('click', (e) => this.useHelper(e)));
+        document.getElementById('shareXBtn').addEventListener('click', () => this.shareOnX());
+        document.getElementById('shareInstagramBtn').addEventListener('click', () => this.shareOnInstagram());
+        this.domElements.nameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.showWelcomeScreen(); });
+    }
+    
+    populateAvatarGrid() {
+        const avatarGrid = document.querySelector('.avatar-grid');
+        avatarGrid.innerHTML = '';
+        for (let i = 1; i <= this.TOTAL_AVATARS; i++) {
+            const img = document.createElement('img');
+            img.src = `assets/avatars/avatar${i}.png`;
+            img.alt = `صورة رمزية ${i}`;
+            img.classList.add('avatar-option');
+            img.addEventListener('click', () => {
+                // تم حذف سطر الصوت من هنا
+                document.querySelectorAll('.avatar-option.selected').forEach(el => el.classList.remove('selected'));
+                img.classList.add('selected');
+                this.gameState.avatar = img.src;
+                this.domElements.confirmAvatarBtn.disabled = false;
+            });
+            avatarGrid.appendChild(img);
+        }
+    }
+    
+    // (جديد) إظهار شاشة الترحيب
+    showWelcomeScreen() {
+        const name = this.domElements.nameInput.value.trim();
+        if (name.length < 2) {
+            this.domElements.nameError.textContent = "الرجاء إدخال اسم صحيح (حرفين على الأقل).";
+            this.domElements.nameError.classList.add('show');
+            return;
+        }
+        this.domElements.nameError.classList.remove('show');
+        this.gameState.name = name;
+        this.domElements.welcomeMessage.innerHTML = `🌟 مرحبا بك يا ${name}! 🌟`;
+        this.showScreen('welcome');
+    }
+
+    async startGame() {
+        this.showScreen('loader');
+        try {
+            const response = await this.apiCall({
+                action: 'start',
+                deviceId: this.getDeviceId(),
+                name: this.gameState.name,
+            });
+
+            if (response && response.success) {
+                this.resetGameState(response.attemptId);
+                this.setupGameUI();
+                this.showScreen('game');
+                this.fetchQuestion();
+            } else {
+                const errorMsg = response && response.error === 'limit_reached'
+                    ? `لقد استنفدت محاولاتك اليومية (${this.LIMIT_PER_DAY}).`
+                    : "حدث خطأ عند بدء اللعبة.";
+                this.showToast(errorMsg, 'error');
+                this.showScreen('start');
+            }
+        } catch (error) {
+            console.error("Error starting game:", error);
+            this.showToast("حدث خطأ في الاتصال بالخادم.", "error");
+            this.showScreen('start');
+        }
+    }
+
+    shuffleQuestions() {
+        const shuffled = [...this.QUESTIONS];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+
+    fetchQuestion() {
+        if (this.gameState.shuffledQuestions.length === 0) {
+            this.gameState.shuffledQuestions = this.shuffleQuestions();
+        }
+        const currentQuestionData = this.gameState.shuffledQuestions[this.gameState.currentQuestion];
+        this.displayQuestion(currentQuestionData);
+    }
+
+    displayQuestion(questionData) {
+        this.answerSubmitted = false;
+        this.domElements.questionText.textContent = questionData.q;
+        document.getElementById('questionCounter').textContent = `السؤال ${this.gameState.currentQuestion + 1} / ${this.QUESTIONS.length}`;
+        this.domElements.optionsGrid.innerHTML = '';
+
+        // إنشاء مصفوفة من الأجوبة لتتبعها بعد الخلط
+        let answers = questionData.options.map((optionText, index) => ({
+            text: optionText,
+            isCorrect: index === questionData.correct
+        }));
+
+        // خلط (بعثرة) مصفوفة الأجوبة
+        for (let i = answers.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [answers[i], answers[j]] = [answers[j], answers[i]];
+        }
+        
+        // عرض الأجوبة المخلوطة
+        answers.forEach(answer => {
+            const button = document.createElement('button');
+            button.className = 'option-btn';
+            button.textContent = answer.text;
+            
+            // (تصحيح مهم) نضيف علامة على الزر الصحيح
+            if (answer.isCorrect) {
+                button.dataset.correct = 'true';
+            }
+            
+            // (تصحيح مهم) نرسل قيمة منطقية (true/false) فقط
+            button.addEventListener('click', () => this.checkAnswer(answer.isCorrect, button));
+            
+            this.domElements.optionsGrid.appendChild(button);
+        });
+
+        this.updateUI();
+        this.startTimer();
+    }
+
+checkAnswer(isCorrect, selectedButton) {
+        if (this.answerSubmitted) return;
+        this.answerSubmitted = true;
+        
+        clearInterval(this.timerInterval);
+        document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
+
+        if (isCorrect) {
+            selectedButton.classList.add('correct');
+            const pointsEarned = this.PRIZES[this.gameState.currentQuestion]?.points || 0;
+            this.updateScore(this.currentScoreValue + pointsEarned);
+        } else {
+            selectedButton.classList.add('wrong');
+            
+            // (تصحيح مهم) الآن يمكننا إيجاد الزر الصحيح وتظليله
+            const correctButton = this.domElements.optionsGrid.querySelector('[data-correct="true"]');
+            if (correctButton) {
+                correctButton.classList.add('correct');
+            }
+            this.gameState.wrongAnswers++;
+        }
+
+        this.gameState.currentQuestion++;
+        this.updateUI();
+
+        const isGameOver = this.gameState.wrongAnswers >= this.MAX_WRONG_ANSWERS || this.gameState.currentQuestion >= this.QUESTIONS.length;
+        
+        setTimeout(() => {
+            if (isGameOver) {
+                this.endGame();
+            } else {
+                this.fetchQuestion();
+            }
+        }, 2000);
+    }
+    
+    // (مُعدل) endGame لظهور النتائج فوراً
+    endGame() {
+        clearInterval(this.timerInterval);
+        const totalTimeSeconds = (new Date() - new Date(this.gameState.startTime)) / 1000;
+        const finalTitle = this.gameState.currentQuestion > 0 ? this.PRIZES[this.gameState.currentQuestion - 1].title : "لا يوجد";
+
+        // حفظ البيانات النهائية للمشاركة
+        this.gameState.finalStats = {
+            name: this.gameState.name,
+            title: finalTitle,
+            score: this.currentScoreValue,
+            time: this.formatTime(totalTimeSeconds)
+        };
+        
+        // إظهار النتائج فوراً
+        document.getElementById('finalName').textContent = this.gameState.finalStats.name;
+        document.getElementById('finalTitle').textContent = this.gameState.finalStats.title;
+        document.getElementById('finalScore').textContent = this.formatNumber(this.gameState.finalStats.score);
+        document.getElementById('totalTime').textContent = this.gameState.finalStats.time;
+        this.showScreen('end');
+        
+        // إرسال البيانات للخادم في الخلفية
+        this.apiCall({
+            action: 'end',
+            attemptId: this.gameState.attemptId,
+            name: this.gameState.name,
+            score: this.currentScoreValue,
+            finalTitle: finalTitle,
+            totalTime: totalTimeSeconds
+        }).catch(error => console.error("Failed to save score:", error));
+    }
+    
+useHelper(event) {
+        const btn = event.currentTarget;
+        const type = btn.dataset.type;
+        const cost = this.HELPER_COSTS[type];
+
+        if (this.currentScoreValue < cost) {
+            this.showToast("نقاطك غير كافية!", "error");
+            return;
+        }
+
+        this.updateScore(this.currentScoreValue - cost);
+        this.gameState.helpersUsed[type] = true;
+        btn.disabled = true;
+        this.showToast(`تم استخدام المساعدة!`, "success");
+
+        if (type === 'fiftyFifty') {
+            // (تصحيح 50:50) هذا هو المنطق الجديد والصحيح
+            const options = Array.from(this.domElements.optionsGrid.querySelectorAll('.option-btn'));
+            let wrongOptions = options.filter(btn => btn.dataset.correct !== 'true');
+            
+            wrongOptions.sort(() => 0.5 - Math.random());
+            if(wrongOptions.length > 1) {
+                wrongOptions[0].classList.add('hidden');
+                wrongOptions[1].classList.add('hidden');
+            }
+
+        } else if (type === 'freezeTime') {
+            this.isTimeFrozen = true;
+            document.querySelector('.timer-bar').classList.add('frozen');
+            setTimeout(() => {
+                this.isTimeFrozen = false;
+                document.querySelector('.timer-bar').classList.remove('frozen');
+            }, 10000);
+
+        } else if (type === 'changeQuestion') {
+            this.gameState.shuffledQuestions[this.gameState.currentQuestion] = this.backupQuestion;
+            this.fetchQuestion();
+        }
+        this.updateUI();
+    }
+
+    startTimer() {
+        clearInterval(this.timerInterval);
+        this.gameState.timeLeft = this.QUESTION_TIME;
+        const timerBar = document.querySelector('.timer-bar');
+        const timerDisplay = document.querySelector('.timer-text');
+
+        this.timerInterval = setInterval(() => {
+            if (this.isTimeFrozen) return;
+
+            this.gameState.timeLeft--;
+            timerDisplay.textContent = this.gameState.timeLeft;
+            timerBar.style.width = `${(this.gameState.timeLeft / this.QUESTION_TIME) * 100}%`;
+
+            if (this.gameState.timeLeft <= 0) {
+                clearInterval(this.timerInterval);
+                this.showToast("انتهى الوقت!", "error");
+                this.gameState.wrongAnswers++;
+                document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
+                
+                // (تصحيح مُضاف) استخدام الطريقة الصحيحة لإيجاد الإجابة
+                const correctButton = this.domElements.optionsGrid.querySelector('[data-correct="true"]');
+                if (correctButton) {
+                    correctButton.classList.add('correct');
+                }
+                
+                this.updateUI();
+                
+                setTimeout(() => {
+                    if (this.gameState.wrongAnswers >= this.MAX_WRONG_ANSWERS) {
+                        this.endGame();
+                    } else {
+                        // (تصحيح مُضاف) الانتقال للسؤال التالي عند انتهاء الوقت
+                        this.gameState.currentQuestion++;
+                        this.fetchQuestion();
+                    }
+                }, 2000);
+            }
+        }, 1000);
+    }    
+    updateScore(newScore) {
+        this.currentScoreValue = newScore;
+        this.domElements.scoreDisplay.textContent = this.formatNumber(this.currentScoreValue);
+        this.updateUI();
+    }
+
+    updateUI() {
+        document.getElementById('wrongAnswersCount').textContent = `${this.gameState.wrongAnswers} / ${this.MAX_WRONG_ANSWERS}`;
+        const currentTitle = this.gameState.currentQuestion > 0 ? this.PRIZES[this.gameState.currentQuestion - 1].title : "لا يوجد";
+        document.getElementById('currentTitle').textContent = currentTitle;
+
+        this.updatePrizesList();
+
+        this.domElements.helperBtns.forEach(btn => {
+            const type = btn.dataset.type;
+            btn.disabled = this.gameState.helpersUsed[type] || this.currentScoreValue < this.HELPER_COSTS[type];
+        });
+    }
+
+    generatePrizesList() {
+        this.domElements.prizesList.innerHTML = '';
+        [...this.PRIZES].reverse().forEach((prize, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>${this.PRIZES.length - index}. ${prize.title}</span> <strong>${this.formatNumber(prize.points)}</strong>`;
+            this.domElements.prizesList.appendChild(li);
+        });
+    }
+
+    updatePrizesList() {
+        const items = this.domElements.prizesList.querySelectorAll('li');
+        items.forEach((item, index) => {
+            item.classList.remove('current', 'past');
+            const prizeIndex = this.PRIZES.length - 1 - index;
+            if (prizeIndex === this.gameState.currentQuestion) {
+                item.classList.add('current');
+            } else if (prizeIndex < this.gameState.currentQuestion) {
+                item.classList.add('past');
+            }
+        });
+    }
+
+    async displayLeaderboard() {
+        this.showScreen('leaderboard');
+        const contentDiv = document.getElementById('leaderboardContent');
+        contentDiv.innerHTML = '<div class="spinner"></div>';
+
+        try {
+            const response = await this.apiCall({ action: 'getLeaderboard' });
+            if (response && response.success && response.leaderboard) {
+                let tableHTML = '<p>لوحة الصدارة فارغة حاليًا!</p>';
+                if (response.leaderboard.length > 0) {
+                    tableHTML = `<table class="leaderboard-table">
+                        <tr><th>الترتيب</th><th>الاسم</th><th>النقاط</th><th>اللقب</th></tr>
+                        ${response.leaderboard.map(row => `
+                            <tr>
+                                <td>${['🥇', '🥈', '🥉'][row[0] - 1] || row[0]}</td>
+                                <td>${row[1]}</td>
+                                <td>${this.formatNumber(row[2])}</td>
+                                <td>${row[3]}</td>
+                            </tr>`).join('')}
+                    </table>`;
+                }
+                contentDiv.innerHTML = tableHTML;
+            } else {
+                contentDiv.innerHTML = '<p>حدث خطأ في تحميل لوحة الصدارة.</p>';
+            }
+        } catch (error) {
+            console.error("Error loading leaderboard:", error);
+            contentDiv.innerHTML = '<p>حدث خطأ في تحميل لوحة الصدارة.</p>';
+        }
+    }
+    
+    // (مُعدل) getShareText لنص المشاركة
+    getShareText() {
+        const { name, title, score, time } = this.gameState.finalStats;
+        return `✨ نتائجي في مسابقة "من سيربح اللقب" ✨\n` +
+               `الاسم: ${name}\n` +
+               `اللقب: ${title}\n` +
+               `النقاط: ${this.formatNumber(score)}\n` +
+               `المدة: ${time}\n\n` +
+               `🔗 جرب حظك أنت أيضاً: https://abuqusayms.github.io/Tbate-Game/`;
+    }
+    
+    shareOnX() {
+        const text = encodeURIComponent(this.getShareText());
+        window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+    }
+
+    shareOnInstagram() {
+        navigator.clipboard.writeText(this.getShareText())
+            .then(() => this.showToast("تم نسخ النتيجة! الصقها في قصتك أو رسائلك على إنستغرام.", "success"))
+            .catch(() => this.showToast("فشل نسخ النتيجة.", "error"));
+    }
+
+    resetGameState(attemptId) {
+        this.gameState = {
+            deviceId: this.getDeviceId(),
+            attemptId: attemptId,
+            name: this.gameState.name,
+            avatar: this.gameState.avatar,
+            currentQuestion: 0,
+            wrongAnswers: 0,
+            startTime: new Date().toISOString(),
+            helpersUsed: { fiftyFifty: false, changeQuestion: false },
+            shuffledQuestions: [],
+        };
+        this.updateScore(0);
+    }
+
+    setupGameUI() {
+        document.getElementById('playerAvatar').src = this.gameState.avatar;
+        document.getElementById('playerName').textContent = this.gameState.name;
+    }
+
+    toggleTheme() {
+        const newTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.body.dataset.theme = newTheme;
+        localStorage.setItem('theme', newTheme);
+        this.domElements.themeToggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    }
+
+    loadTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.dataset.theme = savedTheme;
+        this.domElements.themeToggleBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // (مُعدل) لإصلاح خطأ aria-hidden عبر إدارة التركيز
+    toggleSidebar(open) {
+        // Cache the button that opens the sidebar
+        const openBtn = document.querySelector('.open-sidebar-btn');
+
+        if (open) {
+            this.domElements.sidebar.classList.add('open');
+            this.domElements.sidebarOverlay.classList.add('active');
+            openBtn.setAttribute('aria-expanded', 'true');
+            
+            // For better accessibility, move focus to the close button inside the sidebar
+            setTimeout(() => {
+                const closeBtn = this.domElements.sidebar.querySelector('.close-sidebar-btn');
+                if (closeBtn) {
+                    closeBtn.focus();
+                }
+            }, 100); // A small delay ensures the sidebar is visible before focusing
+
+        } else {
+            this.domElements.sidebar.classList.remove('open');
+            this.domElements.sidebarOverlay.classList.remove('active');
+            openBtn.setAttribute('aria-expanded', 'false');
+            
+            // (The Fix) When closing, return focus to the button that opened it
+            if (openBtn) {
+                openBtn.focus();
+            }
+        }
+    }
+    
+    // (مُعدل) showScreen لإصلاح خطأ aria
+    showScreen(screenName) {
+        if (document.activeElement) document.activeElement.blur(); // (جديد) إزالة التركيز
+        
+        Object.values(this.domElements.screens).forEach(screen => {
+            screen.classList.remove('active');
+            screen.setAttribute('aria-hidden', 'true');
+        });
+        const activeScreen = this.domElements.screens[screenName];
+        if (activeScreen) {
+            activeScreen.classList.add('active');
+            activeScreen.setAttribute('aria-hidden', 'false');
+            // نقل التركيز إلى أول عنصر تفاعلي لتحسين الوصولية
+            const firstFocusable = activeScreen.querySelector('button, [href], input, select, textarea');
+            if(firstFocusable) firstFocusable.focus();
+        }
+    }
+
+    hideLoader() {
+        this.domElements.screens.loader.classList.remove('active');
+    }
+
+    showToast(message, type = 'info') {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        toast.setAttribute('role', 'alert');
+        toastContainer.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    async apiCall(payload) {
+        try {
+            const response = await fetch(this.API_URL, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return await response.json();
+        } catch (error) {
+            console.error('API Error:', error);
+            throw error;
+        }
+    }
+
+    getDeviceId() {
+        let id = localStorage.getItem('deviceId');
+        if (!id) {
+            id = `id_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            localStorage.setItem('deviceId', id);
+        }
+        return id;
+    }
+    
+    // (جديد) تنسيق الوقت
+    formatTime(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = Math.floor(totalSeconds % 60);
+        if (minutes > 0) {
+            return `${minutes} دقيقة و ${seconds} ثانية`;
+        }
+        return `${seconds} ثانية`;
+    }
+
+    formatNumber(num) {
+        return new Intl.NumberFormat('ar-EG').format(num);
+    }
+
+// (جديد) دالة لعرض تكاليف المساعدات
+    displayHelperCosts() {
+        this.domElements.helperBtns.forEach(btn => {
+            const type = btn.dataset.type;
+            const cost = this.HELPER_COSTS[type];
+            if (cost) {
+                const costEl = btn.querySelector('.helper-cost');
+                if (costEl) {
+                    costEl.textContent = `(${cost})`;
+                }
+            }
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    new QuizGame();
+});
