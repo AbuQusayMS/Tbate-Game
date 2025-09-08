@@ -1,12 +1,11 @@
 class QuizGame {
     constructor() {
         this.API_URL = "https://script.google.com/macros/s/AKfycbxswUSDuszaAyDlNBCi3ugsu11NQW6g0vu1BQI0XM58xbTk8G5eE5gV8PNSbSshCmkBDw/exec";
-        this.QUESTION_TIME = 60;
+        this.QUESTION_TIME = 80;
         this.TOTAL_AVATARS = 16;
-        this.LIMIT_PER_DAY = 1;
+        this.LIMIT_PER_DAY = 2; // Set the number of daily attempts here
         this.MAX_WRONG_ANSWERS = 3;
 
-        // (مُعدل) فصل السؤال الاحتياط
         const allQuestions = [
             { q: "سؤال 1", options: ["خطأ", "خطأ", "صح", "خطأ"], correct: 2 },
             { q: "سؤال 2", options: ["صح", "خطأ", "خطأ", "خطأ"], correct: 0 },
@@ -24,37 +23,28 @@ class QuizGame {
             { q: "سؤال 14", options: ["خطأ", "صح", "خطأ", "خطأ"], correct: 1 },
             { q: "سؤال 15", options: ["صح", "خطأ", "خطأ", "خطأ"], correct: 0 },
             { q: "سؤال 16", options: ["خطأ", "خطأ", "صح", "خطأ"], correct: 2 }
-        ];ش
+        ];
         
         this.backupQuestion = allQuestions.pop();
         this.QUESTIONS = allQuestions;
 
         this.PRIZES = [
-            { points: 100, title: "كاديل" },
-            { points: 200, title: "سيريس" },
-            { points: 300, title: "اوتو" },
-            { points: 500, title: "ميكا" },
-            { points: 1000, title: "غراي" },
-            { points: 2000, title: "بايرون" },
-            { points: 4000, title: "سيلفي" },
-            { points: 8000, title: "فاراي" },
-            { points: 16000, title: "شول" },
-            { points: 32000, title: "الدير" },
-            { points: 64000, title: "ويندسوم" },
-            { points: 125000, title: "مورداين" },
-            { points: 250000, title: "كيزيس" },
-            { points: 500000, title: "أغرونا" },
+            { points: 100, title: "كاديل" }, { points: 200, title: "سيريس" },
+            { points: 300, title: "اوتو" }, { points: 500, title: "ميكا" },
+            { points: 1000, title: "غراي" }, { points: 2000, title: "بايرون" },
+            { points: 4000, title: "سيلفي" }, { points: 8000, title: "فاراي" },
+            { points: 16000, title: "شول" }, { points: 32000, title: "الدير" },
+            { points: 64000, title: "ويندسوم" }, { points: 125000, title: "مورداين" },
+            { points: 250000, title: "كيزيس" }, { points: 500000, title: "أغرونا" },
             { points: 1000000, title: "أرثر" }
         ];
-
+        
         this.HELPER_COSTS = {
-           fiftyFifty: 100,
-           freezeTime: 100,
-           changeQuestion: 100
+            fiftyFifty: 100,
+            freezeTime: 100,
+            changeQuestion: 100
         };
 
-        // --- (هذا هو التصحيح) ---
-        // كل هذه الأسطر يجب أن تكون هنا بالداخل
         this.isTimeFrozen = false;
         this.gameState = {};
         this.currentScoreValue = 0;
@@ -62,16 +52,15 @@ class QuizGame {
         this.answerSubmitted = false;
         this.domElements = {};
 
-        // هذا السطر يستدعي الدالة init ويجب أن يكون آخر شيء
         this.init();
-    } // <-- نهاية الـ constructor
+    }
 
     init() {
         this.cacheDomElements();
         this.bindEventListeners();
         this.populateAvatarGrid();
         this.generatePrizesList();
-        this.displayHelperCosts(); // (جديد) عرض تكاليف المساعدات
+        this.displayHelperCosts();
         this.loadTheme();
         this.showScreen('start');
         this.hideLoader();
@@ -89,7 +78,6 @@ class QuizGame {
                 end: document.getElementById('endScreen'),
                 leaderboard: document.getElementById('leaderboardScreen'),
             },
-            // تم حذف كائن الأصوات من هنا
             sidebar: document.querySelector('.sidebar'),
             sidebarOverlay: document.querySelector('.sidebar-overlay'),
             questionText: document.getElementById('questionText'),
@@ -102,48 +90,24 @@ class QuizGame {
             confirmAvatarBtn: document.getElementById('confirmAvatarBtn'),
             themeToggleBtn: document.querySelector('.theme-toggle-btn'),
             welcomeMessage: document.getElementById('welcomeMessage'),
+            cooldownContainer: document.getElementById('cooldownContainer'),
+            cooldownTimer: document.getElementById('cooldownTimer'),
+            attemptsCount: document.getElementById('attemptsCount'),
+            attemptsLeft: document.getElementById('attemptsLeft'),
         };
     }
 
     bindEventListeners() {
-        document.getElementById('startPlayBtn').addEventListener('click', () => {
-            this.showScreen('avatar');
-        });
-
-        this.domElements.confirmAvatarBtn.addEventListener('click', () => {
-            this.showScreen('nameEntry');
-        });
-
-        document.getElementById('confirmNameBtn').addEventListener('click', () => {
-            this.showWelcomeScreen();
-        });
-
-        document.getElementById('welcomeConfirmBtn').addEventListener('click', () => {
-            this.startGame();
-        });
-
-        document.getElementById('showLeaderboardBtn').addEventListener('click', () => {
-            this.displayLeaderboard();
-        });
-
-        document.getElementById('backToStartBtn').addEventListener('click', () => {
-            this.showScreen('start');
-        });
-
-        this.domElements.themeToggleBtn.addEventListener('click', () => {
-            this.toggleTheme();
-        });
-        
+        document.getElementById('startPlayBtn').addEventListener('click', () => this.showScreen('avatar'));
+        this.domElements.confirmAvatarBtn.addEventListener('click', () => this.showScreen('nameEntry'));
+        document.getElementById('confirmNameBtn').addEventListener('click', () => this.showWelcomeScreen());
+        document.getElementById('welcomeConfirmBtn').addEventListener('click', () => this.startGame());
+        document.getElementById('showLeaderboardBtn').addEventListener('click', () => this.displayLeaderboard());
+        document.getElementById('backToStartBtn').addEventListener('click', () => this.showScreen('start'));
+        this.domElements.themeToggleBtn.addEventListener('click', () => this.toggleTheme());
         document.getElementById('statsBtn').addEventListener('click', () => this.displayLeaderboard());
-        
-        document.querySelector('.open-sidebar-btn').addEventListener('click', () => {
-            this.toggleSidebar(true);
-        });
-        
-        document.querySelector('.close-sidebar-btn').addEventListener('click', () => {
-            this.toggleSidebar(false);
-        });
-
+        document.querySelector('.open-sidebar-btn').addEventListener('click', () => this.toggleSidebar(true));
+        document.querySelector('.close-sidebar-btn').addEventListener('click', () => this.toggleSidebar(false));
         this.domElements.sidebarOverlay.addEventListener('click', () => this.toggleSidebar(false));
         this.domElements.helperBtns.forEach(btn => btn.addEventListener('click', (e) => this.useHelper(e)));
         document.getElementById('shareXBtn').addEventListener('click', () => this.shareOnX());
@@ -160,7 +124,6 @@ class QuizGame {
             img.alt = `صورة رمزية ${i}`;
             img.classList.add('avatar-option');
             img.addEventListener('click', () => {
-                // تم حذف سطر الصوت من هنا
                 document.querySelectorAll('.avatar-option.selected').forEach(el => el.classList.remove('selected'));
                 img.classList.add('selected');
                 this.gameState.avatar = img.src;
@@ -170,7 +133,6 @@ class QuizGame {
         }
     }
     
-    // (جديد) إظهار شاشة الترحيب
     showWelcomeScreen() {
         const name = this.domElements.nameInput.value.trim();
         if (name.length < 2) {
@@ -181,6 +143,11 @@ class QuizGame {
         this.domElements.nameError.classList.remove('show');
         this.gameState.name = name;
         this.domElements.welcomeMessage.innerHTML = `🌟 مرحبا بك يا ${name}! 🌟`;
+        
+        if (this.domElements.attemptsCount) {
+            this.domElements.attemptsCount.textContent = this.LIMIT_PER_DAY;
+        }
+
         this.showScreen('welcome');
     }
 
@@ -194,15 +161,19 @@ class QuizGame {
             });
 
             if (response && response.success) {
+                document.getElementById('startPlayBtn').disabled = false;
+                this.domElements.cooldownContainer.style.display = 'none';
+
                 this.resetGameState(response.attemptId);
+                this.gameState.attemptsLeft = response.attemptsLeft;
                 this.setupGameUI();
                 this.showScreen('game');
                 this.fetchQuestion();
+            } else if (response && response.error === 'limit_reached') {
+                this.showScreen('start');
+                this.startCooldownTimer(response.cooldownEnd);
             } else {
-                const errorMsg = response && response.error === 'limit_reached'
-                    ? `لقد استنفدت محاولاتك اليومية (${this.LIMIT_PER_DAY}).`
-                    : "حدث خطأ عند بدء اللعبة.";
-                this.showToast(errorMsg, 'error');
+                this.showToast("حدث خطأ عند بدء اللعبة.", 'error');
                 this.showScreen('start');
             }
         } catch (error) {
@@ -235,30 +206,25 @@ class QuizGame {
         document.getElementById('questionCounter').textContent = `السؤال ${this.gameState.currentQuestion + 1} / ${this.QUESTIONS.length}`;
         this.domElements.optionsGrid.innerHTML = '';
 
-        // إنشاء مصفوفة من الأجوبة لتتبعها بعد الخلط
         let answers = questionData.options.map((optionText, index) => ({
             text: optionText,
             isCorrect: index === questionData.correct
         }));
 
-        // خلط (بعثرة) مصفوفة الأجوبة
         for (let i = answers.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [answers[i], answers[j]] = [answers[j], answers[i]];
         }
         
-        // عرض الأجوبة المخلوطة
         answers.forEach(answer => {
             const button = document.createElement('button');
             button.className = 'option-btn';
             button.textContent = answer.text;
             
-            // (تصحيح مهم) نضيف علامة على الزر الصحيح
             if (answer.isCorrect) {
                 button.dataset.correct = 'true';
             }
             
-            // (تصحيح مهم) نرسل قيمة منطقية (true/false) فقط
             button.addEventListener('click', () => this.checkAnswer(answer.isCorrect, button));
             
             this.domElements.optionsGrid.appendChild(button);
@@ -268,7 +234,7 @@ class QuizGame {
         this.startTimer();
     }
 
-checkAnswer(isCorrect, selectedButton) {
+    checkAnswer(isCorrect, selectedButton) {
         if (this.answerSubmitted) return;
         this.answerSubmitted = true;
         
@@ -282,7 +248,6 @@ checkAnswer(isCorrect, selectedButton) {
         } else {
             selectedButton.classList.add('wrong');
             
-            // (تصحيح مهم) الآن يمكننا إيجاد الزر الصحيح وتظليله
             const correctButton = this.domElements.optionsGrid.querySelector('[data-correct="true"]');
             if (correctButton) {
                 correctButton.classList.add('correct');
@@ -304,13 +269,11 @@ checkAnswer(isCorrect, selectedButton) {
         }, 2000);
     }
     
-    // (مُعدل) endGame لظهور النتائج فوراً
     endGame() {
         clearInterval(this.timerInterval);
         const totalTimeSeconds = (new Date() - new Date(this.gameState.startTime)) / 1000;
         const finalTitle = this.gameState.currentQuestion > 0 ? this.PRIZES[this.gameState.currentQuestion - 1].title : "لا يوجد";
 
-        // حفظ البيانات النهائية للمشاركة
         this.gameState.finalStats = {
             name: this.gameState.name,
             title: finalTitle,
@@ -318,17 +281,16 @@ checkAnswer(isCorrect, selectedButton) {
             time: this.formatTime(totalTimeSeconds)
         };
         
-        // إظهار النتائج فوراً
         document.getElementById('finalName').textContent = this.gameState.finalStats.name;
         document.getElementById('finalTitle').textContent = this.gameState.finalStats.title;
         document.getElementById('finalScore').textContent = this.formatNumber(this.gameState.finalStats.score);
         document.getElementById('totalTime').textContent = this.gameState.finalStats.time;
         this.showScreen('end');
         
-        // إرسال البيانات للخادم في الخلفية
         this.apiCall({
             action: 'end',
             attemptId: this.gameState.attemptId,
+            deviceId: this.gameState.deviceId,
             name: this.gameState.name,
             score: this.currentScoreValue,
             finalTitle: finalTitle,
@@ -336,7 +298,7 @@ checkAnswer(isCorrect, selectedButton) {
         }).catch(error => console.error("Failed to save score:", error));
     }
     
-useHelper(event) {
+    useHelper(event) {
         const btn = event.currentTarget;
         const type = btn.dataset.type;
         const cost = this.HELPER_COSTS[type];
@@ -352,7 +314,6 @@ useHelper(event) {
         this.showToast(`تم استخدام المساعدة!`, "success");
 
         if (type === 'fiftyFifty') {
-            // (تصحيح 50:50) هذا هو المنطق الجديد والصحيح
             const options = Array.from(this.domElements.optionsGrid.querySelectorAll('.option-btn'));
             let wrongOptions = options.filter(btn => btn.dataset.correct !== 'true');
             
@@ -361,7 +322,6 @@ useHelper(event) {
                 wrongOptions[0].classList.add('hidden');
                 wrongOptions[1].classList.add('hidden');
             }
-
         } else if (type === 'freezeTime') {
             this.isTimeFrozen = true;
             document.querySelector('.timer-bar').classList.add('frozen');
@@ -369,7 +329,6 @@ useHelper(event) {
                 this.isTimeFrozen = false;
                 document.querySelector('.timer-bar').classList.remove('frozen');
             }, 10000);
-
         } else if (type === 'changeQuestion') {
             this.gameState.shuffledQuestions[this.gameState.currentQuestion] = this.backupQuestion;
             this.fetchQuestion();
@@ -396,7 +355,6 @@ useHelper(event) {
                 this.gameState.wrongAnswers++;
                 document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
                 
-                // (تصحيح مُضاف) استخدام الطريقة الصحيحة لإيجاد الإجابة
                 const correctButton = this.domElements.optionsGrid.querySelector('[data-correct="true"]');
                 if (correctButton) {
                     correctButton.classList.add('correct');
@@ -408,14 +366,14 @@ useHelper(event) {
                     if (this.gameState.wrongAnswers >= this.MAX_WRONG_ANSWERS) {
                         this.endGame();
                     } else {
-                        // (تصحيح مُضاف) الانتقال للسؤال التالي عند انتهاء الوقت
                         this.gameState.currentQuestion++;
                         this.fetchQuestion();
                     }
                 }, 2000);
             }
         }, 1000);
-    }    
+    }
+    
     updateScore(newScore) {
         this.currentScoreValue = newScore;
         this.domElements.scoreDisplay.textContent = this.formatNumber(this.currentScoreValue);
@@ -427,11 +385,16 @@ useHelper(event) {
         const currentTitle = this.gameState.currentQuestion > 0 ? this.PRIZES[this.gameState.currentQuestion - 1].title : "لا يوجد";
         document.getElementById('currentTitle').textContent = currentTitle;
 
+        if (this.domElements.attemptsLeft) {
+            this.domElements.attemptsLeft.textContent = `${this.gameState.attemptsLeft || this.LIMIT_PER_DAY} / ${this.LIMIT_PER_DAY}`;
+        }
+
         this.updatePrizesList();
 
         this.domElements.helperBtns.forEach(btn => {
             const type = btn.dataset.type;
-            btn.disabled = this.gameState.helpersUsed[type] || this.currentScoreValue < this.HELPER_COSTS[type];
+            const helperIsUsed = this.gameState.helpersUsed && this.gameState.helpersUsed[type];
+            btn.disabled = helperIsUsed || this.currentScoreValue < this.HELPER_COSTS[type];
         });
     }
 
@@ -488,7 +451,6 @@ useHelper(event) {
         }
     }
     
-    // (مُعدل) getShareText لنص المشاركة
     getShareText() {
         const { name, title, score, time } = this.gameState.finalStats;
         return `✨ نتائجي في مسابقة "من سيربح اللقب" ✨\n` +
@@ -519,7 +481,7 @@ useHelper(event) {
             currentQuestion: 0,
             wrongAnswers: 0,
             startTime: new Date().toISOString(),
-            helpersUsed: { fiftyFifty: false, changeQuestion: false },
+            helpersUsed: { fiftyFifty: false, freezeTime: false, changeQuestion: false },
             shuffledQuestions: [],
         };
         this.updateScore(0);
@@ -543,39 +505,30 @@ useHelper(event) {
         this.domElements.themeToggleBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
     }
 
-    // (مُعدل) لإصلاح خطأ aria-hidden عبر إدارة التركيز
     toggleSidebar(open) {
-        // Cache the button that opens the sidebar
         const openBtn = document.querySelector('.open-sidebar-btn');
-
         if (open) {
             this.domElements.sidebar.classList.add('open');
             this.domElements.sidebarOverlay.classList.add('active');
             openBtn.setAttribute('aria-expanded', 'true');
-            
-            // For better accessibility, move focus to the close button inside the sidebar
             setTimeout(() => {
                 const closeBtn = this.domElements.sidebar.querySelector('.close-sidebar-btn');
                 if (closeBtn) {
                     closeBtn.focus();
                 }
-            }, 100); // A small delay ensures the sidebar is visible before focusing
-
+            }, 100);
         } else {
             this.domElements.sidebar.classList.remove('open');
             this.domElements.sidebarOverlay.classList.remove('active');
             openBtn.setAttribute('aria-expanded', 'false');
-            
-            // (The Fix) When closing, return focus to the button that opened it
             if (openBtn) {
                 openBtn.focus();
             }
         }
     }
     
-    // (مُعدل) showScreen لإصلاح خطأ aria
     showScreen(screenName) {
-        if (document.activeElement) document.activeElement.blur(); // (جديد) إزالة التركيز
+        if (document.activeElement) document.activeElement.blur();
         
         Object.values(this.domElements.screens).forEach(screen => {
             screen.classList.remove('active');
@@ -585,7 +538,6 @@ useHelper(event) {
         if (activeScreen) {
             activeScreen.classList.add('active');
             activeScreen.setAttribute('aria-hidden', 'false');
-            // نقل التركيز إلى أول عنصر تفاعلي لتحسين الوصولية
             const firstFocusable = activeScreen.querySelector('button, [href], input, select, textarea');
             if(firstFocusable) firstFocusable.focus();
         }
@@ -630,7 +582,6 @@ useHelper(event) {
         return id;
     }
     
-    // (جديد) تنسيق الوقت
     formatTime(totalSeconds) {
         const minutes = Math.floor(totalSeconds / 60);
         const seconds = Math.floor(totalSeconds % 60);
@@ -644,7 +595,6 @@ useHelper(event) {
         return new Intl.NumberFormat('ar-EG').format(num);
     }
 
-// (جديد) دالة لعرض تكاليف المساعدات
     displayHelperCosts() {
         this.domElements.helperBtns.forEach(btn => {
             const type = btn.dataset.type;
@@ -656,6 +606,33 @@ useHelper(event) {
                 }
             }
         });
+    }
+
+    startCooldownTimer(cooldownEndTimeISO) {
+        const cooldownEndTime = new Date(cooldownEndTimeISO);
+        
+        this.domElements.cooldownContainer.style.display = 'block';
+        document.getElementById('startPlayBtn').disabled = true;
+
+        const timerInterval = setInterval(() => {
+            const now = new Date();
+            const remainingTime = cooldownEndTime - now;
+
+            if (remainingTime <= 0) {
+                clearInterval(timerInterval);
+                this.domElements.cooldownContainer.style.display = 'none';
+                document.getElementById('startPlayBtn').disabled = false;
+                return;
+            }
+
+            const hours = Math.floor((remainingTime / (1000 * 60 * 60)));
+            const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
+            const seconds = Math.floor((remainingTime / 1000) % 60);
+
+            this.domElements.cooldownTimer.textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        }, 1000);
     }
 }
 
