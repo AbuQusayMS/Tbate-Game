@@ -1,5 +1,5 @@
 :root {
-  /* نظام الألوان للوضع الداكن */
+  /* Dark Theme Colors */
   --color-dark-bg: #1a1a2e;
   --color-dark-primary: #16213e;
   --color-dark-secondary: #0f3460;
@@ -10,7 +10,7 @@
   --color-dark-success: #10b981;
   --color-dark-error: #ef4444;
 
-  /* نظام الألوان للوضع الفاتح */
+  /* Light Theme Colors */
   --color-light-bg: #f8fafc;
   --color-light-primary: #ffffff;
   --color-light-secondary: #e2e8f0;
@@ -21,18 +21,18 @@
   --color-light-success: #059669;
   --color-light-error: #dc2626;
 
-  /* ألوان متعادلة */
+  /* Neutral Colors */
   --color-white: #ffffff;
   --color-black: #000000;
   --color-gray-500: #6b7280;
 
-  /* الظلال */
+  /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-  /* الخطوط */
+  /* Typography */
   --font-family: 'Cairo', sans-serif;
   --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
@@ -40,7 +40,7 @@
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 1.875rem;
 
-  /* المسافات */
+  /* Spacing */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -49,18 +49,17 @@
   --space-8: 2rem;
   --space-10: 2.5rem;
 
-  /* الأنصاف */
+  /* Radius */
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
   --radius-2xl: 1rem;
   --radius-full: 9999px;
 
-  /* التوقيتات */
+  /* Transitions */
   --transition-fast: 150ms ease;
   --transition-normal: 300ms ease;
 }
 
-/* نظام الألوان للوضع الداكن (الإفتراضي) */
 body[data-theme='dark'] {
   --bg-color: var(--color-dark-bg);
   --primary-color: var(--color-dark-primary);
@@ -73,7 +72,6 @@ body[data-theme='dark'] {
   --error-color: var(--color-dark-error);
 }
 
-/* نظام الألوان للوضع الفاتح */
 body[data-theme='light'] {
   --bg-color: var(--color-light-bg);
   --primary-color: var(--color-light-primary);
@@ -86,7 +84,6 @@ body[data-theme='light'] {
   --error-color: var(--color-light-error);
 }
 
-/* إعادة الضبط الأساسية */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -109,7 +106,6 @@ body {
   transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
-/* النص المخفي للقراء فقط */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -122,7 +118,6 @@ body {
   border: 0;
 }
 
-/* نظام الشاشات */
 .screen {
   position: fixed;
   top: 0;
@@ -149,7 +144,6 @@ body {
   z-index: 10;
 }
 
-/* صندوق المحتوى الأساسي */
 .content-box {
   background-color: var(--primary-color);
   border-radius: var(--radius-2xl);
@@ -165,7 +159,6 @@ body {
   margin-bottom: var(--space-6);
 }
 
-/* العناوين */
 .game-title {
   font-size: var(--font-size-3xl);
   font-weight: 900;
@@ -182,7 +175,6 @@ h3 {
   font-size: var(--font-size-xl);
 }
 
-/* (جديد) تنسيق شاشة الترحيب */
 .welcome-content {
     text-align: right;
     margin: var(--space-6) 0;
@@ -212,8 +204,6 @@ h3 {
     text-decoration: underline;
 }
 
-
-/* (مُعدل) تصميم الأزرار */
 .button-group {
   display: flex;
   flex-direction: column;
@@ -221,7 +211,6 @@ h3 {
   margin-top: var(--space-6);
 }
 
-/* الزر الرئيسي */
 .btn-main {
   background-color: var(--gold-color);
   color: var(--color-black);
@@ -241,7 +230,6 @@ h3 {
   box-shadow: var(--shadow-lg);
 }
 
-/* الزر الثانوي */
 .btn-secondary {
   background-color: var(--secondary-color);
   color: var(--text-color);
@@ -265,7 +253,6 @@ button:disabled {
   transform: none !important;
 }
 
-/* مجموعة الإدخال */
 .input-group {
   margin-bottom: var(--space-6);
 }
@@ -293,7 +280,6 @@ input[type="text"]:focus {
   display: block;
 }
 
-/* شبكة الصور الرمزية */
 .avatar-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
@@ -317,7 +303,6 @@ input[type="text"]:focus {
   transform: scale(1.1);
 }
 
-/* الشريط الجانبي */
 .sidebar {
   position: fixed;
   top: 0;
@@ -386,7 +371,6 @@ input[type="text"]:focus {
   opacity: 0.6;
 }
 
-/* شاشة اللعبة */
 #gameContainer {
   justify-content: flex-start;
   padding: var(--space-4);
@@ -440,7 +424,6 @@ input[type="text"]:focus {
   font-weight: 700;
 }
 
-/* (مُعدل) تنسيق معلومات اللاعب على الهاتف */
 .player-stats {
   display: flex;
   flex-direction: column;
@@ -453,14 +436,12 @@ input[type="text"]:focus {
   color: var(--gold-color);
 }
 
-/* (مُعدل) تنسيق المساعدات لإعادة الشبكة الثلاثية */
 .helpers {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* إعادة الشبكة إلى 3 أعمدة */
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-3);
 }
 
-/* (مُعدل) زر المساعدة ليشمل التكلفة */
 .helper-btn {
   padding: var(--space-2);
   background-color: var(--secondary-color);
@@ -469,14 +450,13 @@ input[type="text"]:focus {
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: all var(--transition-fast);
-  display: flex; /* لتوسيط المحتوى */
-  flex-direction: column; /* لترتيب الأيقونة فوق التكلفة */
-  align-items: center; /* توسيط أفقي */
-  justify-content: center; /* توسيط عمودي */
-  font-size: 1.1rem; /* تكبير الأيقونة والنص */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
 }
 
-/* (جديد) تنسيق تكلفة المساعدة */
 .helper-cost {
   font-size: 0.75rem;
   font-weight: bold;
@@ -488,7 +468,6 @@ input[type="text"]:focus {
   color: var(--color-white);
 }
 
-/* (مُعدل) المؤقت لضمان ظهوره على الهاتف */
 .timer-container {
     width: 100%;
     background-color: var(--secondary-color);
@@ -496,8 +475,8 @@ input[type="text"]:focus {
     margin: var(--space-4) 0;
     position: relative;
     height: 2rem;
-    min-height: 2rem; /* ضمان عدم انكماش الشريط */
-    flex-shrink: 0; /* منع الانكماش داخل حاوية flex */
+    min-height: 2rem;
+    flex-shrink: 0;
     overflow: hidden;
     border: 2px solid var(--border-color);
 }
@@ -507,6 +486,9 @@ input[type="text"]:focus {
   border-radius: var(--radius-full);
   transition: width 1s linear;
   width: 100%;
+}
+.timer-bar.frozen {
+    background: #3b82f6;
 }
 .timer-text {
   position: absolute;
@@ -518,7 +500,6 @@ input[type="text"]:focus {
   text-shadow: 1px 1px 2px var(--color-black);
 }
 
-/* المحتوى الرئيسي */
 .main-content {
   width: 100%;
 }
@@ -540,7 +521,6 @@ input[type="text"]:focus {
   line-height: 1.5;
 }
 
-/* (مُعدل) شبكة الخيارات */
 .options-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -582,7 +562,6 @@ input[type="text"]:focus {
   opacity: 0;
 }
 
-/* شاشة النهاية */
 .final-stats {
   text-align: right;
   margin-bottom: var(--space-6);
@@ -621,49 +600,55 @@ input[type="text"]:focus {
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
 }
 
-/* ============================
-   إصلاح تمرير لوحة الصدارة
-   ============================ */
-
-/* جديد: إلغاء التوسيط العمودي لشاشة لوحة الصدارة للسماح بالتمرير */
-#leaderboardScreen {
-    align-items: flex-start; /* بدلًا من التوسيط، ابدأ من الأعلى */
-    padding-top: 5vh;      /* أضف مسافة من أعلى الشاشة */
-    padding-bottom: 5vh;   /* أضف مسافة من أسفل الشاشة */
+.cooldown-container {
+    background-color: var(--secondary-color);
+    padding: var(--space-4) var(--space-6);
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--space-6);
+    border: 1px solid var(--border-color);
 }
 
-/* جديد: جعل الصندوق يأخذ الارتفاع المتاح ويستخدم Flexbox */
+.cooldown-timer {
+    font-size: var(--font-size-2xl);
+    color: var(--accent-color);
+    letter-spacing: 2px;
+    margin-top: var(--space-2);
+}
+
+#leaderboardScreen {
+    align-items: flex-start;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+}
+
 #leaderboardScreen .content-box {
     display: flex;
     flex-direction: column;
     max-height: 100%;
-    width: 100%;
+    width: 90%;
 }
 
-/* مُعدل: إضافة خصائص التمرير إلى القاعدة الموجودة */
 #leaderboardContent {
     width: 100%;
-    overflow-y: auto;  /* <-- الخاصية الأهم للتمرير */
-    flex-grow: 1;      /* <-- لجعلها تملأ المساحة */
+    overflow-y: auto;
+    flex-grow: 1;
 }
 
-/* هذا الكود يبقى كما هو */
 .leaderboard-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: var(--space-6) 0;
-    font-size: 0.875rem;
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-6) 0;
+  font-size: 0.875rem;
 }
 .leaderboard-table th, .leaderboard-table td {
-    padding: var(--space-3);
-    text-align: center;
-    border-bottom: 1px solid var(--border-color);
+  padding: var(--space-3);
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
 }
 .leaderboard-table th {
-    background-color: var(--secondary-color);
+  background-color: var(--secondary-color);
 }
 
-/* نظام الإشعارات (Toasts) */
 .toast-container {
   position: fixed;
   top: var(--space-4);
@@ -694,7 +679,6 @@ input[type="text"]:focus {
   to { transform: translateY(-100%); opacity: 0; }
 }
 
-/* Spinner */
 .spinner {
   width: 2.5rem;
   height: 2.5rem;
@@ -707,7 +691,6 @@ input[type="text"]:focus {
   100% { transform: rotate(360deg); }
 }
 
-/* التجاوب مع مختلف أحجام الشاشات */
 @media (min-width: 768px) {
   .screen {
       padding: var(--space-8);
@@ -721,7 +704,7 @@ input[type="text"]:focus {
     justify-content: space-between;
     align-items: center;
   }
-  /* (مُعدل) إعادة تنسيق معلومات اللاعب للشاشات الكبيرة */
+
   .player-info {
       flex-grow: 1;
   }
