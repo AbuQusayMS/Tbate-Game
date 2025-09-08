@@ -48,6 +48,12 @@
                 </h1>
             </header>
             
+            <div id="cooldownContainer" class="cooldown-container" style="display: none;">
+                <p>لقد استنفدت محاولاتك.</p>
+                <p>يمكنك اللعب مرة أخرى بعد:</p>
+                <h3 id="cooldownTimer" class="cooldown-timer"></h3>
+            </div>
+            
             <div class="button-group">
                 <button id="startPlayBtn" class="btn-main">
                     ابدأ اللعب
@@ -66,7 +72,7 @@
             </header>
             
             <div class="avatar-grid" role="group" aria-label="خيارات الصور الرمزية">
-                </div>
+            </div>
             
             <div class="button-group">
                 <button id="confirmAvatarBtn" class="btn-main" disabled>
@@ -114,7 +120,7 @@
                 <p>📌 قبل أن تبدأ رحلتك، تذكّر:</p>
                 <ul>
                     <li>اكتب اسمك المعروف على منصة إكس أو إنستغرام.</li>
-                    <li>لديك فقط محاولة واحدة يومياً، فاستغلها بحكمة.</li>
+                    <li>لديك <strong id="attemptsCount" style="color: var(--gold-color);"></strong> محاولات يوميًا، فاستغلها بحكمة.</li>
                     <li>لا تتسرع في الإجابة… فالوقت بين يديك.</li>
                     <li>في حال واجهت أي مشكلة، راسل المسؤول القارئ الوحيد على <a href="https://x.com/_MS_AbuQusay?t=OcQrklIZ9itdajVI5YuKuw&s=09" target="_blank" rel="noopener noreferrer">إكس</a> أو <a href="https://www.instagram.com/ms_abuqusay?igsh=MXc2ZWptd2FkamN0" target="_blank" rel="noopener noreferrer">إنستغرام</a>.</li>
                 </ul>
@@ -162,6 +168,7 @@
                     <div class="stat-item">اللقب: <strong id="currentTitle" aria-live="polite">لا يوجد</strong></div>
                     <div class="stat-item">النقاط: <strong id="currentScore" aria-live="polite">0</strong></div>
                     <div class="stat-item">الأخطاء: <strong id="wrongAnswersCount" aria-live="assertive">0 / 3</strong></div>
+                    <div class="stat-item">المحاولات: <strong id="attemptsLeft" aria-live="polite"></strong></div>
                 </div>
             </div>
 
@@ -252,7 +259,7 @@
             </header>
             
             <div id="leaderboardContent" aria-live="polite">
-                </div>
+            </div>
             
             <div class="button-group">
                 <button id="backToStartBtn" class="btn-secondary">
