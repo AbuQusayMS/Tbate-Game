@@ -1,278 +1,1366 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="description" content="لعبة مسابقة من سيربح اللقب - اختبر معلوماتك واربح الجوائز">
-    <title>من سيربح اللقب؟ - لعبة المسابقة التفاعلية</title>
-
-    <link rel="icon" type="image/png" href="/images/my-icon.png">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    
-    <link rel="preload" as="style" href="style.css">
-    <link rel="preload" as="script" href="script.js">
-    
-    <link rel="stylesheet" href="style.css">
-    
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "VideoGame",
-        "name": "من سيربح اللقب؟",
-        "description": "لعبة مسابقة تفاعلية لاختبار المعلومات العامة والفوز بالجوائز",
-        "applicationCategory": "GameApplication",
-        "operatingSystem": "Web Browser",
-        "author": {
-            "@type": "Organization",
-            "name": "مسابقة المعرفة"
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="description" content="🧠 مسابقة المعلومات - اختبر قدراتك في مسابقة تفاعلية مليئة بالتحديات">
+  <title>🧠 مسابقة المعلومات</title>
+  <link rel="icon" type="image/png" href="/images/my-icon.png">
+  
+  <style>
+    /* ==============================
+      إعدادات عامة (Variables + Reset)
+    ============================== */
+    :root {
+      --font-main: 'Cairo', sans-serif;
+      /* ألوان عامة */
+      --color-dark: #121212;
+      --color-light: #ffffff;
+      --color-gray: #888;
+      --color-border: #ddd;
+      /* ألوان المستويات */
+      --easy-bg: #e8f5e9;
+      --easy-text: #1b5e20;
+      --medium-bg: #e3f2fd;
+      --medium-text: #0d47a1;
+      --hard-bg: #fff3e0;
+      --hard-text: #e65100;
+      --impossible-bg: #ffebee;
+      --impossible-text: #b71c1c;
+      /* ألوان أخرى */
+      --primary: #007bff;
+      --success: #28a745;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --gold: #f1c40f;
     }
-    </script>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: var(--font-main);
+      background: var(--color-dark);
+      color: var(--color-light);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    /* ==============================
+      الشاشات (Screens)
+    ============================== */
+    .screen {
+      display: none;
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+      text-align: center;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.8);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .screen.active {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+    /* Splash Screen */
+    #loader {
+      background: var(--color-dark);
+      color: var(--gold);
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--color-light);
+      border-top-color: transparent;
+      border-radius: 50%;
+      margin: 20px auto;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    /* ==============================
+      العناوين
+    ============================== */
+    h1.game-title {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+    h2, h3 {
+      margin-bottom: 10px;
+    }
+    /* ==============================
+      الأزرار (Buttons)
+    ============================== */
+    button {
+      font: inherit;
+      cursor: pointer;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      margin: 5px;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    .btn-main {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-secondary {
+      background: var(--color-gray);
+      color: #fff;
+    }
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+    .btn-warning {
+      background: var(--warning);
+      color: #000;
+    }
+    /* ==============================
+      شاشات خاصة
+    ============================== */
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 70px);
+      gap: 10px;
+      justify-content: center;
+    }
+    .avatar-grid img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .avatar-grid img:hover {
+      transform: scale(1.1);
+    }
+    .avatar-grid img.selected {
+      border-color: var(--gold);
+    }
+    .input-group {
+      margin: 15px 0;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid var(--color-border);
+      border-radius: 10px;
+    }
+    /* ==============================
+      اللعبة (Game Container)
+    ============================== */
+    #gameContainer {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .player-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .player-main img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    .helpers {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .helper-btn {
+      background: var(--color-gray);
+      color: #fff;
+      font-size: 0.9rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+    .helper-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    /* المؤقت */
+    .timer-container {
+      position: relative;
+      margin: 15px 0;
+      height: 12px;
+      background: var(--color-border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .timer-bar {
+      height: 100%;
+      background: var(--primary);
+      width: 100%;
+      transition: width 1s linear;
+    }
+    .timer-text {
+      margin-top: 5px;
+      font-weight: bold;
+    }
+    /* ==============================
+      النتائج ولوحة الصدارة
+    ============================== */
+    .final-stats,
+    #leaderboardContent {
+      text-align: left;
+      margin: 15px 0;
+    }
+    .share-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .share-btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: #fff;
+    }
+    .share-btn.x {
+      background: #000;
+    }
+    .share-btn.instagram {
+      background: #e1306c;
+    }
+    /* ==============================
+      ألوان المستويات (Themes)
+    ============================== */
+    body[data-level='easy'] {
+      background: var(--easy-bg);
+      color: var(--easy-text);
+    }
+    body[data-level='medium'] {
+      background: var(--medium-bg);
+      color: var(--medium-text);
+    }
+    body[data-level='hard'] {
+      background: var(--hard-bg);
+      color: var(--hard-text);
+    }
+    body[data-level='impossible'] {
+      background: var(--impossible-bg);
+      color: var(--impossible-text);
+    }
+    /* ==============================
+      الوضع الليلي والفاتح
+    ============================== */
+    body[data-theme='light'] {
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+    body[data-theme='dark'] {
+      background: var(--color-dark);
+      color: var(--color-light);
+    }
+    /* ==============================
+      Responsive Design
+    ============================== */
+    @media (max-width: 768px) {
+      .screen {
+        max-width: 100%;
+        border-radius: 0;
+        padding: 15px;
+      }
+      .avatar-grid {
+        grid-template-columns: repeat(auto-fill, 60px);
+      }
+    }
+    @media (max-width: 480px) {
+      h1.game-title {
+        font-size: 1.5rem;
+      }
+      .btn-main,
+      .btn-secondary {
+        width: 100%;
+      }
+      .player-info {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+
 </head>
-<body data-theme="dark" aria-live="polite">
-    <div id="toast-container" class="toast-container" aria-live="assertive"></div>
+<body data-theme="dark">
 
-    <div id="loader" class="screen active" role="status" aria-label="جاري التحميل">
-        <div class="spinner" aria-hidden="true"></div>
-        <span class="sr-only">جاري تحميل اللعبة، الرجاء الانتظار...</span>
+  <div id="splashScreen" class="screen active">
+    <div class="content-box">
+      <h1 class="game-title">🧠 مسابقة المعلومات</h1>
+      <p class="game-desc">اختبر قدراتك في مسابقة تفاعلية شيقة مليئة بالتحديات!</p>
+      <div class="spinner"></div>
     </div>
+  </div>
 
-    <div id="startScreen" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h1 class="game-title">
-                    <span aria-hidden="true">👑</span>
-                    من سيربح اللقب؟
-                    <span class="sr-only">لعبة مسابقة المعلومات</span>
-                </h1>
-            </header>
-            
-            <div id="cooldownContainer" class="cooldown-container" style="display: none;">
-                <p>لقد استنفدت محاولاتك.</p>
-                <p>يمكنك اللعب مرة أخرى بعد:</p>
-                <h3 id="cooldownTimer" class="cooldown-timer"></h3>
-            </div>
-            
-            <div class="button-group">
-                <button id="startPlayBtn" class="btn-main">
-                    ابدأ اللعب
-                </button>
-                <button id="showLeaderboardBtn" class="btn-secondary">
-                    لوحة الصدارة
-                </button>
-            </div>
-        </div>
+  <div id="startScreen" class="screen hidden">
+    <div class="content-box">
+      <h2>أهلاً بك 👋</h2>
+      <button id="goToAvatar" class="btn-main">ابدأ</button>
+      <button id="showLeaderboardBtn" class="btn-secondary">لوحة الصدارة</button>
     </div>
-    
-    <div id="avatarScreen" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h2>اختر صورة رمزية</h2>
-            </header>
-            
-            <div class="avatar-grid" role="group" aria-label="خيارات الصور الرمزية">
-            </div>
-            
-            <div class="button-group">
-                <button id="confirmAvatarBtn" class="btn-main" disabled>
-                    التالي
-                    <span class="sr-only">اختيار الصورة الرمزية المحددة</span>
-                </button>
-            </div>
-        </div>
-    </div>
+  </div>
 
-    <div id="nameEntry" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h2>أدخل اسمك للمتابعة</h2>
-            </header>
-            
-            <div class="input-group">
-                <label for="nameInput" class="sr-only">اسم اللاعب</label>
-                <input  
-                    type="text"  
-                    id="nameInput"  
-                    placeholder="اكتب اسمك هنا"  
-                    maxlength="25"  
-                    autocomplete="name"
-                    aria-required="true"
-                >
-                <div id="nameError" class="error-message" aria-live="polite"></div>
-            </div>
-            
-            <div class="button-group">
-                <button id="confirmNameBtn" class="btn-main">
-                    تأكيد الإسم
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="welcomeScreen" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h2 id="welcomeMessage"></h2> 
-            </header>
-            
-            <div class="welcome-content">
-                <p>📌 قبل أن تبدأ رحلتك، تذكّر:</p>
-                <ul>
-                    <li>اكتب اسمك المعروف على منصة إكس أو إنستغرام.</li>
-                    <li>لديك <strong id="attemptsCount" style="color: var(--gold-color);"></strong> محاولات يوميًا، فاستغلها بحكمة.</li>
-                    <li>لا تتسرع في الإجابة… فالوقت بين يديك.</li>
-                    <li>في حال واجهت أي مشكلة، راسل المسؤول القارئ الوحيد على <a href="https://x.com/_MS_AbuQusay?t=OcQrklIZ9itdajVI5YuKuw&s=09" target="_blank" rel="noopener noreferrer">إكس</a> أو <a href="https://www.instagram.com/ms_abuqusay?igsh=MXc2ZWptd2FkamN0" target="_blank" rel="noopener noreferrer">إنستغرام</a>.</li>
-                </ul>
-            </div>
-            
-            <div class="button-group">
-                <button id="welcomeConfirmBtn" class="btn-main">حسنا، قرأت وفهمت</button>
-            </div>
-        </div>
-    </div>
+  <div id="avatarScreen" class="screen hidden">
+    <h2>👤 اختر صورتك الرمزية</h2>
+    <div class="avatar-grid"></div>
+    <button id="confirmAvatarBtn" class="btn-main">التالي</button>
+  </div>
 
-    <aside class="sidebar" id="prizesSidebar" aria-hidden="true" aria-label="قائمة الألقاب">
-        <div class="sidebar-header">
-            <h3>الألقاب</h3>
-            <button class="close-sidebar-btn" aria-label="إغلاق قائمة الألقاب">
-                &times;
-            </button>
-        </div>
+  <div id="nameScreen" class="screen hidden">
+    <h2>📝 أدخل اسمك</h2>
+    <input type="text" id="playerNameInput" placeholder="اسمك هنا">
+    <p>🔐 معرفك (ID): <span id="playerID"></span></p>
+    <button id="confirmNameBtn" class="btn-main">تأكيد</button>
+  </div>
+
+  <div id="instructionsScreen" class="screen hidden">
+    <h2>📖 التعليمات</h2>
+    <ul>
+      <li>🎯 كل إجابة صحيحة = +100 نقطة</li>
+      <li>❌ كل إجابة خاطئة = -100 نقطة</li>
+      <li>⏱️ لديك 60 ثانية لكل سؤال</li>
+      <li>🛡️ يمكنك استخدام المساعدات (50:50 – تجميد الوقت – تخطي السؤال)</li>
+      <li>📩 عند مواجهة مشكلة تواصل عبر
+        <a href="https://x.com/_MS_AbuQusay?t=Tv0klH2PdnBYFHj_G8uIEA&s=09" target="_blank">إكس</a> أو
+        <a href="https://www.instagram.com/ms_abuqusay?igsh=MXc2ZWptd2FkamN0" target="_blank">إنستغرام</a>
+      </li>
+    </ul>
+    <button id="startGameBtn" class="btn-main">ابدأ التحدي</button>
+  </div>
+
+  <main id="gameContainer" class="screen hidden">
+    <div class="top-bar">
+      <button id="exitGameBtn">🚪 إنهاء المسابقة</button>
+      <div id="progressBar">المستوى 1️⃣</div>
+    </div>
+    <div class="question-box">
+      <p id="questionText"></p>
+      <div id="optionsContainer"></div>
+    </div>
+    <div class="timer">
+      ⏱️ <span id="timeLeft">60</span> ثانية
+    </div>
+  </main>
+
+  <div id="confirmExitScreen" class="screen hidden">
+    <p>هل تريد إنهاء المسابقة؟ سيتم حفظ نقاطك.</p>
+    <button id="confirmExitYes">✅ نعم</button>
+    <button id="confirmExitNo">❌ لا</button>
+  </div>
+
+  <div id="endScreen" class="screen hidden">
+    <h2>🏆 النتائج</h2>
+    <p>👤 الاسم: <span id="finalName"></span></p>
+    <p>🔐 المعرّف: <span id="finalID"></span></p>
+    <p>✅ الصحيحة: <span id="correctAnswers"></span></p>
+    <p>❌ الخاطئة: <span id="wrongAnswers"></span></p>
+    <p>⭐ النقاط: <span id="finalScore"></span></p>
+    <button id="goLeaderboard" class="btn-main">لوحة الصدارة</button>
+  </div>
+
+  <div id="leaderboardScreen" class="screen hidden">
+    <h2>🏆 لوحة الصدارة</h2>
+    <table id="leaderboardTable">
+      <thead>
+        <tr><th>الترتيب</th><th>الاسم</th><th>ID</th><th>النقاط</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="backToStart" class="btn-secondary">العودة</button>
+  </div>
+
+  <script>
+    class QuizGame {
+      constructor() {
+        this.API_URL = "https://script.google.com/macros/s/AKfycbw68QqjhU0eqOszPpLBm0tXPtjaSV000kBfOWiorLk2lFm45ud3do-f5PMCy9b0LSez/exec";
+        this.QUESTION_TIME = 80;
+        this.TOTAL_AVATARS = 16;
+        this.LIMIT_PER_DAY = 2;
+        this.MAX_WRONG_ANSWERS = 3;
+        // تعريف الأسئلة لمستويات الصعوبة المختلفة
+        this.QUESTIONS = {
+          easy: [{
+            q: "ما هو لون السماء في يوم مشمس؟",
+            options: ["أزرق", "أخضر", "أصفر", "وردي"],
+            correct: 0
+          }, {
+            q: "ماذا يشرب الناس عادة في الصباح؟",
+            options: ["عصير برتقال", "شاي أو قهوة", "ماء", "مشروبات غازية"],
+            correct: 1
+          }, {
+            q: "ما هو الكوكب الذي نعيش عليه؟",
+            options: ["المريخ", "الأرض", "الزهرة", "عطارد"],
+            correct: 1
+          }, {
+            q: "كم عدد الأصابع في يد الإنسان؟",
+            options: ["أربعة", "خمسة", "ستة", "سبعة"],
+            correct: 1
+          }, {
+            q: "ما هو اللون الذي يتكون من مزج الأحمر والأزرق؟",
+            options: ["أخضر", "أصفر", "برتقالي", "بنفسجي"],
+            correct: 3
+          }],
+          medium: [{
+            q: "أين يمكن أن تجد الأهرامات الشهيرة؟",
+            options: ["في الهند", "في مصر", "في الصين", "في المكسيك"],
+            correct: 1
+          }, {
+            q: "أي حيوان يعد أطول حيوان على وجه الأرض؟",
+            options: ["الفيل", "الزرافة", "الحوت الأزرق", "الفهد"],
+            correct: 1
+          }, {
+            q: "ما هو طائر قادر على الطيران إلى الوراء؟",
+            options: ["البطريق", "الصقر", "الطائر الطنان", "النسر"],
+            correct: 2
+          }, {
+            q: "ما هو أسرع حيوان بري؟",
+            options: ["الفهد", "الأسد", "النمر", "الحمار الوحشي"],
+            correct: 0
+          }, {
+            q: "ما هي الوحدة التي تقاس بها الحرارة؟",
+            options: ["اللتر", "المتر", "السلسيوس", "الكيلوغرام"],
+            correct: 2
+          }],
+          hard: [{
+            q: "ما هو أكبر محيط في العالم؟",
+            options: ["المحيط الأطلسي", "المحيط الهندي", "المحيط الهادئ", "المحيط المتجمد الشمالي"],
+            correct: 2
+          }, {
+            q: "ما هو اسم أطول نهر في العالم؟",
+            options: ["نهر النيل", "نهر الأمازون", "نهر اليانغتسي", "نهر الميسيسيبي"],
+            correct: 0
+          }, {
+            q: "من هو مؤلف رواية 'هاري بوتر'؟",
+            options: ["جي. ك. رولينغ", "إرنست همنغواي", "ليو تولستوي", "شارلز ديكنز"],
+            correct: 0
+          }, {
+            q: "أين تقع مدينة نيويورك؟",
+            options: ["في الولايات المتحدة الأمريكية", "في كندا", "في البرازيل", "في المملكة المتحدة"],
+            correct: 0
+          }, {
+            q: "ما هو الحيوان الذي يلد وليس يبيض؟",
+            options: ["السمكة", "السلحفاة", "الثعلب", "الدجاجة"],
+            correct: 2
+          }],
+          impossible: [{
+            q: "ما هو اسم الكتاب المقدس لدى المسلمين؟",
+            options: ["الإنجيل", "التوراة", "القرآن الكريم", "الزبور"],
+            correct: 2
+          }, {
+            q: "ما هو اسم الكوكب الذي يسمى 'الكوكب الأحمر'؟",
+            options: ["الزهرة", "المريخ", "عطارد", "الأرض"],
+            correct: 1
+          }, {
+            q: "ما هو اسم أشهر أنواع العسل؟",
+            options: ["عسل الزهور", "عسل النحل", "عسل الزعتر", "عسل السدر"],
+            correct: 2
+          }, {
+            q: "كم عدد قارات العالم؟",
+            options: ["4", "5", "6", "7"],
+            correct: 3
+          }, {
+            q: "من هو أشهر مخترع للمصباح الكهربائي؟",
+            options: ["توماس إديسون", "نيكولا تسلا", "ألكسندر غراهام بيل", "جيمس وات"],
+            correct: 0
+          }]
+        };
+        // أسئلة احتياطية لكل مستوى
+        this.backupQuestions = {
+          easy: {
+            q: "ما هو صوت القطة؟",
+            options: ["مواء", "نباح", "صياح", "هديل"],
+            correct: 0
+          },
+          medium: {
+            q: "ما هو أسرع حيوان بحري؟",
+            options: ["الدلفين", "القرش", "التونة", "سمك أبو سيف"],
+            correct: 3
+          },
+          hard: {
+            q: "ما هي عاصمة أستراليا؟",
+            options: ["سيدني", "ملبورن", "كانبرا", "بريزبان"],
+            correct: 2
+          },
+          impossible: {
+            q: "من هو مؤلف مسرحية 'هاملت'؟",
+            options: ["شكسبير", "تشيخوف", "إبسن", "بريخت"],
+            correct: 0
+          }
+        };
+        this.PRIZES = [{
+          points: 100,
+          title: "كاديل"
+        }, {
+          points: 200,
+          title: "سيريس"
+        }, {
+          points: 300,
+          title: "اوتو"
+        }, {
+          points: 500,
+          title: "ميكا"
+        }, {
+          points: 1000,
+          title: "غراي"
+        }, {
+          points: 2000,
+          title: "بايرون"
+        }, {
+          points: 4000,
+          title: "سيلفي"
+        }, {
+          points: 8000,
+          title: "فاراي"
+        }, {
+          points: 16000,
+          title: "شول"
+        }, {
+          points: 32000,
+          title: "الدير"
+        }, {
+          points: 64000,
+          title: "ويندسوم"
+        }, {
+          points: 125000,
+          title: "مورداين"
+        }, {
+          points: 250000,
+          title: "كيزيس"
+        }, {
+          points: 500000,
+          title: "أغرونا"
+        }, {
+          points: 1000000,
+          title: "أرثر"
+        }];
+        this.HELPER_COSTS = {
+          fiftyFifty: 100,
+          freezeTime: 100,
+          changeQuestion: 100
+        };
+        this.isTimeFrozen = false;
+        this.gameState = {
+          level: 'easy',
+          levelProgress: 0,
+          levelsCompleted: {
+            easy: false,
+            medium: false,
+            hard: false,
+            impossible: false
+          }
+        };
+        this.currentScoreValue = 0;
+        this.timerInterval = null;
+        this.answerSubmitted = false;
+        this.domElements = {};
+        this.init();
+      }
+      init() {
+        this.cacheDomElements();
+        this.bindEventListeners();
+        this.populateAvatarGrid();
+        this.generatePrizesList();
+        this.displayHelperCosts();
+        this.loadTheme();
+        this.showScreen('start');
+        this.hideLoader();
+        // إضافة تأثيرات عند التحميل
+        this.animateElements();
+      }
+      cacheDomElements() {
+        this.domElements = {
+          screens: {
+            loader: document.getElementById('loader'),
+            start: document.getElementById('startScreen'),
+            avatar: document.getElementById('avatarScreen'),
+            nameEntry: document.getElementById('nameEntry'),
+            welcome: document.getElementById('welcomeScreen'),
+            game: document.getElementById('gameContainer'),
+            end: document.getElementById('endScreen'),
+            leaderboard: document.getElementById('leaderboardScreen'),
+            levelTransition: document.getElementById('levelTransitionScreen')
+          },
+          sidebar: document.querySelector('.sidebar'),
+          sidebarOverlay: document.querySelector('.sidebar-overlay'),
+          questionText: document.getElementById('questionText'),
+          optionsGrid: document.querySelector('.options-grid'),
+          scoreDisplay: document.getElementById('currentScore'),
+          prizesList: document.querySelector('.prizes-list'),
+          helperBtns: document.querySelectorAll('.helper-btn'),
+          nameInput: document.getElementById('nameInput'),
+          nameError: document.getElementById('nameError'),
+          confirmAvatarBtn: document.getElementById('confirmAvatarBtn'),
+          themeToggleBtn: document.querySelector('.theme-toggle-btn'),
+          welcomeMessage: document.getElementById('welcomeMessage'),
+          cooldownContainer: document.getElementById('cooldownContainer'),
+          cooldownTimer: document.getElementById('cooldownTimer'),
+          attemptsCount: document.getElementById('attemptsCount'),
+          attemptsLeft: document.getElementById('attemptsLeft'),
+          levelTitle: document.getElementById('levelTitle'),
+          levelDescription: document.getElementById('levelDescription'),
+          levelProgressBar: document.getElementById('levelProgressBar'),
+          levelIndicator: document.getElementById('levelIndicator')
+        };
+      }
+      bindEventListeners() {
+        document.getElementById('startPlayBtn').addEventListener('click', () => this.showScreen('avatar'));
+        this.domElements.confirmAvatarBtn.addEventListener('click', () => this.showScreen('nameEntry'));
+        document.getElementById('confirmNameBtn').addEventListener('click', () => this.showWelcomeScreen());
+        document.getElementById('welcomeConfirmBtn').addEventListener('click', () => this.startGame());
+        document.getElementById('showLeaderboardBtn').addEventListener('click', () => this.displayLeaderboard());
+        document.getElementById('backToStartBtn').addEventListener('click', () => this.showScreen('start'));
+        this.domElements.themeToggleBtn.addEventListener('click', () => this.toggleTheme());
+        document.getElementById('statsBtn').addEventListener('click', () => this.displayLeaderboard());
+        document.querySelector('.open-sidebar-btn').addEventListener('click', () => this.toggleSidebar(true));
+        document.querySelector('.close-sidebar-btn').addEventListener('click', () => this.toggleSidebar(false));
+        this.domElements.sidebarOverlay.addEventListener('click', () => this.toggleSidebar(false));
+        this.domElements.helperBtns.forEach(btn => btn.addEventListener('click', (e) => this.useHelper(e)));
+        document.getElementById('shareXBtn').addEventListener('click', () => this.shareOnX());
+        document.getElementById('shareInstagramBtn').addEventListener('click', () => this.shareOnInstagram());
+        this.domElements.nameInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') this.showWelcomeScreen();
+        });
+        // أحداث جديدة للمستويات
+        document.getElementById('nextLevelBtn').addEventListener('click', () => this.goToNextLevel());
+        document.getElementById('showResultsAfterLevelBtn').addEventListener('click', () => this.showResultsAfterLevel());
+        document.getElementById('quitAfterLevelBtn').addEventListener('click', () => this.quitAfterLevel());
+      }
+      populateAvatarGrid() {
+        const avatarGrid = document.querySelector('.avatar-grid');
+        avatarGrid.innerHTML = '';
+        // استخدام رموز تعبيرية كصور رمزية بدلاً من صور
+        const emojiAvatars = ['😊', '😎', '🤠', '🧐', '🥳', '😍', '🤩', '😇', '🧠', '🦸', '🦹', '👨‍💻', '👩‍🔬', '👨‍🎨', '👩‍🚀', '👨‍🍳'];
+        for (let i = 0; i < this.TOTAL_AVATARS; i++) {
+          const avatarItem = document.createElement('div');
+          avatarItem.classList.add('avatar-option');
+          avatarItem.innerHTML = `<span style="font-size: 2.5rem;">${emojiAvatars[i]}</span>`;
+          avatarItem.addEventListener('click', () => {
+            document.querySelectorAll('.avatar-option.selected').forEach(el => el.classList.remove('selected'));
+            avatarItem.classList.add('selected');
+            this.gameState.avatar = emojiAvatars[i];
+            this.domElements.confirmAvatarBtn.disabled = false;
+            // إضافة تأثير عند التحديد
+            avatarItem.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+              avatarItem.style.transform = 'scale(1)';
+            }, 300);
+          });
+          avatarGrid.appendChild(avatarItem);
+        }
+      }
+      showWelcomeScreen() {
+        const name = this.domElements.nameInput.value.trim();
+        if (name.length < 2) {
+          this.domElements.nameError.textContent = "الرجاء إدخال اسم صحيح (حرفين على الأقل).";
+          this.domElements.nameError.classList.add('show');
+          return;
+        }
+        this.domElements.nameError.classList.remove('show');
+        this.gameState.name = name;
+        this.domElements.welcomeMessage.innerHTML = `🌟 مرحبا بك يا ${name}! 🌟`;
+        if (this.domElements.attemptsCount) {
+          this.domElements.attemptsCount.textContent = this.LIMIT_PER_DAY;
+        }
+        this.showScreen('welcome');
+      }
+      async startGame() {
+        this.showScreen('loader');
+        try {
+          const response = await this.apiCall({
+            action: 'start',
+            deviceId: this.getDeviceId(),
+            name: this.gameState.name,
+          });
+          if (response && response.success) {
+            document.getElementById('startPlayBtn').disabled = false;
+            this.domElements.cooldownContainer.style.display = 'none';
+            this.resetGameState(response.attemptId);
+            this.gameState.attemptsLeft = response.attemptsLeft;
+            this.setupGameUI();
+            this.showScreen('game');
+            this.startLevel('easy');
+          } else if (response && response.error === 'limit_reached') {
+            this.showScreen('start');
+            this.startCooldownTimer(response.cooldownEnd);
+          } else {
+            this.showToast("حدث خطأ عند بدء اللعبة.", 'error');
+            this.showScreen('start');
+          }
+        } catch (error) {
+          console.error("Error starting game:", error);
+          this.showToast("حدث خطأ في الاتصال بالخادم.", "error");
+          this.showScreen('start');
+        }
+      }
+      // بدء مستوى جديد
+      startLevel(level) {
+        this.gameState.level = level;
+        this.gameState.levelProgress = 0;
+        this.gameState.shuffledQuestions = this.shuffleQuestions(this.QUESTIONS[level]);
+        // تحديث واجهة المستخدم للمستوى الجديد
+        this.updateLevelUI(level);
+        // تحميل السؤال الأول
+        this.fetchQuestion();
+      }
+      // تحديث واجهة المستخدم للمستوى الحالي
+      updateLevelUI(level) {
+        // تحديث مؤشر المستوى
+        if (this.domElements.levelIndicator) {
+          this.domElements.levelIndicator.textContent = this.getLevelName(level);
+        }
+        // تحديث تقدم المستوى
+        this.updateLevelProgress();
+        // تطبيق سمة المستوى
+        document.body.setAttribute('data-level', level);
+        // تحديث ألوان الواجهة حسب المستوى
+        this.applyLevelTheme(level);
+      }
+      // تطبيق سمة المستوى على الواجهة
+      applyLevelTheme(level) {
+        const themeColors = {
+          easy: {
+            primary: '#2ec4b6',
+            secondary: '#2a9d8f',
+            accent: '#2ec4b6'
+          },
+          medium: {
+            primary: '#4361ee',
+            secondary: '#3a0ca3',
+            accent: '#4361ee'
+          },
+          hard: {
+            primary: '#ff9f1c',
+            secondary: '#ff6b6b',
+            accent: '#ff9f1c'
+          },
+          impossible: {
+            primary: '#e71d36',
+            secondary: '#9d0208',
+            accent: '#e71d36'
+          }
+        };
+        const colors = themeColors[level];
+        document.documentElement.style.setProperty('--level-primary', colors.primary);
+        document.documentElement.style.setProperty('--level-secondary', colors.secondary);
+        document.documentElement.style.setProperty('--level-accent', colors.accent);
+      }
+      // الحصول على اسم المستوى بالعربية
+      getLevelName(level) {
+        const levelNames = {
+          easy: "سهل",
+          medium: "متوسط",
+          hard: "صعب",
+          impossible: "مستحيل"
+        };
+        return levelNames[level] || level;
+      }
+      shuffleQuestions(questions) {
+        const shuffled = [...questions];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+      }
+      fetchQuestion() {
+        if (this.gameState.shuffledQuestions.length === 0) {
+          // إذا انتهت الأسئلة في هذا المستوى، انتقل إلى المستوى التالي
+          this.completeLevel();
+          return;
+        }
+        const currentQuestionData = this.gameState.shuffledQuestions[this.gameState.levelProgress];
+        this.displayQuestion(currentQuestionData);
+      }
+      displayQuestion(questionData) {
+        this.answerSubmitted = false;
+        this.domElements.questionText.textContent = questionData.q;
+        document.getElementById('questionCounter').textContent = `السؤال ${this.gameState.levelProgress + 1} / ${this.QUESTIONS[this.gameState.level].length}`;
+        this.domElements.optionsGrid.innerHTML = '';
+        let answers = questionData.options.map((optionText, index) => ({
+          text: optionText,
+          isCorrect: index === questionData.correct
+        }));
+        for (let i = answers.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [answers[i], answers[j]] = [answers[j], answers[i]];
+        }
+        answers.forEach(answer => {
+          const button = document.createElement('button');
+          button.className = 'option-btn';
+          button.textContent = answer.text;
+          if (answer.isCorrect) {
+            button.dataset.correct = 'true';
+          }
+          button.addEventListener('click', () => this.checkAnswer(answer.isCorrect, button));
+          this.domElements.optionsGrid.appendChild(button);
+        });
+        this.updateUI();
+        this.startTimer();
+      }
+      checkAnswer(isCorrect, selectedButton) {
+        if (this.answerSubmitted) return;
+        this.answerSubmitted = true;
+        clearInterval(this.timerInterval);
+        document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
+        if (isCorrect) {
+          selectedButton.classList.add('correct');
+          const pointsEarned = 100; // نقاط ثابتة لكل إجابة صحيحة
+          this.updateScore(this.currentScoreValue + pointsEarned);
+          this.gameState.levelProgress++;
+          this.updateLevelProgress();
+        } else {
+          selectedButton.classList.add('wrong');
+          const correctButton = this.domElements.optionsGrid.querySelector('[data-correct="true"]');
+          if (correctButton) {
+            correctButton.classList.add('correct');
+          }
+          this.gameState.wrongAnswers++;
+        }
+        this.updateUI();
+        const isGameOver = this.gameState.wrongAnswers >= this.MAX_WRONG_ANSWERS;
+        const isLevelComplete = this.gameState.levelProgress >= this.QUESTIONS[this.gameState.level].length;
+        setTimeout(() => {
+          if (isGameOver) {
+            this.endGame();
+          } else if (isLevelComplete) {
+            this.completeLevel();
+          } else {
+            this.fetchQuestion();
+          }
+        }, 2000);
+      }
+      // إكمال المستوى الحالي
+      completeLevel() {
+        this.gameState.levelsCompleted[this.gameState.level] = true;
+        // عرض نافذة الانتقال بين المستويات
+        this.showLevelTransition();
+      }
+      // عرض نافذة الانتقال بين المستويات
+      showLevelTransition() {
+        const levelNames = {
+          easy: "سهل",
+          medium: "متوسط",
+          hard: "صعب",
+          impossible: "مستحيل"
+        };
+        const currentLevelName = levelNames[this.gameState.level];
+        const nextLevel = this.getNextLevel();
+        if (nextLevel) {
+          const nextLevelName = levelNames[nextLevel];
+          // تحديث محتوى نافذة الانتقال
+          document.getElementById('levelTransitionTitle').textContent = `تهانينا! لقد أكملت المستوى ${currentLevelName}`;
+          document.getElementById('levelTransitionDesc').textContent = `لقد حصلت على ${this.currentScoreValue} نقطة حتى الآن. استعد للمستوى ${nextLevelName}!`;
+          // إظهار النافذة
+          this.showScreen('levelTransition');
+        } else {
+          // إذا كان هذا آخر مستوى، انهي اللعبة
+          this.endGame();
+        }
+      }
+      // الانتقال إلى المستوى التالي
+      goToNextLevel() {
+        const nextLevel = this.getNextLevel();
+        if (nextLevel) {
+          this.startLevel(nextLevel);
+          this.showScreen('game');
+        } else {
+          this.endGame();
+        }
+      }
+      // الحصول على المستوى التالي
+      getNextLevel() {
+        const levels = ['easy', 'medium', 'hard', 'impossible'];
+        const currentIndex = levels.indexOf(this.gameState.level);
+        if (currentIndex < levels.length - 1) {
+          return levels[currentIndex + 1];
+        }
+        return null;
+      }
+      // عرض النتائج بعد انتهاء المستوى
+      showResultsAfterLevel() {
+        this.endGame();
+      }
+      // إنهاء اللعبة بعد المستوى
+      quitAfterLevel() {
+        this.showScreen('start');
+      }
+      endGame() {
+        clearInterval(this.timerInterval);
+        const totalTimeSeconds = (new Date() - new Date(this.gameState.startTime)) / 1000;
+        const finalTitle = this.getFinalTitle();
+        this.gameState.finalStats = {
+          name: this.gameState.name,
+          title: finalTitle,
+          score: this.currentScoreValue,
+          time: this.formatTime(totalTimeSeconds),
+          level: this.gameState.level,
+          levelsCompleted: this.gameState.levelsCompleted
+        };
+        document.getElementById('finalName').textContent = this.gameState.finalStats.name;
+        document.getElementById('finalTitle').textContent = this.gameState.finalStats.title;
+        document.getElementById('finalScore').textContent = this.formatNumber(this.gameState.finalStats.score);
+        document.getElementById('totalTime').textContent = this.gameState.finalStats.time;
+        this.showScreen('end');
+        this.apiCall({
+          action: 'end',
+          attemptId: this.gameState.attemptId,
+          deviceId: this.gameState.deviceId,
+          name: this.gameState.name,
+          score: this.currentScoreValue,
+          finalTitle: finalTitle,
+          totalTime: totalTimeSeconds,
+          level: this.gameState.level,
+          levelsCompleted: JSON.stringify(this.gameState.levelsCompleted)
+        }).catch(error => console.error("Failed to save score:", error));
+      }
+      // الحصول على اللقب النهائي بناءً على النقاط
+      getFinalTitle() {
+        for (let i = this.PRIZES.length - 1; i >= 0; i--) {
+          if (this.currentScoreValue >= this.PRIZES[i].points) {
+            return this.PRIZES[i].title;
+          }
+        }
+        return "لا يوجد";
+      }
+      useHelper(event) {
+        const btn = event.currentTarget;
+        const type = btn.dataset.type;
+        const cost = this.HELPER_COSTS[type];
+        if (this.currentScoreValue < cost) {
+          this.showToast("نقاطك غير كافية!", "error");
+          return;
+        }
+        this.updateScore(this.currentScoreValue - cost);
+        this.gameState.helpersUsed[type] = true;
+        btn.disabled = true;
+        this.showToast(`تم استخدام المساعدة!`, "success");
+        if (type === 'fiftyFifty') {
+          const options = Array.from(this.domElements.optionsGrid.querySelectorAll('.option-btn'));
+          let wrongOptions = options.filter(btn => btn.dataset.correct !== 'true');
+          wrongOptions.sort(() => 0.5 - Math.random());
+          if (wrongOptions.length > 1) {
+            wrongOptions[0].classList.add('hidden');
+            wrongOptions[1].classList.add('hidden');
+          }
+        } else if (type === 'freezeTime') {
+          this.isTimeFrozen = true;
+          document.querySelector('.timer-bar').classList.add('frozen');
+          setTimeout(() => {
+            this.isTimeFrozen = false;
+            document.querySelector('.timer-bar').classList.remove('frozen');
+          }, 10000);
+        } else if (type === 'changeQuestion') {
+          // استبدال السؤال الحالي بسؤال احتياطي من نفس المستوى
+          this.gameState.shuffledQuestions[this.gameState.levelProgress] = this.backupQuestions[this.gameState.level];
+          this.fetchQuestion();
+        }
+        this.updateUI();
+      }
+      startTimer() {
+        clearInterval(this.timerInterval);
+        this.gameState.timeLeft = this.QUESTION_TIME;
+        const timerBar = document.querySelector('.timer-bar');
+        const timerDisplay = document.querySelector('.timer-text');
+        this.timerInterval = setInterval(() => {
+          if (this.isTimeFrozen) return;
+          this.gameState.timeLeft--;
+          timerDisplay.textContent = this.gameState.timeLeft;
+          timerBar.style.width = `${(this.gameState.timeLeft / this.QUESTION_TIME) * 100}%`;
+          if (this.gameState.timeLeft <= 0) {
+            clearInterval(this.timerInterval);
+            this.showToast("انتهى الوقت!", "error");
+            this.gameState.wrongAnswers++;
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
+            const correctButton = this.domElements.optionsGrid.querySelector('[data-correct="true"]');
+            if (correctButton) {
+              correctButton.classList.add('correct');
+            }
+            this.updateUI();
+            setTimeout(() => {
+              if (this.gameState.wrongAnswers >= this.MAX_WRONG_ANSWERS) {
+                this.endGame();
+              } else {
+                this.gameState.levelProgress++;
+                this.updateLevelProgress();
+                this.fetchQuestion();
+              }
+            }, 2000);
+          }
+        }, 1000);
+      }
+      // تحديث تقدم المستوى
+      updateLevelProgress() {
+        const progress = (this.gameState.levelProgress / this.QUESTIONS[this.gameState.level].length) * 100;
+        if (this.domElements.levelProgressBar) {
+          this.domElements.levelProgressBar.style.width = `${progress}%`;
+        }
+      }
+      updateScore(newScore) {
+        this.currentScoreValue = newScore;
+        this.domElements.scoreDisplay.textContent = this.formatNumber(this.currentScoreValue);
+        this.updateUI();
+      }
+      updateUI() {
+        document.getElementById('wrongAnswersCount').textContent = `${this.gameState.wrongAnswers} / ${this.MAX_WRONG_ANSWERS}`;
+        const currentTitle = this.getFinalTitle();
+        document.getElementById('currentTitle').textContent = currentTitle;
+        if (this.domElements.attemptsLeft) {
+          this.domElements.attemptsLeft.textContent = `${this.gameState.attemptsLeft || this.LIMIT_PER_DAY} / ${this.LIMIT_PER_DAY}`;
+        }
+        this.updatePrizesList();
+        this.domElements.helperBtns.forEach(btn => {
+          const type = btn.dataset.type;
+          const helperIsUsed = this.gameState.helpersUsed && this.gameState.helpersUsed[type];
+          btn.disabled = helperIsUsed || this.currentScoreValue < this.HELPER_COSTS[type];
+        });
+      }
+      generatePrizesList() {
+        this.domElements.prizesList.innerHTML = '';
+        [...this.PRIZES].reverse().forEach((prize, index) => {
+          const li = document.createElement('li');
+          li.innerHTML = `<span>${this.PRIZES.length - index}. ${prize.title}</span> <strong>${this.formatNumber(prize.points)}</strong>`;
+          this.domElements.prizesList.appendChild(li);
+        });
+      }
+      updatePrizesList() {
+        const items = this.domElements.prizesList.querySelectorAll('li');
+        items.forEach((item, index) => {
+          item.classList.remove('current', 'past');
+          const prizeIndex = this.PRIZES.length - 1 - index;
+          if (this.currentScoreValue >= this.PRIZES[prizeIndex].points) {
+            item.classList.add('past');
+          }
+        });
+      }
+      async displayLeaderboard() {
+        this.showScreen('leaderboard');
+        const contentDiv = document.getElementById('leaderboardContent');
+        contentDiv.innerHTML = '<div class="spinner"></div>';
+        try {
+          const response = await this.apiCall({
+            action: 'getLeaderboard'
+          });
+          if (response && response.success && response.leaderboard) {
+            let tableHTML = '<p>لوحة الصدارة فارغة حاليًا!</p>';
+            if (response.leaderboard.length > 0) {
+              tableHTML = `<table class="leaderboard-table">
+                                <tr><th>الترتيب</th><th>الاسم</th><th>النقاط</th><th>اللقب</th><th>المستوى</th></tr>
+                                ${response.leaderboard.map((row, index) => `
+                                    <tr class="${index < 3 ? 'rank-' + (index + 1) : ''}">
+                                        <td>${['🥇', '🥈', '🥉'][index] || index + 1}</td>
+                                        <td>${row.name || row[1]}</td>
+                                        <td>${this.formatNumber(row.score || row[2])}</td>
+                                        <td>${row.title || row[3]}</td>
+                                        <td>${row.level ? this.getLevelName(row.level) : ''}</td>
+                                    </tr>`).join('')}
+                            </table>`;
+            }
+            contentDiv.innerHTML = tableHTML;
+          } else {
+            contentDiv.innerHTML = '<p>حدث خطأ في تحميل لوحة الصدارة.</p>';
+          }
+        } catch (error) {
+          console.error("Error loading leaderboard:", error);
+          contentDiv.innerHTML = '<p>حدث خطأ في تحميل لوحة الصدارة.</p>';
+        }
+      }
+      getShareText() {
+        const {
+          name,
+          title,
+          score,
+          time,
+          level
+        } = this.gameState.finalStats;
+        const levelName = this.getLevelName(level);
+        return `✨ نتائجي في مسابقة "من سيربح اللقب" ✨\n` +
+          `الاسم: ${name}\n` +
+          `اللقب: ${title}\n` +
+          `النقاط: ${this.formatNumber(score)}\n` +
+          `المستوى: ${levelName}\n` +
+          `المدة: ${time}\n\n` +
+          `🔗 جرب حظك أنت أيضاً: ${window.location.href}`;
+      }
+      shareOnX() {
+        const text = encodeURIComponent(this.getShareText());
+        window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+      }
+      shareOnInstagram() {
+        navigator.clipboard.writeText(this.getShareText()).then(() => this.showToast("تم نسخ النتيجة! الصقها في قصتك أو رسائلك على إنستغرام.", "success")).catch(() => this.showToast("فشل نسخ النتيجة.", "error"));
+      }
+      resetGameState(attemptId) {
+        this.gameState = {
+          deviceId: this.getDeviceId(),
+          attemptId: attemptId,
+          name: this.gameState.name,
+          avatar: this.gameState.avatar,
+          level: 'easy',
+          levelProgress: 0,
+          wrongAnswers: 0,
+          startTime: new Date().toISOString(),
+          helpersUsed: {
+            fiftyFifty: false,
+            freezeTime: false,
+            changeQuestion: false
+          },
+          shuffledQuestions: [],
+          levelsCompleted: {
+            easy: false,
+            medium: false,
+            hard: false,
+            impossible: false
+          }
+        };
+        this.updateScore(0);
+      }
+      setupGameUI() {
+        const avatarElement = document.getElementById('playerAvatar');
+        if (avatarElement) {
+          if (this.gameState.avatar) {
+            avatarElement.innerHTML = `<span style="font-size: 2.5rem;">${this.gameState.avatar}</span>`;
+          } else {
+            avatarElement.innerHTML = '<span style="font-size: 2.5rem;">👤</span>';
+          }
+        }
+        document.getElementById('playerName').textContent = this.gameState.name;
+      }
+      toggleTheme() {
+        const newTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.body.dataset.theme = newTheme;
+        localStorage.setItem('theme', newTheme);
+        this.domElements.themeToggleBtn.innerHTML = newTheme === 'dark' ? '<span>☀️</span>' : '<span>🌙</span>';
+      }
+      loadTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.dataset.theme = savedTheme;
+        this.domElements.themeToggleBtn.innerHTML = savedTheme === 'dark' ? '<span>☀️</span>' : '<span>🌙</span>';
+      }
+      toggleSidebar(open) {
+        const openBtn = document.querySelector('.open-sidebar-btn');
+        if (open) {
+          this.domElements.sidebar.classList.add('open');
+          this.domElements.sidebarOverlay.classList.add('active');
+          openBtn.setAttribute('aria-expanded', 'true');
+          setTimeout(() => {
+            const closeBtn = this.domElements.sidebar.querySelector('.close-sidebar-btn');
+            if (closeBtn) {
+              closeBtn.focus();
+            }
+          }, 100);
+        } else {
+          this.domElements.sidebar.classList.remove('open');
+          this.domElements.sidebarOverlay.classList.remove('active');
+          openBtn.setAttribute('aria-expanded', 'false');
+          if (openBtn) {
+            openBtn.focus();
+          }
+        }
+      }
+      showScreen(screenName) {
+        if (document.activeElement) document.activeElement.blur();
+        Object.values(this.domElements.screens).forEach(screen => {
+          if (screen) {
+            screen.classList.remove('active');
+            screen.setAttribute('aria-hidden', 'true');
+          }
+        });
+        const activeScreen = this.domElements.screens[screenName];
+        if (activeScreen) {
+          activeScreen.classList.add('active');
+          activeScreen.setAttribute('aria-hidden', 'false');
+          const firstFocusable = activeScreen.querySelector('button, [href], input, select, textarea');
+          if (firstFocusable) firstFocusable.focus();
+        }
+      }
+      hideLoader() {
+        if (this.domElements.screens.loader) {
+          this.domElements.screens.loader.classList.remove('active');
+        }
+      }
+      showToast(message, type = 'info') {
+        const toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) return;
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        toast.setAttribute('role', 'alert');
+        toastContainer.appendChild(toast);
+        // إضافة تأثير للظهور
+        toast.style.animation = 'toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards';
+        setTimeout(() => toast.remove(), 3000);
+      }
+      async apiCall(payload) {
+        try {
+          const response = await fetch(this.API_URL, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'text/plain;charset=utf-8'
+            },
+            body: JSON.stringify(payload)
+          });
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          console.error('API Error:', error);
+          throw error;
+        }
+      }
+      getDeviceId() {
+        let id = localStorage.getItem('deviceId');
+        if (!id) {
+          id = `id_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+          localStorage.setItem('deviceId', id);
+        }
+        return id;
+      }
+      formatTime(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = Math.floor(totalSeconds % 60);
+        if (minutes > 0) {
+          return `${minutes} دقيقة و ${seconds} ثانية`;
+        }
+        return `${seconds} ثانية`;
+      }
+      formatNumber(num) {
+        return new Intl.NumberFormat('ar-EG').format(num);
+      }
+      displayHelperCosts() {
+        this.domElements.helperBtns.forEach(btn => {
+          const type = btn.dataset.type;
+          const cost = this.HELPER_COSTS[type];
+          if (cost) {
+            const costEl = btn.querySelector('.helper-cost');
+            if (costEl) {
+              costEl.textContent = `(-${cost})`;
+            }
+          }
+        });
+      }
+      startCooldownTimer(cooldownEndTimeISO) {
+        const cooldownEndTime = new Date(cooldownEndTimeISO);
+        this.domElements.cooldownContainer.style.display = 'block';
+        document.getElementById('startPlayBtn').disabled = true;
+        const timerInterval = setInterval(() => {
+          const now = new Date();
+          const remainingTime = cooldownEndTime - now;
+          if (remainingTime <= 0) {
+            clearInterval(timerInterval);
+            this.domElements.cooldownContainer.style.display = 'none';
+            document.getElementById('startPlayBtn').disabled = false;
+            return;
+          }
+          const hours = Math.floor((remainingTime / (1000 * 60 * 60)));
+          const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
+          const seconds = Math.floor((remainingTime / 1000) % 60);
+          this.domElements.cooldownTimer.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }, 1000);
+      }
+      // إضافة تأثيرات حركية للعناصر
+      animateElements() {
+        // تأثير للظهور التدريجي للعناصر
+        const animateOnScroll = () => {
+          const elements = document.querySelectorAll('.content-box, .btn, .avatar-option');
+          elements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const elementVisible = 150;
+            if (elementTop < window.innerHeight - elementVisible) {
+              element.style.opacity = "1";
+              element.style.transform = "translateY(0)";
+            }
+          });
+        };
+        // تطبيق الأنيميشن الأولي
+        const animatedElements = document.querySelectorAll('.content-box, .btn, .avatar-option');
+        animatedElements.forEach(element => {
+          element.style.opacity = "0";
+          element.style.transform = "translateY(20px)";
+          element.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        });
+        // تشغيل الأنيميشن عند التمرير
+        window.addEventListener("scroll", animateOnScroll);
+        // تشغيل الأنيميشن فور تحميل الصفحة
+        setTimeout(animateOnScroll, 100);
+      }
+    }
+    // تهيئة اللعبة عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+      const game = new QuizGame();
+      // إضافة دعم للوحة المفاتيح
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          const activeModal = document.querySelector('.modal.active');
+          if (activeModal) {
+            game.toggleSidebar(false);
+          }
+        }
+        // دعم الاختيار باستخدام الأرقام (1-4)
+        if (document.getElementById('gameContainer').classList.contains('active')) {
+          const key = parseInt(e.key);
+          if (key >= 1 && key <= 4) {
+            const options = document.querySelectorAll('.option-btn:not(.disabled)');
+            if (options.length >= key) {
+              options[key - 1].click();
+            }
+          }
+        }
+      });
+    });
+    // إضافة تأثيرات CSS dynamically
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
         
-        <div class="sidebar-content">
-            <ul class="prizes-list" aria-label="قائمة مستويات الألقاب"></ul>
-        </div>
-    </aside>
-    
-    <div class="sidebar-overlay" aria-hidden="true"></div>
-
-    <main id="gameContainer" class="screen" aria-hidden="true">
-        <div class="top-bar">
-            <button class="theme-toggle-btn" aria-label="تبديل وضع السطوع والظلام">
-                <span aria-hidden="true">☀️</span>
-            </button>
-            <button class="open-sidebar-btn" aria-expanded="false" aria-controls="prizesSidebar">
-                <span aria-hidden="true">🏆</span>
-                الألقاب
-            </button>
-        </div>
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% { transform: translate3d(0, 0, 0); }
+            40%, 43% { transform: translate3d(0, -15px, 0); }
+            70% { transform: translate3d(0, -7px, 0); }
+            90% { transform: translate3d(0, -3px, 0); }
+        }
         
-        <header class="game-header">
-            <div class="player-info">
-                <div class="player-main">
-                    <img id="playerAvatar" src="" alt="" aria-hidden="true">
-                    <span id="playerName" aria-label="اسم اللاعب"></span>
-                </div>
-                <div class="player-stats">
-                    <div class="stat-item">اللقب: <strong id="currentTitle" aria-live="polite">لا يوجد</strong></div>
-                    <div class="stat-item">النقاط: <strong id="currentScore" aria-live="polite">0</strong></div>
-                    <div class="stat-item">الأخطاء: <strong id="wrongAnswersCount" aria-live="assertive">0 / 3</strong></div>
-                    <div class="stat-item">المحاولات: <strong id="attemptsLeft" aria-live="polite"></strong></div>
-                </div>
-            </div>
-
-            <div class="helpers" aria-label="خيارات المساعدة">
-                <button class="helper-btn" data-type="fiftyFifty" disabled aria-describedby="fiftyFiftyDesc">
-                    50:50
-                    <span class="helper-cost"></span>
-                </button>
-                <div id="fiftyFiftyDesc" class="sr-only">يزيل خيارين خاطئين</div>
-    
-                <button class="helper-btn" data-type="freezeTime" disabled aria-describedby="freezeTimeDesc">
-                   ❄️ 10ث
-                    <span class="helper-cost"></span>
-                </button>
-                <div id="freezeTimeDesc" class="sr-only">يوقف المؤقت لمدة 10 ثوان</div>
-
-                <button class="helper-btn" data-type="changeQuestion" disabled aria-describedby="changeQuestionDesc">
-                   🔄 تغيير
-                <span class="helper-cost"></span>
-                </button>
-                <div id="changeQuestionDesc" class="sr-only">يغير السؤال الحالي</div>
-            </div>
-        </header>
-
-        <div class="timer-container" aria-label="مؤقت السؤال">
-            <div class="timer-bar" role="progressbar" aria-valuemin="0" aria-valuemax="60" aria-valuenow="60"></div>
-            <span id="timer" class="timer-text">60</span>
-        </div>
-
-        <div class="main-content">
-            <section class="question-box" aria-labelledby="questionCounter">
-                <h3 id="questionCounter"></h3>
-                <p id="questionText" aria-live="polite"></p>
-                <div class="spinner-container" aria-hidden="true">
-                    <div class="spinner"></div>
-                    <span class="sr-only">جاري تحميل السؤال التالي</span>
-                </div>
-            </section>
-            
-            <section class="options-container" aria-labelledby="questionText">
-                <div class="options-grid" role="group" aria-label="خيارات الإجابة"></div>
-            </section>
-        </div>
-    </main>
-
-    <div id="endScreen" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h2>🏆 النتائج النهائية 🏆</h2>
-            </header>
-            
-            <div class="final-stats" aria-labelledby="finalStatsHeading">
-                <h3 id="finalStatsHeading" class="sr-only">الإحصائيات النهائية</h3>
-                <p>✍️ الاسم: <strong id="finalName"></strong></p>
-                <p>🏅 اللقب: <strong id="finalTitle"></strong></p>
-                <p>⭐ النقاط: <strong id="finalScore"></strong></p>
-                <p>⏱️ المدة: <strong id="totalTime"></strong></p>
-            </div>
-            
-            <section class="share-section" aria-labelledby="shareHeading">
-                <h3 id="shareHeading">📢 مشاركة النتائج</h3>
-                <div class="share-buttons">
-                    <button id="shareXBtn" class="share-btn x" aria-label="مشاركة النتيجة على X">
-                        X
-                    </button>
-                    <button id="shareInstagramBtn" class="share-btn instagram" aria-label="مشاركة النتيجة على Instagram">
-                        Instagram
-                    </button>
-                </div>
-            </section>
-            
-            <div class="button-group">
-             <button id="statsBtn" class="btn-main">
-                 لوحة الصدارة
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="leaderboardScreen" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h2>
-                    <span aria-hidden="true">🏆</span>
-                    لوحة الصدارة
-                    <span aria-hidden="true">🏆</span>
-                </h2>
-            </header>
-            
-            <div id="leaderboardContent" aria-live="polite">
-            </div>
-            
-            <div class="button-group">
-                <button id="backToStartBtn" class="btn-secondary">
-                    العودة
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js" defer></script>
-    
-    <div class="sr-only" aria-live="polite" id="liveAnnouncements"></div>
+        .pulse { animation: pulse 2s infinite; }
+        .bounce { animation: bounce 1s infinite; }
+        
+        .level-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        
+        .level-easy { background-color: #2ec4b6; color: white; }
+        .level-medium { background-color: #4361ee; color: white; }
+        .level-hard { background-color: #ff9f1c; color: black; }
+        .level-impossible { background-color: #e71d36; color: white; }
+    `;
+    document.head.appendChild(style);
+  </script>
 </body>
 </html>
