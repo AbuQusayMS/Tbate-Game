@@ -1,462 +1,430 @@
-// @ts-nocheck
-/**
- * @fileoverview The enhanced back-end script for the quiz game
- * @author AbuQusay & Gemini
- * @version 6.1 - Syntax Bug Fix & Code Formatting
- */
-
-// =================================================================
-// 📚 1. CONFIGURATION
-// =================================================================
-
-class GameConfig {
-  static get SHEET_ID() { return '1lFtM0HfdOjOF0ci-HGA2H82E7zJAofW1sC41P7lHyVE'; }
-  static get ADMIN_NAME() { return 'AbuQusay'; }
-  static get API_KEY_PROPERTY() { return 'API_KEY'; }
-  static get MAX_LEADERBOARD_SIZE() { return 100; }
-  static get GAME_URL() { return 'https://abuqusayms.github.io/Shadow-Game/'; }
-  
-  static get SHEETS() {
-    return {
-      LOG: 'السجل',
-      LEADERBOARD: 'لوحة الصدارة',
-      FINISHERS: 'المنجزون',
-      STATS: 'الإحصائيات',
-      DEVICE_GROUPS: 'مجموعات الأجهزة',
-      AUDIT_LOG: 'سجل التغييرات',
-    };
-  }
-  
-  static get HEADERS() {
-    return {
-      LOG: [
-        'رقم المحاولة', 'معرّف الجهاز', 'معرّف اللاعب', 'اسم اللاعب', 'الإجابات الصحيحة',
-        'الإجابات الخاطئة', 'نسبة الدقة', 'مرات التخطي', 'استخدام 50:50', 'استخدام التجميد',
-        'النقاط النهائية', 'الوقت الإجمالي (د:ث)', 'متوسط الوقت (د:ث)', 'آخر مستوى وصل إليه', 'تاريخ التسجيل'
-      ],
-      LEADERBOARD: ['الترتيب', 'اسم اللاعب', 'المستوى', 'رقم المحاولة'],
-      FINISHERS: ['معرّف اللاعب', 'اسم اللاعب', 'تاريخ الإنجاز', 'النقاط'],
-      DEVICE_GROUPS: ['معرف الجهاز', 'إجمالي المحاولات', 'آخر تاريخ لعب'],
-      AUDIT_LOG: ['التاريخ', 'الإجراء', 'البيانات', 'الحالة']
-    };
-  }
-}
-
-
-class TelegramConfig {
-  static get BOT_TOKEN() { return PropertiesService.getScriptProperties().getProperty('TELEGRAM_BOT_TOKEN'); }
-  static get CHAT_ID() { return PropertiesService.getScriptProperties().getProperty('TELEGRAM_CHAT_ID'); }
-  static get isEnabled() { return this.BOT_TOKEN && this.CHAT_ID; }
-}
-
-// =================================================================
-// 🌐 2. MAIN ENTRY POINT (WEB APP)
-// =================================================================
-
-class GameAPI {
-  static handleRequest(e) {
-    const lock = LockService.getScriptLock();
-    try {
-      lock.waitLock(30000);
-      if (!e.postData) throw new Error('Invalid request - no data');
-      const data = JSON.parse(e.postData.contents);
-      this._validateApiKey(data.apiKey);
-      return this._routeRequest(data);
-    } catch (error) {
-      return this._handleError(error, e);
-    } finally {
-      lock.releaseLock();
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="مسابقة المعلومات - اختبر معلوماتك في مستويات متعددة">
+    <title>🧠 مسابقة المعلومات | اختبر قدراتك</title>
+    <link rel="icon" type="image/png" href="/images/my-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js" defer></script>
+    <style>
+    :root {
+      --color-dark-bg: #1a1a2e; --color-dark-primary: #16213e; --color-dark-secondary: #0f3460;
+      --color-dark-accent: #e94560; --color-dark-text: #f0f0f0; --color-dark-border: #374151;
+      --color-dark-gold: #ffd700; --color-dark-success: #10b981; --color-dark-error: #ef4444;
+      --color-light-bg: #f8fafc; --color-light-primary: #ffffff; --color-light-secondary: #e2e8f0;
+      --color-light-accent: #2563eb; --color-light-text: #1e293b; --color-light-border: #cbd5e1;
+      --color-light-gold: #ca8a04; --color-light-success: #059669; --color-light-error: #dc2626;
+      --color-white: #ffffff; --color-black: #000000;
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+      --font-family: 'Cairo', sans-serif;
+      --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem; --space-6: 1.5rem; --space-8: 2rem;
+      --radius-lg: 0.5rem; --radius-xl: 0.75rem; --radius-2xl: 1rem; --radius-full: 9999px;
+      --transition-fast: 150ms ease; --transition-normal: 300ms ease;
+      --level-easy: #10b981; --level-medium: #3b82f6; --level-hard: #f59e0b; --level-impossible: #ef4444;
     }
-  }
-  
-  static _routeRequest(data) {
-    GameLogger.audit(data.action, data, 'Started');
-    let result;
-    switch (data.action) {
-      case 'endGame': result = GameSession.end(data); break;
-      case 'getLeaderboard': result = Leaderboard.get(); break;
-      case 'startGame': result = GameSession.start(data); break;
-      case 'getStats': result = Statistics.get(); break;
-      case 'updateDeviceGroups': DeviceManager.updateGroups(); result = { success: true, message: 'Device groups updated' }; break;
-      case 'reportError': NotificationService.sendErrorReport(data.data); result = { success: true, message: 'Report received' }; break;
-      default: throw new Error(`Unknown action: ${data.action}`);
-    }
-    GameLogger.audit(data.action, data, 'Success');
-    return ResponseHelper.json(result);
-  }
-  
-  static _validateApiKey(apiKey) {
-    const storedKey = PropertiesService.getScriptProperties().getProperty(GameConfig.API_KEY_PROPERTY);
-    if (!apiKey || apiKey !== storedKey) {
-      GameLogger.audit('Authentication Failure', { providedKey: apiKey?.substring(0, 8) + '...' }, 'Failed');
-      throw new Error('Invalid API Key');
-    }
-  }
-  
-  static _handleError(error, e) {
-    const action = e.postData ? JSON.parse(e.postData.contents).action : 'Unknown';
-    GameLogger.audit('System Error', { action, error: error.message }, 'Failed');
-    if (!error.message.includes('API Key')) {
-      NotificationService.sendErrorAlert(action, error.message);
-    }
-    return ResponseHelper.json({ success: false, error: error.message });
-  }
-}
+    body[data-theme='dark'] { --bg-color: var(--color-dark-bg); --primary-color: var(--color-dark-primary); --secondary-color: var(--color-dark-secondary); --accent-color: var(--color-dark-accent); --text-color: var(--color-dark-text); --border-color: var(--color-dark-border); --gold-color: var(--color-dark-gold); --success-color: var(--color-dark-success); --error-color: var(--color-dark-error); }
+    body[data-theme='light'] { --bg-color: var(--color-light-bg); --primary-color: var(--color-light-primary); --secondary-color: var(--color-light-secondary); --accent-color: var(--color-light-accent); --text-color: var(--color-light-text); --border-color: var(--color-light-border); --gold-color: var(--color-light-gold); --success-color: var(--color-light-success); --error-color: var(--color-light-error); }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
+    body { min-height: 100%; font-family: var(--font-family); background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--space-8) var(--space-4); opacity: 0; visibility: hidden; transform: scale(0.95); transition: opacity var(--transition-normal), transform var(--transition-normal); overflow-y: auto; z-index: 1; }
+    .screen.screen--align-top { justify-content: flex-start; } .screen.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 10; }
+    .content-box { background-color: var(--primary-color); border-radius: var(--radius-2xl); padding: var(--space-6); width: 100%; max-width: 30rem; box-shadow: var(--shadow-xl); text-align: center; border: 1px solid var(--border-color); }
+    .button-group { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-6); }
+    .btn-main, .btn-secondary { padding: var(--space-3) var(--space-6); border-radius: var(--radius-lg); font-weight: 700; font-size: 1.125rem; cursor: pointer; transition: all var(--transition-fast); border: 2px solid; }
+    .btn-main { background-color: var(--gold-color); color: var(--color-black); border-color: var(--gold-color); }
+    .btn-main:hover:not(:disabled) { background-color: transparent; color: var(--gold-color); transform: translateY(-3px); }
+    .btn-secondary { background-color: var(--secondary-color); color: var(--text-color); border-color: var(--border-color); }
+    .btn-secondary:hover:not(:disabled) { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--color-white); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    .avatar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-6); }
+    .avatar-option { width: 80%; aspect-ratio: 1/1; border-radius: var(--radius-full); object-fit: cover; cursor: pointer; border: 3px solid transparent; transition: all var(--transition-fast); }
+    .avatar-option:hover { transform: scale(1.05); } .avatar-option.selected { border-color: var(--gold-color); transform: scale(1.1); }
+    .avatar-upload-container { display: flex; justify-content: center; align-items: center; width: 80%; aspect-ratio: 1/1; border-radius: var(--radius-full); border: 3px dashed var(--border-color); cursor: pointer; transition: all var(--transition-fast); }
+    .avatar-upload-container:hover { border-color: var(--gold-color); background-color: var(--secondary-color); } .avatar-upload-label { font-size: 2rem; color: var(--text-color); cursor: pointer; }
+    #gameContainer { justify-content: flex-start; padding: var(--space-4); width: 100%; max-width: 900px; }
+    .options-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+    .final-stats p { margin-bottom: var(--space-3); font-size: 1.125rem; }
+    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all var(--transition-normal); }
+    .modal.active { opacity: 1; visibility: visible; }
+    .modal-content { background-color: var(--primary-color); border-radius: var(--radius-2xl); padding: var(--space-6); width: 90%; max-width: 30rem; text-align: center; box-shadow: var(--shadow-xl); }
+    .modal-buttons { display: flex; gap: var(--space-4); justify-content: center; margin-top: var(--space-6); }
+    .toast-container { position: fixed; top: var(--space-4); left: 50%; transform: translateX(-50%); z-index: 1000; display: flex; flex-direction: column; align-items: center; gap: var(--space-3); pointer-events: none; }
+    .toast { padding: var(--space-3); border-radius: var(--radius-lg); color: var(--color-white); box-shadow: var(--shadow-lg); animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards; }
+    .toast.success { background-color: var(--success-color); } .toast.error { background-color: var(--error-color); } .toast.info { background-color: var(--level-medium); }
+    @keyframes toastIn { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes toastOut { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100%); opacity: 0; } }
+    .spinner { width: 2.5rem; height: 2.5rem; border: 4px solid var(--secondary-color); border-top: 4px solid var(--gold-color); border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .report-fab { position: fixed; bottom: var(--space-4); left: var(--space-4); width: 3.5rem; height: 3.5rem; background-color: var(--accent-color); color: var(--color-white); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; box-shadow: var(--shadow-lg); cursor: pointer; z-index: 999; transition: transform var(--transition-fast); display: none; }
+    .report-fab:hover { transform: scale(1.1); }
+    .report-fab.has-error { animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(233, 69, 96, 0); } 100% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0); } }
+    .cropper-container-modal { max-height: 70vh; }
+    @media (min-width: 768px) { .button-group { flex-direction: row; justify-content: center; } .options-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body data-theme="dark" aria-live="polite" data-level="easy">
+    <div id="toast-container" class="toast-container" aria-live="assertive"></div>
+    <div id="reportFab" class="report-fab" role="button" aria-label="الإبلاغ عن مشكلة">⚠️</div>
+    <div id="loader" class="screen active" role="status" aria-label="جاري التحميل"><div class="spinner" aria-hidden="true"></div></div>
 
-// =================================================================
-// 🎮 3. GAME SESSIONS
-// =================================================================
-
-class GameSession {
-  static start(data) {
-    DataValidator.validateStartData(data);
-    if (this._isAdmin(data.name)) return { success: true, message: 'Admin access granted', isAdmin: true };
-    return { success: true, message: 'Game session started' };
-  }
-  
-  static end(data) {
-    DataValidator.validateEndData(data);
-    if (this._isAdmin(data.name)) return { success: true, message: 'Admin score not recorded', isAdmin: true };
+    <div id="startScreen" class="screen" aria-hidden="true">
+        <div class="content-box">
+            <h2>🧠 مسابقة المعلومات</h2><p>اختبر قدراتك في مسابقة تفاعلية شيقة</p>
+            <div class="button-group">
+                <button id="startPlayBtn" class="btn-main">ابدأ اللعب</button>
+                <button id="showLeaderboardBtn" class="btn-secondary">لوحة الصدارة</button>
+            </div>
+        </div>
+    </div>
+    <div id="avatarScreen" class="screen" aria-hidden="true">
+        <div class="content-box">
+            <h2>اختر صورتك الرمزية</h2>
+            <div class="avatar-grid" role="group"></div>
+            <div class="button-group">
+                <button id="confirmAvatarBtn" class="btn-main" disabled>التالي</button>
+            </div>
+        </div>
+    </div>
+    <div id="nameEntry" class="screen" aria-hidden="true">
+        <div class="content-box">
+            <h2>أدخل اسمك</h2>
+            <input type="text" id="nameInput" placeholder="مثلا: عبد الله" maxlength="25">
+            <div id="nameError" style="color:var(--error-color); display:none; margin-top:0.5rem;"></div>
+            <div class="button-group">
+                <button id="confirmNameBtn" class="btn-main">تأكيد الإسم</button>
+            </div>
+        </div>
+    </div>
+    <div id="instructionsScreen" class="screen screen--align-top" aria-hidden="true">
+        <div class="content-box">
+            <h2>📋 تعليمات اللعبة</h2>
+            <div style="text-align:right; margin:1.5rem 0;">
+                <p><strong>⚖️ النقاط:</strong> صحيحة: +100 / خاطئة: -100</p>
+                <p><strong>⏱️ الوقت:</strong> لكل سؤال وقت محدد</p>
+                <p><strong>🛠️ المساعدات:</strong> المساعدة: -100 / التخطي: -20 (وتتزايد)</p>
+                <p><strong>🎯 المستويات:</strong> سهل / متوسط / صعب / مستحيل</p>
+                <p><strong>🚫 الأخطاء:</strong> مسموح 3 فقط</p>
+                <p><strong>📩 الدعم:</strong> تواصل عبر <a href="https://x.com/_MS_AbuQusay" target="_blank">إكس</a> أو <a href="https://www.instagram.com/_ms_abuqusay" target="_blank">إنستغرام</a></p>
+            </div>
+            <div class="button-group">
+                <button id="instructionsConfirmBtn" class="btn-main">حسناً، فهمت</button>
+            </div>
+        </div>
+    </div>
     
-    const attemptNumber = this._getNewAttemptNumber(data.deviceId);
-    const fullGameData = { ...data, attemptNumber };
+    <main id="gameContainer" class="screen" aria-hidden="true"></main>
+    
+    <div id="endScreen" class="screen screen--align-top" aria-hidden="true">
+        <div class="content-box">
+            <h2>🏆 النتائج النهائية</h2>
+            <div class="final-stats" style="text-align:right;">
+                <p>✍️ الاسم: <strong id="finalName"></strong></p>
+                <p>🆔 المعرّف: <strong id="finalId"></strong></p>
+                <p>✅ الإجابات الصحيحة: <strong id="finalCorrect"></strong></p>
+                <p>❌ الإجابات الخاطئة: <strong id="finalWrong"></strong></p>
+                <p>⏭️ مرات التخطي: <strong id="finalSkips"></strong></p>
+                <p>⭐ النقاط النهائية: <strong id="finalScore"></strong></p>
+                <p>⏱️ الوقت المستغرق: <strong id="totalTime"></strong></p>
+                <p>📈 المستوى: <strong id="finalLevel"></strong></p>
+                <p>🎯 نسبة الدقة: <strong id="finalAccuracy"></strong></p>
+                <p>⏳ متوسط وقت الإجابة: <strong id="finalAvgTime"></strong></p>
+                <div><span>أداؤك: </span><strong id="performanceText"></strong></div>
+            </div>
+            <div class="button-group">
+                <button id="playAgainBtn" class="btn-main">لعب مرة أخرى</button>
+                <button id="statsBtn" class="btn-secondary">لوحة الصدارة</button>
+            </div>
+        </div>
+    </div>
+    <div id="leaderboardScreen" class="screen screen--align-top" aria-hidden="true">
+        <div class="content-box">
+            <h2>🏆 لوحة الصدارة</h2>
+            <div id="leaderboardContent"></div>
+            <div class="button-group">
+                <button id="backToStartBtn" class="btn-secondary">العودة</button>
+            </div>
+        </div>
+    </div>
+    <div id="levelCompleteScreen" class="screen" aria-hidden="true">
+        <div class="content-box">
+            <h2 id="levelCompleteTitle"></h2>
+            <div class="level-stats" style="text-align:right;">
+                 <p>النقاط الحالية: <strong id="levelScore"></strong></p>
+                 <p>عدد الأخطاء: <strong id="levelErrors"></strong></p>
+                 <p>الأسئلة الصحيحة: <strong id="levelCorrect"></strong></p>
+            </div>
+            <div class="button-group">
+                <button id="nextLevelBtn" class="btn-main">المستوى التالي</button>
+                <button id="quitLevelBtn" class="btn-secondary">الانسحاب</button>
+            </div>
+        </div>
+    </div>
 
-    if (fullGameData.isGameCompleted) {
-        this._recordGameFinisher(fullGameData);
+    <!-- Modals -->
+    <div id="confirmExitModal" class="modal" aria-hidden="true"><div class="modal-content"><h3>إنهاء المسابقة؟</h3><p>سيتم حفظ نقاطك الحالية.</p><div class="modal-buttons"><button id="confirmExitYes" class="btn-main">نعم</button><button id="confirmExitNo" class="btn-secondary">لا</button></div></div></div>
+    <div id="reportErrorModal" class="modal" aria-hidden="true"><div class="modal-content"><h3>الإبلاغ عن مشكلة</h3><p id="reportErrorText"></p><div class="modal-buttons"><button id="reportErrorYes" class="btn-main">إرسال</button><button id="reportErrorNo" class="btn-secondary">إلغاء</button></div></div></div>
+    <div id="cropperModal" class="modal" aria-hidden="true"><div class="modal-content"><h2>تعديل الصورة</h2><div class="cropper-container-modal"><img id="cropperImage" src=""></div><div class="modal-buttons"><button id="cropBtn" class="btn-main">قص</button><button id="cancelCropBtn" class="btn-secondary">إلغاء</button></div></div></div>
+
+<script>
+class QuizGame {
+    constructor() {
+        this.API_URL = "https://script.google.com/macros/s/AKfycbwSieydP8pgaTKpqzlDBYDEjeuMSYu85eVLwUlMepwkbGOi4toI5-Lc-lpeK8T6rRdg/exec";
+        this.API_KEY = "AbuQusay2025_SecretKey";
+        this.QUESTION_TIME = 80; this.MAX_WRONG_ANSWERS = 3; this.STARTING_SCORE = 100;
+        this.LEVELS = [ { name: "easy", label: "سهل" }, { name: "medium", label: "متوسط" }, { name: "hard", label: "صعب" }, { name: "impossible", label: "مستحيل" } ];
+        this.QUESTIONS = {}; this.HELPER_COSTS = { fiftyFifty: 100, freezeTime: 100 };
+        this.initialSkipCost = 20; this.currentSkipCost = this.initialSkipCost;
+        this.gameState = {}; this.lastError = null; this.lastFocusedElement = null; this.cropper = null;
+        this.init();
     }
 
-    this._saveGameResult(fullGameData);
-    Leaderboard.update(fullGameData);
-    Statistics.update();
-    NotificationService.sendGameResult(fullGameData);
-    
-    return { success: true, message: 'Score saved successfully' };
-  }
-
-  static _recordGameFinisher(data) {
-    const finisherSheet = SheetManager.getSheet(GameConfig.SHEETS.FINISHERS, GameConfig.HEADERS.FINISHERS);
-    const finisherIds = finisherSheet.getLastRow() > 1 ? finisherSheet.getRange(2, 1, finisherSheet.getLastRow() - 1, 1).getValues().flat() : [];
-    
-    if (!finisherIds.includes(data.playerId)) {
-      finisherSheet.appendRow([data.playerId, data.name, new Date(), data.score]);
-    }
-  }
-
-  static _getNewAttemptNumber(deviceId) {
-    const sheet = SheetManager.getSheet(GameConfig.SHEETS.LOG);
-    if (sheet.getLastRow() < 2) return 1;
-    const deviceIdColumn = sheet.getRange(2, 2, sheet.getLastRow() - 1, 1).getValues();
-    const attemptNumberColumn = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues();
-    for (let i = deviceIdColumn.length - 1; i >= 0; i--) {
-      if (deviceIdColumn[i][0] === deviceId) {
-        const lastAttempt = parseInt(attemptNumberColumn[i][0], 10);
-        return isNaN(lastAttempt) ? 1 : lastAttempt + 1;
-      }
-    }
-    return 1;
-  }
-  
-  static _isAdmin(playerName) { return playerName.toLowerCase() === GameConfig.ADMIN_NAME.toLowerCase(); }
-  
-  static _saveGameResult(data) {
-    const sheet = SheetManager.getSheet(GameConfig.SHEETS.LOG, GameConfig.HEADERS.LOG);
-    const newRow = [
-      data.attemptNumber, data.deviceId, data.playerId, data.name, data.correct, data.wrong,
-      data.accuracy, data.skips, data.usedFiftyFifty ? 1 : 0, data.usedFreezeTime ? 1 : 0,
-      data.score, data.totalTime / 86400, data.avgTime / 86400, data.level, new Date()
-    ];
-    sheet.appendRow(newRow);
-  }
-}
-
-// =================================================================
-// 🏆 4. LEADERBOARD
-// =================================================================
-
-class Leaderboard {
-  
-  static get() {
-    const sheet = SheetManager.getSheet(GameConfig.SHEETS.LEADERBOARD, GameConfig.HEADERS.LEADERBOARD);
-    if (sheet.getLastRow() < 2) return { success: true, leaderboard: [] };
-    
-    const data = sheet.getRange(2, 1, sheet.getLastRow() - 1, GameConfig.HEADERS.LEADERBOARD.length + 2).getValues(); // Read hidden cols too
-    let leaderboard = data.map(row => ({ 
-      rank: row[0], 
-      name: row[1], 
-      level: row[2], 
-      attempt: row[3],
-      playerId: row[5] // PlayerID is hidden in column F
-    }));
-    
-    return { success: true, leaderboard };
-  }
-  
-  static update(gameData) {
-    const sheet = SheetManager.getSheet(GameConfig.SHEETS.LEADERBOARD, GameConfig.HEADERS.LEADERBOARD);
-    let entries = [];
-    const COLS_TO_READ = 6; // Rank, Name, Level, Attempt, Score (hidden), PlayerID (hidden)
-
-    if (sheet.getLastRow() > 1) {
-      const existingData = sheet.getRange(2, 2, sheet.getLastRow() - 1, COLS_TO_READ - 1).getValues();
-      entries = existingData.map(row => ({
-        name: row[0], level: row[1], attempt: row[2], score: row[3] || 0, playerId: row[4] || null
-      }));
-    }
-    
-    entries.push({ name: gameData.name, level: gameData.level, attempt: gameData.attemptNumber, score: gameData.score, playerId: gameData.playerId });
-    entries.sort((a, b) => b.score - a.score); 
-    
-    if (sheet.getLastRow() > 1) {
-      sheet.getRange(2, 1, sheet.getLastRow(), COLS_TO_READ).clearContent();
-    }
-    
-    const finisherSheet = SheetManager.getSheet(GameConfig.SHEETS.FINISHERS);
-    let ultimateWinnerId = null;
-    if (finisherSheet.getLastRow() > 1) {
-        ultimateWinnerId = finisherSheet.getRange(2, 1).getValue();
-    }
-
-    let winnerEntry = null;
-    if (ultimateWinnerId) {
-        const winnerIndex = entries.findIndex(e => e.playerId === ultimateWinnerId);
-        if (winnerIndex > -1) {
-            winnerEntry = entries.splice(winnerIndex, 1)[0];
+    async init() {
+        this.catchGlobalErrors();
+        this.cacheDomElements();
+        this.bindEventListeners();
+        const questionsLoaded = await this.loadQuestions();
+        if (questionsLoaded) {
+            this.populateAvatarGrid();
+            this.showScreen('start');
+            this.domElements.screens.loader.style.display = 'none';
+        } else {
+            this.domElements.screens.loader.innerHTML = '<p style="color:var(--error-color);">فشل تحميل الأسئلة. الرجاء تحديث الصفحة.</p>';
         }
     }
 
-    const finalEntries = (winnerEntry ? [winnerEntry, ...entries] : entries).slice(0, GameConfig.MAX_LEADERBOARD_SIZE);
-      
-    const dataToWrite = finalEntries.map((entry, index) => {
-      let rank;
-      if (winnerEntry && entry.playerId === winnerEntry.playerId) {
-        rank = '🎖️';
-      } else {
-        const numericRank = winnerEntry ? index : index + 1; // Adjust rank if winner is present
-        rank = {1: '🥇', 2: '🥈', 3: '🥉'}[numericRank] || numericRank;
-      }
-      return [rank, entry.name, entry.level, entry.attempt, entry.score, entry.playerId];
-    });
-
-    if (dataToWrite.length > 0) {
-      sheet.getRange(2, 1, dataToWrite.length, COLS_TO_READ).setValues(dataToWrite);
+    cacheDomElements() {
+        this.domElements = {
+            screens: { loader: document.getElementById('loader'), start: document.getElementById('startScreen'), avatar: document.getElementById('avatarScreen'), nameEntry: document.getElementById('nameEntry'), instructions: document.getElementById('instructionsScreen'), game: document.getElementById('gameContainer'), end: document.getElementById('endScreen'), leaderboard: document.getElementById('leaderboardScreen'), levelComplete: document.getElementById('levelCompleteScreen') },
+            avatarGrid: document.querySelector('.avatar-grid'),
+            confirmAvatarBtn: document.getElementById('confirmAvatarBtn'),
+            nameInput: document.getElementById('nameInput'),
+            nameError: document.getElementById('nameError'),
+            reportFab: document.getElementById('reportFab'),
+            reportErrorModal: document.getElementById('reportErrorModal'),
+            reportErrorText: document.getElementById('reportErrorText'),
+            confirmExitModal: document.getElementById('confirmExitModal'),
+            cropperModal: document.getElementById('cropperModal'),
+            cropperImage: document.getElementById('cropperImage'),
+            gameContainer: document.getElementById('gameContainer')
+        };
     }
-  }
-}
 
-// =================================================================
-// 📨 8. NOTIFICATIONS
-// =================================================================
+    bindEventListeners() {
+        document.getElementById('startPlayBtn').addEventListener('click', () => this.showScreen('avatar'));
+        this.domElements.confirmAvatarBtn.addEventListener('click', () => this.showScreen('nameEntry'));
+        document.getElementById('confirmNameBtn').addEventListener('click', () => this.startGame());
+        document.getElementById('instructionsConfirmBtn').addEventListener('click', () => {
+            this.showScreen('game');
+            this.startLevel();
+        });
+        document.getElementById('showLeaderboardBtn').addEventListener('click', () => this.displayLeaderboard());
+        document.getElementById('backToStartBtn').addEventListener('click', () => this.showScreen('start'));
+        document.getElementById('confirmExitYes').addEventListener('click', () => this.endGame(false));
+        document.getElementById('confirmExitNo').addEventListener('click', () => this.hideModal(this.domElements.confirmExitModal));
+        document.getElementById('playAgainBtn').addEventListener('click', () => this.resetGame());
+        document.getElementById('statsBtn').addEventListener('click', () => this.displayLeaderboard());
+        document.getElementById('nextLevelBtn').addEventListener('click', () => { this.gameState.level++; this.showScreen('game'); this.startLevel(); });
+        document.getElementById('quitLevelBtn').addEventListener('click', () => this.endGame(false));
+        this.domElements.reportFab.addEventListener('click', () => this.showReportModal());
+        document.getElementById('reportErrorYes').addEventListener('click', () => this.sendErrorReport());
+        document.getElementById('reportErrorNo').addEventListener('click', () => this.hideModal(this.domElements.reportErrorModal));
+        document.getElementById('cropBtn').addEventListener('click', () => this.cropAndSetAvatar());
+        document.getElementById('cancelCropBtn').addEventListener('click', () => this.hideModal(this.domElements.cropperModal));
+        document.body.addEventListener('click', (event) => {
+            if (event.target && event.target.id === 'endQuizBtn') {
+                this.showModal(this.domElements.confirmExitModal);
+            }
+        });
+    }
 
-class NotificationService {
-  static sendGameResult(gameData) {
-    if (!TelegramConfig.isEnabled) return;
-    const { correct, wrong, name, playerId, skips, score, totalTime, level, avgTime } = gameData;
-    const totalAnswered = correct + wrong;
-    const accuracy = totalAnswered > 0 ? parseFloat(((correct / totalAnswered) * 100).toFixed(1)) : 0.0;
+    populateAvatarGrid() {
+        this.domElements.avatarGrid.innerHTML = '';
+        const uploadContainer = document.createElement('div');
+        uploadContainer.className = 'avatar-upload-container';
+        uploadContainer.innerHTML = `<label for="avatarUploadInput" class="avatar-upload-label" title="رفع صورة">➕</label><input type="file" id="avatarUploadInput" accept="image/*" style="display:none;">`;
+        this.domElements.avatarGrid.appendChild(uploadContainer);
+        document.getElementById('avatarUploadInput').addEventListener('change', (e) => this.handleAvatarUpload(e));
+        const avatarUrls = [ "https://em-content.zobj.net/thumbs/120/apple/354/woman_1f469.png", "https://em-content.zobj.net/thumbs/120/apple/354/man_1f468.png", "https://em-content.zobj.net/thumbs/120/apple/354/person-beard_1f9d4.png" ];
+        avatarUrls.forEach((url) => {
+            const img = document.createElement('img'); img.src = url; img.classList.add('avatar-option');
+            img.addEventListener('click', () => this.selectAvatar(img)); this.domElements.avatarGrid.appendChild(img);
+        });
+    }
     
-    let performanceRating = "لم يتم الإجابة على أي سؤال";
-    if (totalAnswered > 0) {
-        if (accuracy >= 90) performanceRating = "ممتاز 🏆";
-        else if (accuracy >= 75) performanceRating = "جيد جدًا ⭐";
-        else if (accuracy >= 60) performanceRating = "جيد 👍";
-        else if (accuracy >= 40) performanceRating = "مقبول 👌";
-        else performanceRating = "يحتاج تحسين 📈";
+    selectAvatar(imgElement) {
+        this.domElements.avatarGrid.querySelectorAll('.avatar-option.selected').forEach(el => el.classList.remove('selected'));
+        imgElement.classList.add('selected');
+        this.gameState.avatar = imgElement.src;
+        this.domElements.confirmAvatarBtn.disabled = false;
     }
 
-    const resultsMessage = `🏆 <b>النتائج النهائية</b> 🏆\n\n<b>الاسم:</b> <code>${this._escapeHtml(name)}</code>\n<b>المعرّف:</b> <code>${this._escapeHtml(playerId)}</code>\n<b>الإجابات الصحيحة:</b> ${correct}\n<b>الإجابات الخاطئة:</b> ${wrong}\n<b>مرات التخطي:</b> ${skips}\n<b>النقاط النهائية:</b> ${score}\n<b>الوقت المستغرق:</b> ${TimeHelper.formatMinutesSeconds(totalTime)}\n<b>المستوى الذي وصلت إليه:</b> ${level}\n<b>نسبة الدقة:</b> ${accuracy}%\n<b>متوسط وقت الإجابة:</b> ${TimeHelper.formatMinutesSeconds(avgTime)} / سؤال\n<b>أداؤك:</b> ${performanceRating}`;
-    const plainTextForSharing = `نتائجي في مسابقة المعلومات 🧠\n\nالاسم: ${name}\nالنقاط: ${score}\nالمستوى: ${level}\nأداؤك: ${performanceRating}\n\nجرب تحديك أنت أيضاً!\n${GameConfig.GAME_URL}`;
-    const encodedShareText = encodeURIComponent(plainTextForSharing);
-    const shareOnXUrl = `https://twitter.com/intent/tweet?text=${encodedShareText}`;
-    const adminReport = `📋 <b>تقرير لعبة جديد</b> 📋\n\n<b>رقم المحاولة:</b> ${gameData.attemptNumber}\n<b>معرّف الجهاز:</b> <code>${this._escapeHtml(gameData.deviceId)}</code>\n<b>الاسم:</b> <code>${this._escapeHtml(name)}</code>\n<b>النقاط:</b> ${score}\n<b>المستوى:</b> ${level}`;
-    const finalMessage = `${resultsMessage}\n\n<a href="${shareOnXUrl}"><b>انشر على 𝕏</b></a>\n<i>للمشاركة، انسخ النص التالي:</i>\n<code>${this._escapeHtml(plainTextForSharing)}</code>\n\n➖➖➖➖➖➖➖➖➖➖\n\n${adminReport}`;
-    this._sendTelegram(finalMessage);
-  }
-  
-  static sendErrorReport(reportData) {
-    if (!TelegramConfig.isEnabled) return;
-    const { errorDetails = {}, gameState = {}, userAgent = 'N/A' } = reportData;
-    const message = `🐞 <b>بلاغ بمشكلة فنية</b>\n\n👤 <b>اللاعب:</b> <code>${this._escapeHtml(gameState.name || 'غير معروف')}</code>\n<b>--- تفاصيل الخطأ ---</b>\n<pre>${this._escapeHtml(JSON.stringify(errorDetails, null, 2))}</pre>\n<b>--- معلومات الجهاز ---</b>\n<pre>${this._escapeHtml(userAgent)}</pre>`;
-    this._sendTelegram(message);
-  }
-
-  static sendErrorAlert(action, error) {
-    if (!TelegramConfig.isEnabled) return;
-    const message = `🚨 <b>خطأ في النظام</b>\n\n🛠️ <b>الإجراء:</b> <code>${this._escapeHtml(action)}</code>\n❌ <b>الخطأ:</b> <code>${this._escapeHtml(error)}</code>`;
-    this._sendTelegram(message);
-  }
-  
-  static _sendTelegram(message) {
-    try {
-      const url = `https://api.telegram.org/bot${TelegramConfig.BOT_TOKEN}/sendMessage`;
-      const options = { method: 'post', contentType: 'application/json', payload: JSON.stringify({ chat_id: TelegramConfig.CHAT_ID, text: message, parse_mode: 'HTML', disable_web_page_preview: true }), muteHttpExceptions: true };
-      UrlFetchApp.fetch(url, options);
-    } catch (error) {
-      GameLogger.audit('Telegram Error', { error: error.message }, 'Failed');
+    handleAvatarUpload(event) {
+        const file = event.target.files[0];
+        if (!file || !file.type.startsWith('image/') || file.size > 2 * 1024 * 1024) { this.showToast('الرجاء اختيار ملف صورة صالح (أقل من 2 ميجابايت).', 'error'); return; }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.domElements.cropperImage.src = e.target.result;
+            this.showModal(this.domElements.cropperModal);
+            if (this.cropper) this.cropper.destroy();
+            this.cropper = new Cropper(this.domElements.cropperImage, { aspectRatio: 1, viewMode: 1, background: false, modal: false });
+        };
+        reader.readAsDataURL(file);
     }
-  }
-  
-  static _escapeHtml(text) {
-    if (text == null) return '';
-    return text.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-  }
-}
-
-// =================================================================
-// 📄 11. SHEET MANAGEMENT
-// =================================================================
-
-class SheetManager {
-  static getSheet(sheetName, headers = []) {
-    const ss = SpreadsheetApp.openById(GameConfig.SHEET_ID);
-    let sheet = ss.getSheetByName(sheetName);
-    if (!sheet) {
-      sheet = ss.insertSheet(sheetName);
-      sheet.setRightToLeft(true);
-      if (headers.length > 0) {
-        sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold');
-        const formatMap = { 'تاريخ التسجيل': 'yyyy-mm-dd hh:mm:ss', 'تاريخ الإنجاز': 'yyyy-mm-dd hh:mm:ss', 'الوقت الإجمالي (د:ث)': '[mm]:ss', 'متوسط الوقت (د:ث)': '[mm]:ss' };
-        headers.forEach((h, i) => { if (formatMap[h]) sheet.getRange(2, i + 1, sheet.getMaxRows() - 1, 1).setNumberFormat(formatMap[h]); });
-      }
+    
+    cropAndSetAvatar() {
+        if (!this.cropper) return;
+        const canvas = this.cropper.getCroppedCanvas({ width: 256, height: 256 });
+        const dataUrl = canvas.toDataURL();
+        let customAvatar = document.getElementById('customAvatar');
+        if (!customAvatar) {
+            customAvatar = document.createElement('img'); customAvatar.id = 'customAvatar'; customAvatar.classList.add('avatar-option');
+            customAvatar.addEventListener('click', () => this.selectAvatar(customAvatar));
+            this.domElements.avatarGrid.insertBefore(customAvatar, this.domElements.avatarGrid.children[1]);
+        }
+        customAvatar.src = dataUrl;
+        this.selectAvatar(customAvatar);
+        this.hideModal(this.domElements.cropperModal);
     }
-    return sheet;
-  }
-}
 
-// =================================================================
-// (The rest of the boilerplate classes are properly formatted below)
-// =================================================================
-
-class Statistics {
-  static get() {
-    const sheet = SheetManager.getSheet(GameConfig.SHEETS.LOG);
-    if (sheet.getLastRow() < 2) {
-      return this._getEmptyStats();
+    catchGlobalErrors() { window.onerror = (m, s, l, c, e) => { this.lastError = { message: m, source: s, lineno: l, error: e ? e.stack : 'N/A' }; this.domElements.reportFab.style.display = 'flex'; this.domElements.reportFab.classList.add('has-error'); return true; }; }
+    showReportModal() { this.domElements.reportErrorText.innerHTML = this.lastError ? `اكتشفنا خطأ تلقائيًا: <br><small>${this.lastError.message}</small>` : "هل تريد إرسال بلاغ عام؟"; this.showModal(this.domElements.reportErrorModal); }
+    async sendErrorReport() { /* implementation */ }
+    
+    async startGame() {
+        const name = this.domElements.nameInput.value.trim();
+        if (name.length < 3) {
+            this.domElements.nameError.textContent = "الاسم يجب أن يكون 3 أحرف على الأقل.";
+            this.domElements.nameError.style.display = 'block';
+            return;
+        }
+        this.domElements.nameError.style.display = 'none';
+        this.gameState = { name, avatar: this.gameState.avatar, playerId: this.generatePlayerId(), deviceId: this.generateDeviceId(), level: 0, wrongAnswers: 0, correctAnswers: 0, skips: 0, startTime: new Date(), helpersUsed: { fiftyFifty: false, freezeTime: false } };
+        
+        this.populateGameUI();
+        this.showScreen('instructions');
     }
-    // Correctly get the full range of data
-    const data = sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).getValues();
-    return {
-      success: true,
-      stats: {
-        totalPlays: data.length,
-        uniqueDevices: this._countUniqueDevices(data),
-        averageScore: this._calculateAverage(data, 10), // Column K
-        averageAccuracy: this._calculateAverage(data, 6), // Column G
-        lastUpdated: new Date()
-      }
-    };
-  }
-  static update() {
-    const stats = this.get().stats;
-    const sheet = SheetManager.getSheet(GameConfig.SHEETS.STATS);
-    const data = [
-      ['إجمالي المحاولات', stats.totalPlays],
-      ['الأجهزة الفريدة', stats.uniqueDevices],
-      ['متوسط النقاط', Math.round(stats.averageScore)],
-      ['متوسط الدقة', stats.averageAccuracy.toFixed(1) + '%'],
-      ['آخر تحديث', stats.lastUpdated]
-    ];
-    sheet.clear();
-    sheet.getRange(1, 1, 1, 2).setValues([
-      ['الإحصائية', 'القيمة']
-    ]).setFontWeight('bold');
-    sheet.getRange(2, 1, data.length, 2).setValues(data);
-  }
-  static _countUniqueDevices(data) {
-    return new Set(data.map(row => row[1])).size;
-  }
-  static _calculateAverage(data, colIndex) {
-    const values = data.map(row => parseFloat(row[colIndex]) || 0);
-    const sum = values.reduce((acc, val) => acc + val, 0);
-    return values.length > 0 ? sum / values.length : 0;
-  }
-  static _getEmptyStats() {
-    return { success: true, stats: { totalPlays: 0, uniqueDevices: 0, averageScore: 0, averageAccuracy: 0, lastUpdated: new Date() } };
-  }
-}
 
-class DeviceManager {
-  static updateGroups() {
-    const logSheet = SheetManager.getSheet(GameConfig.SHEETS.LOG);
-    const deviceSheet = SheetManager.getSheet(GameConfig.SHEETS.DEVICE_GROUPS, GameConfig.HEADERS.DEVICE_GROUPS);
-    if (logSheet.getLastRow() < 2) {
-      deviceSheet.clear();
-      deviceSheet.getRange(1, 1, 1, 3).setValues([GameConfig.HEADERS.DEVICE_GROUPS]).setFontWeight('bold');
-      return;
+    populateGameUI() {
+        this.domElements.gameContainer.innerHTML = `
+            <div class="top-bar" style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:1rem;">
+                <button id="endQuizBtn" class="btn-secondary">🚪 إنهاء</button>
+            </div>
+            <header class="game-header" style="background:var(--primary-color); border-radius:var(--radius-xl); padding:1rem; margin-bottom:1rem;">
+                <div class="player-info" style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="display:flex; align-items:center; gap:1rem;">
+                        <img id="playerAvatar" src="${this.gameState.avatar}" style="width:3.5rem; height:3.5rem; border-radius:50%; border:2px solid var(--gold-color);">
+                        <div>
+                            <span id="playerName" style="font-size: var(--font-size-lg); font-weight: 700;">${this.gameState.name}</span>
+                            <span id="playerId" style="font-size: 0.75rem; opacity: 0.7; display:block;">${this.gameState.playerId}</span>
+                        </div>
+                    </div>
+                    <div class="player-stats" style="display:flex; gap:1rem;">
+                        <div>النقاط: <strong id="currentScore">${this.STARTING_SCORE}</strong></div>
+                        <div>الأخطاء: <strong id="wrongAnswersCount">0 / ${this.MAX_WRONG_ANSWERS}</strong></div>
+                    </div>
+                </div>
+                 <div class="helpers" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top:1rem;">
+                    <button class="helper-btn" data-type="fiftyFifty">50:50 <span class="helper-cost">(-100)</span></button>
+                    <button class="helper-btn" data-type="freezeTime">❄️ 10ث <span class="helper-cost">(-100)</span></button>
+                    <button class="helper-btn" data-type="skipQuestion">⏭️ تخطي <span id="skipCost" class="helper-cost">(-${this.initialSkipCost})</span></button>
+                </div>
+            </header>
+            <div class="timer-container" style="width: 100%; background-color: var(--secondary-color); border-radius: 9999px; position: relative; height: 2rem; overflow: hidden;">
+                <div class="timer-bar" style="height: 100%; background: linear-gradient(90deg, var(--accent-color), var(--gold-color)); border-radius: 9999px; transition: width 1s linear; width: 100%;"></div>
+                <span id="timerText" class="timer-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-weight: 700;"></span>
+            </div>
+            <div class="main-content" style="width:100%;">
+                <section class="question-box" style="background:var(--primary-color); border-radius:var(--radius-xl); padding:1.5rem; margin-bottom:1.5rem; position:relative;">
+                    <div id="currentLevelBadge" style="position:absolute; top:-0.75rem; left:50%; transform:translateX(-50%); color:white; padding:0.25rem 0.75rem; border-radius:1rem; font-weight:bold;"></div>
+                    <h3 id="questionCounter"></h3>
+                    <p id="questionText" style="font-size:var(--font-size-xl);"></p>
+                </section>
+                <section class="options-container">
+                    <div class="options-grid"></div>
+                </section>
+            </div>`;
     }
-    const logData = logSheet.getRange(2, 1, logSheet.getLastRow() - 1, logSheet.getLastColumn()).getValues();
-    const deviceMap = new Map();
-    logData.forEach(row => {
-      const deviceId = row[1];
-      if (!deviceMap.has(deviceId)) {
-        deviceMap.set(deviceId, []);
-      }
-      deviceMap.get(deviceId).push({
-        date: new Date(row[14]),
-        name: row[3],
-        score: row[10]
-      });
-    });
-    const outputRows = [];
-    deviceMap.forEach((attempts, deviceId) => {
-      attempts.sort((a, b) => b.date - a.date);
-      outputRows.push([deviceId, attempts.length, attempts[0].date]);
-      attempts.slice(0, 5).forEach(attempt => {
-        outputRows.push(['', `→ ${attempt.date.toLocaleString('ar-EG')}`, `اللاعب: ${attempt.name}`, `النقاط: ${attempt.score}`]);
-      });
-      if (attempts.length > 5) {
-        outputRows.push(['', `... و ${attempts.length - 5} محاولة أخرى`, '', '']);
-      }
-    });
-    deviceSheet.clear();
-    deviceSheet.getRange(1, 1, 1, 4).setValues([GameConfig.HEADERS.DEVICE_GROUPS]).setFontWeight('bold');
-    if (outputRows.length > 0) {
-      deviceSheet.getRange(2, 1, outputRows.length, 4).setValues(outputRows);
+    
+    updateUI() {
+        const isImpossible = this.gameState.level !== undefined && this.LEVELS[this.gameState.level].name === 'impossible';
+        document.querySelectorAll('.helper-btn').forEach(btn => { btn.disabled = isImpossible; });
+        document.getElementById('currentScore').textContent = this.currentScoreValue;
+        document.getElementById('wrongAnswersCount').textContent = `${this.gameState.wrongAnswers} / ${this.MAX_WRONG_ANSWERS}`;
     }
-  }
-}
-
-class DataValidator {
-  static validateStartData(data) { const r = ['playerId', 'name', 'deviceId']; this._checkRequiredFields(data, r); this._validateName(data.name); }
-  static validateEndData(data) { const r = ['playerId', 'name', 'deviceId', 'score', 'level', 'accuracy']; this._checkRequiredFields(data, r); this._validateName(data.name); this._validateScore(data.score); this._validateAccuracy(data.accuracy); }
-  static _checkRequiredFields(data, required) { const m = required.filter(f => !data.hasOwnProperty(f)); if (m.length > 0) { throw new Error(`الحقول المطلوبة ناقصة: ${m.join(', ')}`); } }
-  static _validateName(name) { if (typeof name !== 'string' || name.trim().length === 0) { throw new Error('اسم اللاعب غير صالح'); } if (name.length > 50) { throw new Error('اسم اللاعب طويل جداً'); } }
-  static _validateScore(score) { if (typeof score !== 'number' || score < -100000 || score > 100000) { throw new Error('النقاط غير صالحة'); } }
-  static _validateAccuracy(accuracy) { if (typeof accuracy !== 'number' || accuracy < 0 || accuracy > 100) { throw new Error('نسبة الدقة غير صالحة'); } }
-}
-
-class GameLogger {
-  static audit(action, data, status) {
-    try {
-      const sheet = SheetManager.getSheet(GameConfig.SHEETS.AUDIT_LOG, GameConfig.HEADERS.AUDIT_LOG);
-      const entry = [new Date(), action, JSON.stringify(data), status];
-      sheet.appendRow(entry);
-      if (sheet.getLastRow() > 5000) {
-        sheet.deleteRow(2);
-      }
-    } catch (error) {
-      console.error('فشل كتابة سجل التدقيق:', error);
+    
+    endGame(completed = false) {
+        clearInterval(this.timerInterval);
+        this.hideModal(this.domElements.confirmExitModal);
+        const totalTimeSeconds = (new Date() - this.gameState.startTime) / 1000;
+        const currentLevel = this.LEVELS[Math.min(this.gameState.level, this.LEVELS.length - 1)];
+        const totalAnswered = this.gameState.correctAnswers + this.gameState.wrongAnswers;
+        const accuracy = totalAnswered > 0 ? parseFloat(((this.gameState.correctAnswers / totalAnswered) * 100).toFixed(1)) : 0.0;
+        const avgTime = totalAnswered > 0 ? parseFloat((totalTimeSeconds / totalAnswered).toFixed(1)) : 0;
+        
+        document.getElementById('finalName').textContent = this.gameState.name;
+        document.getElementById('finalId').textContent = this.gameState.playerId;
+        document.getElementById('finalCorrect').textContent = this.gameState.correctAnswers;
+        document.getElementById('finalWrong').textContent = this.gameState.wrongAnswers;
+        document.getElementById('finalSkips').textContent = this.gameState.skips;
+        document.getElementById('finalScore').textContent = this.currentScoreValue;
+        document.getElementById('totalTime').textContent = this.formatTime(totalTimeSeconds);
+        document.getElementById('finalLevel').textContent = currentLevel.label;
+        document.getElementById('finalAccuracy').textContent = `${accuracy}%`;
+        document.getElementById('finalAvgTime').textContent = `${this.formatTime(avgTime)} / سؤال`;
+        document.getElementById('performanceText').textContent = this.calculatePerformanceRating();
+        
+        const resultsData = { name: this.gameState.name, deviceId: this.gameState.deviceId, playerId: this.gameState.playerId, correct: this.gameState.correctAnswers, wrong: this.gameState.wrongAnswers, level: currentLevel.label, score: this.currentScoreValue, accuracy, totalTime: Math.round(totalTimeSeconds), avgTime, skips: this.gameState.skips, usedFiftyFifty: this.gameState.helpersUsed.fiftyFifty, usedFreezeTime: this.gameState.helpersUsed.freezeTime, isGameCompleted: completed };
+        this.saveResults(resultsData);
+        this.showScreen('end');
     }
-  }
-}
-
-class ResponseHelper {
-  static json(data) {
-    return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-class TimeHelper {
-  static formatMinutesSeconds(seconds) {
-    if (typeof seconds !== 'number' || isNaN(seconds)) {
-      return '0:00';
+    
+    startLevel() { /* ... implementation ... */ }
+    
+    async displayLeaderboard() {
+        this.showScreen('leaderboard');
+        const contentDiv = document.getElementById('leaderboardContent');
+        contentDiv.innerHTML = '<div class="spinner"></div>';
+        try {
+            const response = await this.apiCall({ action: 'getLeaderboard' });
+            if (response.success && response.leaderboard) {
+                let tableHTML = 'لوحة الصدارة فارغة!';
+                if (response.leaderboard.length > 0) {
+                    tableHTML = `<table style="width:100%;text-align:right;"><thead><tr><th>الترتيب</th><th>الاسم</th><th>المستوى</th><th>رقم المحاولة</th></tr></thead><tbody>`;
+                    response.leaderboard.forEach(row => {
+                        tableHTML += `<tr><td>${row.rank}</td><td>${row.name}</td><td>${row.level}</td><td>${row.attempt}</td></tr>`;
+                    });
+                    tableHTML += `</tbody></table>`;
+                }
+                contentDiv.innerHTML = tableHTML;
+            } else { contentDiv.innerHTML = 'حدث خطأ.'; }
+        } catch (error) { contentDiv.innerHTML = 'فشل التحميل.'; }
     }
-    const total = Math.round(seconds);
-    const mins = Math.floor(total / 60);
-    const secs = total % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  }
+    
+    async loadQuestions() { try { const r = await fetch('questions.json'); if(!r.ok) throw new Error("Network response was not ok"); this.QUESTIONS = await r.json(); return true; } catch (e) { return false; } } 
+    generatePlayerId() { return 'PID' + Math.random().toString(36).substr(2, 9); } 
+    generateDeviceId() { let d = localStorage.getItem('quizDeviceId'); if(!d){d='DID'+Math.random().toString(36).substr(2,9); localStorage.setItem('quizDeviceId', d);} return d; }
+    showScreen(s) { if(!this.domElements.screens[s]) return; Object.values(this.domElements.screens).forEach(e => e.style.display = 'none'); this.domElements.screens[s].style.display = 'flex'; }
+    showModal(m) { this.lastFocusedElement = document.activeElement; m.classList.add('active'); m.setAttribute('aria-hidden', 'false'); if(m.querySelector('button')) m.querySelector('button').focus(); }
+    hideModal(m) { m.classList.remove('active'); m.setAttribute('aria-hidden', 'true'); if (this.lastFocusedElement) this.lastFocusedElement.focus(); }
+    showToast(m,t){ const c=document.getElementById('toast-container'); const e=document.createElement('div'); e.className=`toast ${t}`; e.textContent=m; c.appendChild(e); setTimeout(()=>e.remove(),3000); } 
+    async apiCall(p) { try { const r = await fetch(this.API_URL, {method:'POST', body:JSON.stringify({apiKey:this.API_KEY,...p})}); return await r.json(); } catch(e) { throw e; } }
+    resetGame() { window.location.reload(); }
+    saveResults(r) { this.apiCall({action:'endGame', ...r}); }
+    calculatePerformanceRating() { return "جيد"; } // Placeholder
+    formatTime(t) { const total = Math.floor(t); const m = Math.floor(total/60); const s = total % 60; return `${m}:${s.toString().padStart(2,'0')}`; }
 }
 
-function doPost(e) { return GameAPI.handleRequest(e); }
-function doGet(e) { return ResponseHelper.json({ status: 'active', version: '6.1' }); }
+document.addEventListener('DOMContentLoaded', () => new QuizGame());
+</script>
+</body>
+</html>
 
