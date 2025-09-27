@@ -5,172 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="description" content="مسابقة المعلومات - اختبر معلوماتك في مستويات متعددة">
     <title>🧠 مسابقة المعلومات | اختبر قدراتك</title>
-
-    <link rel="icon" type="image/png" href="/images/my-icon.png">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    
     <style>
-    :root {
-      /* Dark Theme Colors */
-      --color-dark-bg: #1a1a2e;
-      --color-dark-primary: #16213e;
-      --color-dark-secondary: #0f3460;
-      --color-dark-accent: #e94560;
-      --color-dark-text: #f0f0f0;
-      --color-dark-border: #374151;
-      --color-dark-gold: #ffd700;
-      --color-dark-success: #10b981;
-      --color-dark-error: #ef4444;
-
-      /* Light Theme Colors */
-      --color-light-bg: #f8fafc;
-      --color-light-primary: #ffffff;
-      --color-light-secondary: #e2e8f0;
-      --color-light-accent: #2563eb;
-      --color-light-text: #1e293b;
-      --color-light-border: #cbd5e1;
-      --color-light-gold: #ca8a04;
-      --color-light-success: #059669;
-      --color-light-error: #dc2626;
-
-      /* Neutral Colors */
-      --color-white: #ffffff;
-      --color-black: #000000;
-      --color-gray-500: #6b7280;
-
-      /* Shadows */
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-
-      /* Typography */
-      --font-family: 'Cairo', sans-serif;
-      --font-size-base: 1rem;
-      --font-size-lg: 1.125rem;
-      --font-size-xl: 1.25rem;
-      --font-size-2xl: 1.5rem;
-      --font-size-3xl: 1.575rem;
-
-      /* Spacing */
-      --space-1: 0.25rem;
-      --space-2: 0.5rem;
-      --space-3: 0.75rem;
-      --space-4: 1rem;
-      --space-6: 1.5rem;
-      --space-8: 2rem;
-      --space-10: 2.5rem;
-
-      /* Radius */
-      --radius-lg: 0.5rem;
-      --radius-xl: 0.75rem;
-      --radius-2xl: 1rem;
-      --radius-full: 9999px;
-
-      /* Transitions */
-      --transition-fast: 150ms ease;
-      --transition-normal: 300ms ease;
-      
-      /* Level Colors */
-      --level-easy: #10b981;
-      --level-medium: #3b82f6;
-      --level-hard: #f59e0b;
-      --level-impossible: #ef4444;
-    }
-
-    body[data-theme='dark'] {
-      --bg-color: var(--color-dark-bg);
-      --primary-color: var(--color-dark-primary);
-      --secondary-color: var(--color-dark-secondary);
-      --accent-color: var(--color-dark-accent);
-      --text-color: var(--color-dark-text);
-      --border-color: var(--color-dark-border);
-      --gold-color: var(--color-dark-gold);
-      --success-color: var(--color-dark-success);
-      --error-color: var(--color-dark-error);
-    }
-
-    body[data-theme='light'] {
-      --bg-color: var(--color-light-bg);
-      --primary-color: var(--color-light-primary);
-      --secondary-color: var(--color-light-secondary);
-      --accent-color: var(--color-light-accent);
-      --text-color: var(--color-light-text);
-      --border-color: var(--color-light-border);
-      --gold-color: var(--color-light-gold);
-      --success-color: var(--color-light-success);
-      --error-color: var(--color-light-error);
-    }
-
-    /* Level-specific styles */
-    body[data-level="easy"] { --level-color: var(--level-easy); --level-bg: rgba(16, 185, 129, 0.1); }
-    body[data-level="medium"] { --level-color: var(--level-medium); --level-bg: rgba(59, 130, 246, 0.1); }
-    body[data-level="hard"] { --level-color: var(--level-hard); --level-bg: rgba(245, 158, 11, 0.1); }
-    body[data-level="impossible"] { --level-color: var(--level-impossible); --level-bg: rgba(239, 68, 68, 0.1); }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { height: 100%; }
+    :root { --color-dark-bg: #1a1a2e; --color-dark-primary: #16213e; --color-dark-secondary: #0f3460; --color-dark-accent: #e94560; --color-dark-text: #f0f0f0; --color-dark-border: #374151; --color-dark-gold: #ffd700; --color-dark-success: #10b981; --color-dark-error: #ef4444; --color-light-bg: #f8fafc; --color-light-primary: #ffffff; --color-light-secondary: #e2e8f0; --color-light-accent: #2563eb; --color-light-text: #1e293b; --color-light-border: #cbd5e1; --color-light-gold: #ca8a04; --color-light-success: #059669; --color-light-error: #dc2626; --color-white: #ffffff; --color-black: #000000; --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); --font-family: 'Cairo', sans-serif; --font-size-base: 1rem; --font-size-lg: 1.125rem; --font-size-xl: 1.25rem; --font-size-2xl: 1.5rem; --font-size-3xl: 1.575rem; --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem; --space-6: 1.5rem; --space-8: 2rem; --radius-lg: 0.5rem; --radius-xl: 0.75rem; --radius-2xl: 1rem; --radius-full: 9999px; --transition-fast: 150ms ease; --transition-normal: 300ms ease; --level-easy: #10b981; --level-medium: #3b82f6; --level-hard: #f59e0b; --level-impossible: #ef4444; }
+    body[data-theme='dark'] { --bg-color: var(--color-dark-bg); --primary-color: var(--color-dark-primary); --secondary-color: var(--color-dark-secondary); --accent-color: var(--color-dark-accent); --text-color: var(--color-dark-text); --border-color: var(--color-dark-border); --gold-color: var(--color-dark-gold); --success-color: var(--color-dark-success); --error-color: var(--color-dark-error); }
+    body[data-theme='light'] { --bg-color: var(--color-light-bg); --primary-color: var(--color-light-primary); --secondary-color: var(--color-light-secondary); --accent-color: var(--color-light-accent); --text-color: var(--color-light-text); --border-color: var(--color-light-border); --gold-color: var(--color-light-gold); --success-color: var(--color-light-success); --error-color: var(--color-light-error); }
+    body[data-level="easy"] { --level-color: var(--level-easy); } body[data-level="medium"] { --level-color: var(--level-medium); } body[data-level="hard"] { --level-color: var(--level-hard); } body[data-level="impossible"] { --level-color: var(--level-impossible); }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; } html { height: 100%; }
     body { min-height: 100%; font-family: var(--font-family); background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; transition: background-color var(--transition-normal), color var(--transition-normal); }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-
     .screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--space-8) var(--space-4); opacity: 0; visibility: hidden; transform: scale(0.95); transition: opacity var(--transition-normal), visibility var(--transition-normal), transform var(--transition-normal); overflow-y: auto; z-index: 1; }
-    .screen.screen--align-top { justify-content: flex-start; }
-    .screen.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 10; }
-
+    .screen.screen--align-top { justify-content: flex-start; } .screen.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 10; }
     .content-box { background-color: var(--primary-color); border-radius: var(--radius-2xl); padding: var(--space-6); width: 100%; max-width: 30rem; box-shadow: var(--shadow-xl); text-align: center; border: 1px solid var(--border-color); }
-    .screen-header { margin-bottom: var(--space-6); }
-    .game-title { font-size: var(--font-size-3xl); font-weight: 900; color: var(--gold-color); text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
-    .game-subtitle { color: var(--text-color); opacity: 0.8; margin-top: var(--space-2); font-size: 0.9rem; }
-    h2 { font-size: var(--font-size-2xl); font-weight: 700; }
-    h3 { font-size: var(--font-size-xl); }
-
+    .screen-header { margin-bottom: var(--space-6); } .game-title { font-size: var(--font-size-3xl); font-weight: 900; color: var(--gold-color); text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
+    .game-subtitle { color: var(--text-color); opacity: 0.8; margin-top: var(--space-2); font-size: 0.9rem; } h2 { font-size: var(--font-size-2xl); font-weight: 700; } h3 { font-size: var(--font-size-xl); }
     .button-group { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-6); }
     .btn-main { background-color: var(--gold-color); color: var(--color-black); padding: var(--space-3) var(--space-6); border-radius: var(--radius-lg); font-weight: 700; font-size: var(--font-size-lg); cursor: pointer; transition: all var(--transition-fast); border: 2px solid var(--gold-color); box-shadow: var(--shadow-md); }
     .btn-main:hover:not(:disabled) { background-color: transparent; color: var(--gold-color); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
     .btn-secondary { background-color: var(--secondary-color); color: var(--text-color); padding: var(--space-3) var(--space-6); border-radius: var(--radius-lg); font-weight: 700; font-size: var(--font-size-lg); cursor: pointer; transition: all var(--transition-fast); border: 2px solid var(--border-color); }
     .btn-secondary:hover:not(:disabled) { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--color-white); }
     button:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
-
     .input-group { margin-bottom: var(--space-6); }
     input[type="text"] { width: 100%; padding: var(--space-3); border: 2px solid var(--border-color); border-radius: var(--radius-lg); background-color: var(--bg-color); color: var(--text-color); font-size: var(--font-size-base); }
     input[type="text"]:focus { outline: none; border-color: var(--accent-color); }
     .error-message { color: var(--error-color); text-align: right; font-size: 0.875rem; margin-top: var(--space-2); display: none; }
     .error-message.show { display: block; }
-
     .avatar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-6); }
     .avatar-option { width: 80%; aspect-ratio: 1/1; border-radius: var(--radius-full); object-fit: cover; cursor: pointer; border: 3px solid transparent; transition: all var(--transition-fast); }
-    .avatar-option:hover { transform: scale(1.05); }
-    .avatar-option.selected { border-color: var(--gold-color); transform: scale(1.1); }
-    
-    /* --- New Styles for Avatar Upload --- */
+    .avatar-option:hover { transform: scale(1.05); } .avatar-option.selected { border-color: var(--gold-color); transform: scale(1.1); }
     .avatar-upload-container { display: flex; justify-content: center; align-items: center; width: 80%; aspect-ratio: 1/1; border-radius: var(--radius-full); border: 3px dashed var(--border-color); cursor: pointer; transition: all var(--transition-fast); }
     .avatar-upload-container:hover { border-color: var(--gold-color); background-color: var(--secondary-color); }
     .avatar-upload-label { font-size: 2rem; color: var(--text-color); cursor: pointer; }
-
     .instructions-content { text-align: right; margin: var(--space-6) 0; }
     .instruction-item { display: flex; align-items: flex-start; margin-bottom: var(--space-4); gap: var(--space-3); }
     .instruction-icon { font-size: 1.5rem; flex-shrink: 0; }
-    .instruction-text { text-align: right; }
-    .instructions-content a { color: var(--accent-color); text-decoration: none; font-weight: 700; }
+    .instruction-text { text-align: right; } .instructions-content a { color: var(--accent-color); text-decoration: none; font-weight: 700; }
     .instructions-content a:hover { text-decoration: underline; }
-
     #gameContainer { justify-content: flex-start; padding: var(--space-4); width: 100%; max-width: 900px; }
     .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); width: 100%; }
     .end-quiz-btn { background-color: var(--error-color); color: var(--color-white); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--space-2) var(--space-3); cursor: pointer; font-weight: 700; }
     .level-progress { display: flex; gap: var(--space-2); }
     .level-indicator { width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid var(--border-color); background-color: var(--secondary-color); color: var(--text-color); position: relative; }
     .level-indicator.active { background-color: var(--level-color); color: var(--color-white); border-color: var(--level-color); }
-    .level-indicator[data-level="easy"].active { background-color: var(--level-easy); border-color: var(--level-easy); }
-    .level-indicator[data-level="medium"].active { background-color: var(--level-medium); border-color: var(--level-medium); }
-    .level-indicator[data-level="hard"].active { background-color: var(--level-hard); border-color: var(--level-hard); }
-    .level-indicator[data-level="impossible"].active { background-color: var(--level-impossible); border-color: var(--level-impossible); }
     .level-indicator[data-tooltip]::after { content: attr(data-tooltip); position: absolute; bottom: -2.5rem; left: 50%; transform: translateX(-50%); background-color: var(--primary-color); color: var(--text-color); padding: var(--space-1) var(--space-2); border-radius: var(--radius-lg); font-size: 0.75rem; white-space: nowrap; opacity: 0; visibility: hidden; transition: opacity var(--transition-fast), visibility var(--transition-fast); z-index: 100; border: 1px solid var(--border-color); }
     .level-indicator[data-tooltip]:hover::after { opacity: 1; visibility: visible; }
     .theme-toggle-btn { background-color: var(--secondary-color); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--space-2) var(--space-3); color: var(--text-color); cursor: pointer; }
-    
     .game-header { display: flex; flex-direction: column; padding: var(--space-4); background-color: var(--primary-color); border-radius: var(--radius-xl); width: 100%; gap: var(--space-4); margin-bottom: var(--space-4); box-shadow: var(--shadow-md); }
     .player-info { display: flex; justify-content: space-between; align-items: center; }
     .player-main { display: flex; align-items: center; gap: var(--space-3); }
@@ -180,185 +61,59 @@
     .player-id { font-size: 0.75rem; opacity: 0.7; }
     .player-stats { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-1); font-size: 0.875rem; }
     .player-stats strong { color: var(--gold-color); }
-
     .helpers { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
     .helper-btn { padding: var(--space-2); background-color: var(--secondary-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: var(--radius-lg); cursor: pointer; transition: all var(--transition-fast); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 1.1rem; }
     .helper-cost { font-size: 0.75rem; font-weight: bold; color: var(--gold-color); margin-top: var(--space-1); }
     .helper-btn:not(:disabled):hover { background-color: var(--accent-color); color: var(--color-white); }
-
     .timer-container { width: 100%; background-color: var(--secondary-color); border-radius: var(--radius-full); margin: var(--space-4) 0; position: relative; height: 2rem; min-height: 2rem; flex-shrink: 0; overflow: hidden; border: 2px solid var(--border-color); }
     .timer-bar { height: 100%; background: linear-gradient(90deg, var(--accent-color), var(--gold-color)); border-radius: var(--radius-full); transition: width 1s linear; width: 100%; }
     .timer-bar.frozen { background: #3b82f6; }
     .timer-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--color-white); font-weight: 700; text-shadow: 1px 1px 2px var(--color-black); }
-
     .main-content { width: 100%; }
     .question-box { background-color: var(--primary-color); border-radius: var(--radius-xl); padding: var(--space-6); margin-bottom: var(--space-6); box-shadow: var(--shadow-md); text-align: center; position: relative; }
     .level-badge { position: absolute; top: -0.75rem; left: 50%; transform: translateX(-50%); background-color: var(--level-color); color: white; padding: 0.25rem 0.75rem; border-radius: 1rem; font-weight: bold; font-size: 0.875rem; }
     #questionCounter { color: var(--gold-color); font-size: var(--font-size-lg); }
     #questionText { font-size: var(--font-size-xl); font-weight: 600; line-height: 1.5; }
-
     .options-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
     .option-btn { padding: var(--space-4); background-color: var(--primary-color); border: 2px solid var(--border-color); border-radius: var(--radius-xl); color: var(--text-color); font-size: var(--font-size-base); font-weight: 700; cursor: pointer; transition: all var(--transition-fast); text-align: center; }
     .option-btn:hover:not(.disabled) { background-color: var(--secondary-color); border-color: var(--accent-color); transform: translateY(-2px); }
     .option-btn.correct { background-color: var(--success-color); color: var(--color-white); border-color: var(--success-color); }
     .option-btn.wrong { background-color: var(--error-color); color: var(--color-white); border-color: var(--error-color); }
-    .option-btn.disabled { cursor: not-allowed; opacity: 0.5; }
-    .option-btn.hidden { visibility: hidden; opacity: 0; }
-
-    .level-stats { text-align: right; margin-bottom: var(--space-6); }
-    .level-stats p { margin-bottom: var(--space-3); }
-    .level-stats strong { color: var(--gold-color); }
-
-    .final-stats { text-align: right; margin-bottom: var(--space-6); }
-    .final-stats p { margin-bottom: var(--space-3); font-size: var(--font-size-lg); }
-    .final-stats strong { color: var(--gold-color); }
+    .option-btn.disabled { cursor: not-allowed; opacity: 0.5; } .option-btn.hidden { visibility: hidden; opacity: 0; }
+    .level-stats { text-align: right; margin-bottom: var(--space-6); } .level-stats p { margin-bottom: var(--space-3); } .level-stats strong { color: var(--gold-color); }
+    .final-stats { text-align: right; margin-bottom: var(--space-6); } .final-stats p { margin-bottom: var(--space-3); font-size: var(--font-size-lg); } .final-stats strong { color: var(--gold-color); }
     .performance-rating { margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--border-color); }
     .share-section { margin-top: var(--space-6); border-top: 1px solid var(--border-color); padding-top: var(--space-6); }
     .share-buttons { display: flex; justify-content: center; gap: var(--space-4); margin-top: var(--space-4); }
     .share-btn { border: none; padding: var(--space-3) var(--space-6); border-radius: var(--radius-lg); color: var(--color-white); font-weight: 700; cursor: pointer; font-size: var(--font-size-base); }
-    .share-btn.x { background-color: var(--color-black); }
-    .share-btn.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-
+    .share-btn.x { background-color: var(--color-black); } .share-btn.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
     .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all var(--transition-normal); }
     .modal.active { opacity: 1; visibility: visible; }
     .modal-content { background-color: var(--primary-color); border-radius: var(--radius-2xl); padding: var(--space-6); width: 90%; max-width: 30rem; text-align: center; box-shadow: var(--shadow-xl); }
     .modal-buttons { display: flex; gap: var(--space-4); justify-content: center; margin-top: var(--space-6); }
-
     .toast-container { position: fixed; top: var(--space-4); left: var(--space-4); right: var(--space-4); z-index: 1000; display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
     .toast { padding: var(--space-4); border-radius: var(--radius-lg); color: var(--color-white); box-shadow: var(--shadow-lg); animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards; }
-    .toast.success { background-color: var(--success-color); }
-    .toast.error { background-color: var(--error-color); }
-    .toast.info { background-color: var(--level-medium); }
-
+    .toast.success { background-color: var(--success-color); } .toast.error { background-color: var(--error-color); } .toast.info { background-color: var(--level-medium); }
     @keyframes toastIn { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     @keyframes toastOut { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100%); opacity: 0; } }
-
     .spinner { width: 2.5rem; height: 2.5rem; border: 4px solid var(--secondary-color); border-top: 4px solid var(--gold-color); border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
-    
-    /* --- Floating Report Button --- */
     .report-fab { position: fixed; bottom: var(--space-4); left: var(--space-4); width: 3.5rem; height: 3.5rem; background-color: var(--accent-color); color: var(--color-white); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; box-shadow: var(--shadow-lg); cursor: pointer; z-index: 999; transition: transform var(--transition-fast); }
-    .report-fab:hover { transform: scale(1.1); }
-    .report-fab.has-error { animation: pulse 1.5s infinite; }
+    .report-fab:hover { transform: scale(1.1); } .report-fab.has-error { animation: pulse 1.5s infinite; }
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(233, 69, 96, 0); } 100% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0); } }
-
-    @media (min-width: 768px) {
-      .screen { padding: var(--space-8); }
-      .button-group { flex-direction: row; justify-content: center; }
-      .game-header { flex-direction: row; justify-content: space-between; align-items: center; }
-      .player-info { flex-grow: 1; }
-      .player-stats { flex-direction: row; gap: var(--space-6); background: none; padding: 0; }
-      .options-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
+    @media (min-width: 768px) { .screen { padding: var(--space-8); } .button-group { flex-direction: row; justify-content: center; } .game-header { flex-direction: row; justify-content: space-between; align-items: center; } .player-info { flex-grow: 1; } .player-stats { flex-direction: row; gap: var(--space-6); background: none; padding: 0; } .options-grid { grid-template-columns: repeat(2, 1fr); } }
     @keyframes avatar-click-animation { 0% { transform: scale(1.1); } 50% { transform: scale(1.25); } 100% { transform: scale(1.1); } }
     .avatar-option.clicked { animation: avatar-click-animation 300ms ease-out; }
-        
     </style>
-    
-    <script type="application/ld+json">
-    { "@context": "https://schema.org", "@type": "VideoGame", "name": "🧠 مسابقة المعلومات", "description": "لعبة مسابقة تفاعلية لاختبار المعلومات في مستويات متعددة", "applicationCategory": "GameApplication", "operatingSystem": "Web Browser", "author": { "@type": "Organization", "name": "مسابقة المعرفة" } }
-    </script>
 </head>
 <body data-theme="dark" aria-live="polite" data-level="easy">
     <div id="toast-container" class="toast-container" aria-live="assertive"></div>
-
-    <!-- Error Reporting FAB -->
     <div id="reportFab" class="report-fab" role="button" aria-label="الإبلاغ عن مشكلة">⚠️</div>
-
-    <div id="loader" class="screen active" role="status" aria-label="جاري التحميل">
-        <div class="spinner" aria-hidden="true"></div>
-        <span class="sr-only">جاري تحميل اللعبة، الرجاء الانتظار...</span>
-    </div>
-
-    <div id="startScreen" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h1 class="game-title"><span aria-hidden="true">🧠</span> مسابقة المعلومات <span class="sr-only">لعبة مسابقة المعلومات</span></h1>
-                <p class="game-subtitle">اختبر قدراتك في مسابقة تفاعلية شيقة</p>
-            </header>
-            <div class="button-group">
-                <button id="startPlayBtn" class="btn-main">ابدأ اللعب</button>
-                <button id="showLeaderboardBtn" class="btn-secondary">لوحة الصدارة</button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="avatarScreen" class="screen" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header"><h2>اختر صورتك الرمزية</h2></header>
-            <div class="avatar-grid" role="group" aria-label="خيارات الصور الرمزية">
-                <!-- *** NEW: Avatar Upload Button will be added here by JS *** -->
-            </div>
-            <div class="button-group">
-                <button id="confirmAvatarBtn" class="btn-main" disabled>التالي<span class="sr-only">اختيار الصورة الرمزية المحددة</span></button>
-            </div>
-        </div>
-    </div>
-
-    <!-- The rest of the HTML screens... -->
+    <div id="loader" class="screen active" role="status" aria-label="جاري التحميل"><div class="spinner" aria-hidden="true"></div><span class="sr-only">جاري تحميل اللعبة، الرجاء الانتظار...</span></div>
+    <div id="startScreen" class="screen" aria-hidden="true"><div class="content-box"><header class="screen-header"><h1 class="game-title"><span aria-hidden="true">🧠</span> مسابقة المعلومات <span class="sr-only">لعبة مسابقة المعلومات</span></h1><p class="game-subtitle">اختبر قدراتك في مسابقة تفاعلية شيقة</p></header><div class="button-group"><button id="startPlayBtn" class="btn-main">ابدأ اللعب</button><button id="showLeaderboardBtn" class="btn-secondary">لوحة الصدارة</button></div></div></div>
+    <div id="avatarScreen" class="screen" aria-hidden="true"><div class="content-box"><header class="screen-header"><h2>اختر صورتك الرمزية</h2></header><div class="avatar-grid" role="group" aria-label="خيارات الصور الرمزية"></div><div class="button-group"><button id="confirmAvatarBtn" class="btn-main" disabled>التالي<span class="sr-only">اختيار الصورة الرمزية المحددة</span></button></div></div></div>
     <div id="nameEntry" class="screen" aria-hidden="true"> <div class="content-box"> <header class="screen-header"> <h2>أدخل اسمك</h2> </header> <div class="input-group"> <label for="nameInput" class="sr-only">اسم اللاعب</label> <input type="text" id="nameInput" placeholder="مثلا: عبد الله" maxlength="25" autocomplete="name" aria-required="true" > <div id="nameError" class="error-message" aria-live="polite"></div> </div> <div class="button-group"> <button id="confirmNameBtn" class="btn-main"> تأكيد الإسم </button> </div> </div> </div>
-    <div id="instructionsScreen" class="screen screen--align-top" aria-hidden="true">
-        <div class="content-box">
-            <header class="screen-header">
-                <h2>📋 تعليمات اللعبة</h2>
-            </header>
-            
-            <div class="instructions-content">
-                <div class="instruction-item">
-                    <span class="instruction-icon">⚖️</span>
-                    <div class="instruction-text">
-                        <strong>النقاط:</strong><br>
-                        صحيحة: +100 / خاطئة: -100
-                    </div>
-                </div>
-
-                <div class="instruction-item">
-                    <span class="instruction-icon">⏱️</span>
-                    <div class="instruction-text">
-                        <strong>الوقت:</strong><br>
-                        لكل سؤال وقت محدد
-                    </div>
-                </div>
-                
-                <div class="instruction-item">
-                    <span class="instruction-icon">🛠️</span>
-                    <div class="instruction-text">
-                        <strong>المساعدات:</strong><br>
-                        المساعدة: -100 نقطة / التخطي: -20 (وتتزايد)
-                    </div>
-                </div>
-
-                <div class="instruction-item">
-                    <span class="instruction-icon">🎯</span>
-                    <div class="instruction-text">
-                        <strong>المستويات:</strong><br>
-                        سهل / متوسط / صعب / مستحيل
-                    </div>
-                </div>
-
-                <div class="instruction-item">
-                    <span class="instruction-icon">🚫</span>
-                    <div class="instruction-text">
-                        <strong>الأخطاء:</strong><br>
-                        مسموح 3 فقط
-                    </div>
-                </div>
-                
-                <div class="instruction-item">
-                    <span class="instruction-icon">📩</span>
-                    <div class="instruction-text">
-                        <strong>الدعم:</strong><br>
-                        تواصل مع المسؤول عبر <a href="https://x.com/_MS_AbuQusay?t=Tv0klH2PdnBYFHj_G8uIEA&s=09" target="_blank" rel="noopener noreferrer">إكس</a> أو <a href="https://www.instagram.com/_ms_abuqusay?igsh=OTRmODR1cTNkcXV1">إنستغرام</a>.
-                    </div>
-                </div>
-            </div>
-            
-            <div class="button-group">
-                <button id="instructionsConfirmBtn" class="btn-main">حسناً، فهمت</button>
-            </div>
-        </div>
-    </div>
+    <div id="instructionsScreen" class="screen screen--align-top" aria-hidden="true"><div class="content-box"><header class="screen-header"><h2>📋 تعليمات اللعبة</h2></header><div class="instructions-content"><div class="instruction-item"><span class="instruction-icon">⚖️</span><div class="instruction-text"><strong>النقاط:</strong><br> صحيحة: +100 / خاطئة: -100</div></div><div class="instruction-item"><span class="instruction-icon">⏱️</span><div class="instruction-text"><strong>الوقت:</strong><br> لكل سؤال وقت محدد</div></div><div class="instruction-item"><span class="instruction-icon">🛠️</span><div class="instruction-text"><strong>المساعدات:</strong><br> المساعدة: -100 نقطة / التخطي: -20 (وتتزايد)</div></div><div class="instruction-item"><span class="instruction-icon">🎯</span><div class="instruction-text"><strong>المستويات:</strong><br> سهل / متوسط / صعب / مستحيل</div></div><div class="instruction-item"><span class="instruction-icon">🚫</span><div class="instruction-text"><strong>الأخطاء:</strong><br> مسموح 3 فقط</div></div><div class="instruction-item"><span class="instruction-icon">📩</span><div class="instruction-text"><strong>الدعم:</strong><br> تواصل مع المسؤول عبر <a href="https://x.com/_MS_AbuQusay?t=Tv0klH2PdnBYFHj_G8uIEA&s=09" target="_blank" rel="noopener noreferrer">إكس</a> أو <a href="https://www.instagram.com/_ms_abuqusay?igsh=OTRmODR1cTNkcXV1">إنستغرام</a>.</div></div></div><div class="button-group"><button id="instructionsConfirmBtn" class="btn-main">حسناً، فهمت</button></div></div></div>
     <main id="gameContainer" class="screen" aria-hidden="true"> <div class="top-bar"> <button id="endQuizBtn" class="end-quiz-btn" aria-label="إنهاء المسابقة"> 🚪 إنهاء </button> <div class="level-progress"> <div class="level-indicator" data-level="easy" data-tooltip="المستوى السهل"> <span>1</span> </div> <div class="level-indicator" data-level="medium" data-tooltip="المستوى المتوسط"> <span>2</span> </div> <div class="level-indicator" data-level="hard" data-tooltip="المستوى الصعب"> <span>3</span> </div> <div class="level-indicator" data-level="impossible" data-tooltip="المستوى المستحيل"> <span>4</span> </div> </div> <button class="theme-toggle-btn" aria-label="تبديل وضع السطوع والظلام"> <span aria-hidden="true">☀️</span> </button> </div> <header class="game-header"> <div class="player-info"> <div class="player-main"> <img id="playerAvatar" src="" alt="" aria-hidden="true"> <div class="player-details"> <span id="playerName" aria-label="اسم اللاعب"></span> <span id="playerId" class="player-id"></span> </div> </div> <div class="player-stats"> <div class="stat-item">النقاط: <strong id="currentScore" aria-live="polite">100</strong></div> <div class="stat-item">الأخطاء: <strong id="wrongAnswersCount" aria-live="assertive">0 / 3</strong></div> <div class="stat-item">التخطي: <strong id="skipCount">0</strong></div> </div> </div> <div class="helpers" aria-label="خيارات المساعدة"> <button class="helper-btn" data-type="fiftyFifty" aria-describedby="fiftyFiftyDesc"> 50:50 <span class="helper-cost">(100)</span> </button> <div id="fiftyFiftyDesc" class="sr-only">يزيل خيارين خاطئين</div> <button class="helper-btn" data-type="freezeTime" aria-describedby="freezeTimeDesc"> ❄️ 10ث <span class="helper-cost">(100)</span> </button> <div id="freezeTimeDesc" class="sr-only">يوقف المؤقت لمدة 10 ثوان</div> <button class="helper-btn" data-type="skipQuestion" aria-describedby="skipQuestionDesc"> ⏭️ تخطي <span id="skipCost" class="helper-cost">(100)</span> </button> <div id="skipQuestionDesc" class="sr-only">تخطي السؤال الحالي</div> </div> </header> <div class="timer-container" aria-label="مؤقت السؤال"> <div class="timer-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"></div> <span id="timer" class="timer-text">30</span> </div> <div class="main-content"> <section class="question-box" aria-labelledby="questionCounter"> <div class="level-badge" id="currentLevelBadge">سهل</div> <h3 id="questionCounter">السؤال 1 من 5</h3> <p id="questionText" aria-live="polite"></p> </section> <section class="options-container" aria-labelledby="questionText"> <div class="options-grid" role="group" aria-label="خيارات الإجابة"></div> </section> </div> </main>
     <div id="levelCompleteScreen" class="screen" aria-hidden="true"> <div class="content-box"> <header class="screen-header"> <h2 id="levelCompleteTitle">🎉 أكملت المستوى السهل!</h2> </header> <div class="level-stats"> <p>النقاط الحالية: <strong id="levelScore"></strong></p> <p>عدد الأخطاء: <strong id="levelErrors"></strong></p> <p>الأسئلة الصحيحة: <strong id="levelCorrect"></strong></p> </div> <div class="button-group"> <button id="nextLevelBtn" class="btn-main">المستوى التالي</button> <button id="quitLevelBtn" class="btn-secondary">الانسحاب وعرض النتائج</button> </div> </div> </div>
     <div id="endScreen" class="screen screen--align-top" aria-hidden="true"> <div class="content-box"> <header class="screen-header"> <h2>🏆 النتائج النهائية 🏆</h2> </header> <div class="final-stats" aria-labelledby="finalStatsHeading"> <h3 id="finalStatsHeading" class="sr-only">الإحصائيات النهائية</h3> <p>✍️ الاسم: <strong id="finalName"></strong></p> <p>🆔 المعرّف: <strong id="finalId"></strong></p> <p>✅ الإجابات الصحيحة: <strong id="finalCorrect"></strong></p> <p>❌ الإجابات الخاطئة: <strong id="finalWrong"></strong></p> <p>⏭️ مرات التخطي: <strong id="finalSkips"></strong></p> <p>⭐ النقاط النهائية: <strong id="finalScore"></strong></p> <p>⏱️ الوقت المستغرق: <strong id="totalTime"></strong></p> <p>📈 المستوى الذي وصلت إليه: <strong id="finalLevel"></strong></p> <p>🎯 نسبة الدقة: <strong id="finalAccuracy"></strong></p> <p>🔥 أفضل سلسلة متتالية: <strong id="finalBestStreak"></strong></p> <p>⏳ متوسط وقت الإجابة: <strong id="finalAvgTime"></strong></p> <div class="performance-rating"> <span>أداؤك: </span> <strong id="performanceText"></strong> </div> </div> <section class="share-section" aria-labelledby="shareHeading"> <h3 id="shareHeading">📢 مشاركة النتائج</h3> <div class="share-buttons"> <button id="shareXBtn" class="share-btn x" aria-label="مشاركة النتيجة على X"> X </button> <button id="shareInstagramBtn" class="share-btn instagram" aria-label="مشاركة النتيجة على Instagram"> Instagram </button> </div> </section> <div class="button-group"> <button id="playAgainBtn" class="btn-main">لعب مرة أخرى</button> <button id="statsBtn" class="btn-secondary">لوحة الصدارة</button> </div> </div> </div>
@@ -371,64 +126,25 @@
         constructor() {
             this.API_URL = "https://script.google.com/macros/s/AKfycbwSieydP8pgaTKpqzlDBYDEjeuMSYu85eVLwUlMepwkbGOi4toI5-Lc-lpeK8T6rRdg/exec";
             this.API_KEY = "AbuQusay2025_SecretKey";
-            this.QUESTION_TIME = 80;
-            this.MAX_WRONG_ANSWERS = 3;
-            this.STARTING_SCORE = 100;
-
-            this.LEVELS = [
-                { name: "easy", label: "سهل" }, { name: "medium", label: "متوسط" },
-                { name: "hard", label: "صعب" }, { name: "impossible", label: "مستحيل" }
-            ];
-            this.QUESTIONS = {};
-            this.HELPER_COSTS = { fiftyFifty: 100, freezeTime: 100 };
-            this.initialSkipCost = 20;
-            this.currentSkipCost = this.initialSkipCost;
-            
-            this.gameState = {};
-            this.lastError = null; // For error reporting
-            this.isTimeFrozen = false;
-            this.currentScoreValue = this.STARTING_SCORE;
-            this.timerInterval = null;
-            this.answerSubmitted = false;
-            this.domElements = {};
-
+            this.QUESTION_TIME = 80; this.MAX_WRONG_ANSWERS = 3; this.STARTING_SCORE = 100;
+            this.LEVELS = [ { name: "easy", label: "سهل" }, { name: "medium", label: "متوسط" }, { name: "hard", label: "صعب" }, { name: "impossible", label: "مستحيل" } ];
+            this.QUESTIONS = {}; this.HELPER_COSTS = { fiftyFifty: 100, freezeTime: 100 };
+            this.initialSkipCost = 20; this.currentSkipCost = this.initialSkipCost;
+            this.gameState = {}; this.lastError = null; this.lastFocusedElement = null; this.isTimeFrozen = false; this.currentScoreValue = this.STARTING_SCORE; this.timerInterval = null; this.answerSubmitted = false; this.domElements = {};
             this.init();
         }
 
         async init() {
-            this.catchGlobalErrors();
-            this.cacheDomElements();
-            this.bindEventListeners();
-            
-            const questionsLoaded = await this.loadQuestions();
-            if (questionsLoaded) {
-                this.populateAvatarGrid(); // Populate avatars after questions are loaded
-                this.showScreen('start');
-                this.hideLoader();
-            } else {
-                this.domElements.screens.loader.textContent = "حدث خطأ في تحميل الأسئلة. الرجاء تحديث الصفحة.";
-            }
+            this.catchGlobalErrors(); this.cacheDomElements(); this.bindEventListeners();
+            const q = await this.loadQuestions();
+            if (q) { this.populateAvatarGrid(); this.showScreen('start'); this.hideLoader(); } 
+            else { this.domElements.screens.loader.textContent = "حدث خطأ في تحميل الأسئلة. الرجاء تحديث الصفحة."; }
         }
 
         cacheDomElements() {
             this.domElements = {
-                screens: {
-                    loader: document.getElementById('loader'), start: document.getElementById('startScreen'),
-                    avatar: document.getElementById('avatarScreen'), nameEntry: document.getElementById('nameEntry'),
-                    instructions: document.getElementById('instructionsScreen'), game: document.getElementById('gameContainer'),
-                    levelComplete: document.getElementById('levelCompleteScreen'), end: document.getElementById('endScreen'),
-                    leaderboard: document.getElementById('leaderboardScreen'),
-                },
-                avatarGrid: document.querySelector('.avatar-grid'),
-                confirmAvatarBtn: document.getElementById('confirmAvatarBtn'),
-                nameInput: document.getElementById('nameInput'), nameError: document.getElementById('nameError'),
-                themeToggleBtn: document.querySelector('.theme-toggle-btn'),
-                reportFab: document.getElementById('reportFab'),
-                reportErrorModal: document.getElementById('reportErrorModal'),
-                reportErrorText: document.getElementById('reportErrorText'),
-                // Other elements...
-                questionText: document.getElementById('questionText'), optionsGrid: document.querySelector('.options-grid'),
-                scoreDisplay: document.getElementById('currentScore'), confirmExitModal: document.getElementById('confirmExitModal'),
+                screens: { loader: document.getElementById('loader'), start: document.getElementById('startScreen'), avatar: document.getElementById('avatarScreen'), nameEntry: document.getElementById('nameEntry'), instructions: document.getElementById('instructionsScreen'), game: document.getElementById('gameContainer'), levelComplete: document.getElementById('levelCompleteScreen'), end: document.getElementById('endScreen'), leaderboard: document.getElementById('leaderboardScreen'), },
+                avatarGrid: document.querySelector('.avatar-grid'), confirmAvatarBtn: document.getElementById('confirmAvatarBtn'), nameInput: document.getElementById('nameInput'), nameError: document.getElementById('nameError'), themeToggleBtn: document.querySelector('.theme-toggle-btn'), reportFab: document.getElementById('reportFab'), reportErrorModal: document.getElementById('reportErrorModal'), reportErrorText: document.getElementById('reportErrorText'), questionText: document.getElementById('questionText'), optionsGrid: document.querySelector('.options-grid'), scoreDisplay: document.getElementById('currentScore'), confirmExitModal: document.getElementById('confirmExitModal'),
             };
         }
 
@@ -447,145 +163,34 @@
             document.getElementById('quitLevelBtn').addEventListener('click', () => this.endGame());
             document.getElementById('playAgainBtn').addEventListener('click', () => this.resetGame());
             document.getElementById('statsBtn').addEventListener('click', () => this.displayLeaderboard());
-            document.querySelectorAll('.helper-btn').forEach(btn => btn.addEventListener('click', (e) => this.useHelper(e)));
+            document.querySelectorAll('.helper-btn').forEach(b => b.addEventListener('click', (e) => this.useHelper(e)));
             document.getElementById('shareXBtn').addEventListener('click', () => this.shareOnX());
             document.getElementById('shareInstagramBtn').addEventListener('click', () => this.shareOnInstagram());
             this.domElements.nameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.showScreen('instructions'); });
-            
-            // Error Reporting Listeners
             this.domElements.reportFab.addEventListener('click', () => this.showReportModal());
             document.getElementById('reportErrorYes').addEventListener('click', () => this.sendErrorReport());
             document.getElementById('reportErrorNo').addEventListener('click', () => this.hideReportModal());
         }
 
-        // --- New Methods for Avatar Upload ---
         populateAvatarGrid() {
-            this.domElements.avatarGrid.innerHTML = ''; // Clear first
-
-            // 1. Add the upload button
-            const uploadContainer = document.createElement('div');
-            uploadContainer.className = 'avatar-upload-container';
-            uploadContainer.innerHTML = `
-                <label for="avatarUploadInput" class="avatar-upload-label" title="رفع صورة من جهازك">
-                    ➕
-                    <span class="sr-only">رفع صورة رمزية</span>
-                </label>
-                <input type="file" id="avatarUploadInput" accept="image/png, image/jpeg, image/gif" style="display: none;">
-            `;
-            this.domElements.avatarGrid.appendChild(uploadContainer);
+            this.domElements.avatarGrid.innerHTML = '';
+            const u = document.createElement('div');
+            u.className = 'avatar-upload-container';
+            u.innerHTML = `<label for="avatarUploadInput" class="avatar-upload-label" title="رفع صورة من جهازك">➕<span class="sr-only">رفع صورة رمزية</span></label><input type="file" id="avatarUploadInput" accept="image/png, image/jpeg, image/gif" style="display: none;">`;
+            this.domElements.avatarGrid.appendChild(u);
             document.getElementById('avatarUploadInput').addEventListener('change', (e) => this.handleAvatarUpload(e));
-
-            // 2. Add default avatars
-            const avatarUrls = [
-                "https://em-content.zobj.net/thumbs/120/apple/354/woman_1f469.png", "https://em-content.zobj.net/thumbs/120/apple/354/man_1f468.png",
-                "https://em-content.zobj.net/thumbs/120/apple/354/person-beard_1f9d4.png", "https://em-content.zobj.net/thumbs/120/apple/354/old-man_1f474.png",
-                "https://em-content.zobj.net/thumbs/120/apple/354/student_1f9d1-200d-1f393.png", "https://em-content.zobj.net/thumbs/120/apple/354/teacher_1f9d1-200d-1f3eb.png",
-                "https://em-content.zobj.net/thumbs/120/apple/354/scientist_1f9d1-200d-1f52c.png", "https://em-content.zobj.net/thumbs/120/apple/354/cook_1f9d1-200d-1f373.png",
-                "https://em-content.zobj.net/thumbs/120/apple/354/artist_1f9d1-200d-1f3a8.png", "https://em-content.zobj.net/thumbs/120/apple/354/astronaut_1f9d1-200d-1f680.png",
-                "https://em-content.zobj.net/thumbs/120/apple/354/police-officer_1f46e.png", "https://em-content.zobj.net/thumbs/120/apple/354/superhero_1f9b8.png"
-            ];
-
-            avatarUrls.forEach((url, index) => {
-                const img = document.createElement('img');
-                img.src = url;
-                img.alt = `صورة رمزية ${index + 1}`;
-                img.classList.add('avatar-option');
-                img.addEventListener('click', () => this.selectAvatar(img));
-                this.domElements.avatarGrid.appendChild(img);
-            });
+            const a = [ "https://em-content.zobj.net/thumbs/120/apple/354/woman_1f469.png", "https://em-content.zobj.net/thumbs/120/apple/354/man_1f468.png", "https://em-content.zobj.net/thumbs/120/apple/354/person-beard_1f9d4.png", "https://em-content.zobj.net/thumbs/120/apple/354/old-man_1f474.png", "https://em-content.zobj.net/thumbs/120/apple/354/student_1f9d1-200d-1f393.png", "https://em-content.zobj.net/thumbs/120/apple/354/teacher_1f9d1-200d-1f3eb.png", "https://em-content.zobj.net/thumbs/120/apple/354/scientist_1f9d1-200d-1f52c.png", "https://em-content.zobj.net/thumbs/120/apple/354/cook_1f9d1-200d-1f373.png", "https://em-content.zobj.net/thumbs/120/apple/354/artist_1f9d1-200d-1f3a8.png", "https://em-content.zobj.net/thumbs/120/apple/354/astronaut_1f9d1-200d-1f680.png", "https://em-content.zobj.net/thumbs/120/apple/354/police-officer_1f46e.png", "https://em-content.zobj.net/thumbs/120/apple/354/superhero_1f9b8.png" ];
+            a.forEach((url, i) => { const img = document.createElement('img'); img.src = url; img.alt = `صورة رمزية ${i + 1}`; img.classList.add('avatar-option'); img.addEventListener('click', () => this.selectAvatar(img)); this.domElements.avatarGrid.appendChild(img); });
         }
         
-        selectAvatar(imgElement) {
-            this.domElements.avatarGrid.querySelectorAll('.avatar-option.selected').forEach(el => el.classList.remove('selected'));
-            imgElement.classList.add('selected');
-            this.gameState.avatar = imgElement.src;
-            this.domElements.confirmAvatarBtn.disabled = false;
-            imgElement.classList.add('clicked');
-            setTimeout(() => { imgElement.classList.remove('clicked'); }, 300);
-        }
+        selectAvatar(i) { this.domElements.avatarGrid.querySelectorAll('.avatar-option.selected').forEach(e => e.classList.remove('selected')); i.classList.add('selected'); this.gameState.avatar = i.src; this.domElements.confirmAvatarBtn.disabled = false; i.classList.add('clicked'); setTimeout(() => { i.classList.remove('clicked'); }, 300); }
+        handleAvatarUpload(e) { const f = e.target.files[0]; if (!f) return; if (!['image/jpeg', 'image/png', 'image/gif'].includes(f.type)) { this.showToast('الرجاء اختيار ملف صورة (JPG, PNG, GIF).', 'error'); return; } if (f.size > 2 * 1024 * 1024) { this.showToast('حجم الصورة كبير جداً. الحد الأقصى 2 ميجابايت.', 'error'); return; } const r = new FileReader(); r.onload = (e) => { const d = e.target.result; let c = document.getElementById('customAvatar'); if (!c) { c = document.createElement('img'); c.id = 'customAvatar'; c.alt = 'صورة رمزية مخصصة'; c.classList.add('avatar-option'); c.addEventListener('click', () => this.selectAvatar(c)); this.domElements.avatarGrid.insertBefore(c, this.domElements.avatarGrid.children[1]); } c.src = d; this.selectAvatar(c); }; r.onerror = () => { this.showToast('حدث خطأ أثناء قراءة ملف الصورة.', 'error'); }; r.readAsDataURL(f); }
 
-        handleAvatarUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            if (!['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
-                this.showToast('الرجاء اختيار ملف صورة (JPG, PNG, GIF).', 'error');
-                return;
-            }
-            if (file.size > 2 * 1024 * 1024) { // 2MB limit
-                this.showToast('حجم الصورة كبير جداً. الحد الأقصى 2 ميجابايت.', 'error');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const imageDataUrl = e.target.result;
-                let customAvatar = document.getElementById('customAvatar');
-                if (!customAvatar) {
-                    customAvatar = document.createElement('img');
-                    customAvatar.id = 'customAvatar';
-                    customAvatar.alt = 'صورة رمزية مخصصة';
-                    customAvatar.classList.add('avatar-option');
-                    customAvatar.addEventListener('click', () => this.selectAvatar(customAvatar));
-                    this.domElements.avatarGrid.insertBefore(customAvatar, this.domElements.avatarGrid.children[1]);
-                }
-                customAvatar.src = imageDataUrl;
-                this.selectAvatar(customAvatar);
-            };
-            reader.onerror = () => { this.showToast('حدث خطأ أثناء قراءة ملف الصورة.', 'error'); };
-            reader.readAsDataURL(file);
-        }
-
-        // --- Error Reporting System ---
-        catchGlobalErrors() {
-            window.onerror = (message, source, lineno, colno, error) => {
-                this.lastError = { message, source, lineno, colno, error: error ? error.stack : 'N/A' };
-                this.domElements.reportFab.classList.add('has-error');
-                return true; // Prevents the default browser error handler
-            };
-        }
-
-        showReportModal() {
-            if (this.lastError) {
-                this.domElements.reportErrorText.innerHTML = `اكتشفنا خطأ تلقائيًا. هل تريد إرسال تقرير به؟<br><small style="opacity:0.7;">${this.lastError.message}</small>`;
-            } else {
-                this.domElements.reportErrorText.textContent = "هل تريد إرسال بلاغ عام عن مشكلة واجهتها؟";
-            }
-            this.domElements.reportErrorModal.classList.add('active');
-        }
-
-        hideReportModal() {
-            this.domElements.reportErrorModal.classList.remove('active');
-        }
-
-        async sendErrorReport() {
-            this.hideReportModal();
-            this.showToast("جاري إرسال البلاغ...", "info");
-            try {
-                const reportData = {
-                    errorDetails: this.lastError || { message: "بلاغ يدوي من اللاعب" },
-                    gameState: {
-                        name: this.gameState.name,
-                        playerId: this.gameState.playerId,
-                        score: this.currentScoreValue,
-                        level: this.gameState.level !== undefined ? this.LEVELS[this.gameState.level].label : 'N/A'
-                    },
-                    userAgent: navigator.userAgent
-                };
-                const response = await this.apiCall({ action: 'reportError', data: reportData });
-                if (response.success) {
-                    this.showToast("تم إرسال بلاغك بنجاح. شكراً لك!", "success");
-                    this.lastError = null;
-                    this.domElements.reportFab.classList.remove('has-error');
-                } else {
-                    throw new Error(response.error || "فشل إرسال البلاغ");
-                }
-            } catch (error) {
-                this.showToast("فشل إرسال البلاغ. الرجاء المحاولة لاحقاً.", "error");
-            }
-        }
+        catchGlobalErrors() { window.onerror = (m, s, l, c, e) => { this.lastError = { message: m, source: s, lineno: l, colno: c, error: e ? e.stack : 'N/A' }; this.domElements.reportFab.classList.add('has-error'); return true; }; }
+        showReportModal() { if (this.lastError) { this.domElements.reportErrorText.innerHTML = `اكتشفنا خطأ تلقائيًا. هل تريد إرسال تقرير به؟<br><small style="opacity:0.7;">${this.lastError.message}</small>`; } else { this.domElements.reportErrorText.textContent = "هل تريد إرسال بلاغ عام عن مشكلة واجهتها؟"; } this.showModal(this.domElements.reportErrorModal); }
+        hideReportModal() { this.hideModal(this.domElements.reportErrorModal); }
+        async sendErrorReport() { this.hideReportModal(); this.showToast("جاري إرسال البلاغ...", "info"); try { const d = { errorDetails: this.lastError || { message: "بلاغ يدوي من اللاعب" }, gameState: { name: this.gameState.name, playerId: this.gameState.playerId, score: this.currentScoreValue, level: this.gameState.level !== undefined ? this.LEVELS[this.gameState.level].label : 'N/A' }, userAgent: navigator.userAgent }; const r = await this.apiCall({ action: 'reportError', data: d }); if (r.success) { this.showToast("تم إرسال بلاغك بنجاح. شكراً لك!", "success"); this.lastError = null; this.domElements.reportFab.classList.remove('has-error'); } else { throw new Error(r.error || "فشل إرسال البلاغ"); } } catch (e) { this.showToast("فشل إرسال البلاغ. الرجاء المحاولة لاحقاً.", "error"); } }
         
-        // --- Rest of the game logic ---
         async loadQuestions() { try { const r = await fetch('questions.json'); if (!r.ok) throw new Error(`HTTP error! status: ${r.status}`); this.QUESTIONS = await r.json(); return true; } catch (e) { console.error("فشل في تحميل ملف الأسئلة:", e); return false; } }
         shuffleArray(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } }
         showScreen(s) { if (document.activeElement) document.activeElement.blur(); Object.values(this.domElements.screens).forEach(e => { e.classList.remove('active'); e.setAttribute('aria-hidden', 'true'); }); const a = this.domElements.screens[s]; if (a) { a.classList.add('active'); a.setAttribute('aria-hidden', 'false'); const f = a.querySelector('button, [href], input, select, textarea'); if (f) f.focus(); } }
@@ -608,11 +213,50 @@
         updateUI() { document.getElementById('wrongAnswersCount').textContent = `${this.gameState.wrongAnswers} / ${this.MAX_WRONG_ANSWERS}`; document.getElementById('skipCount').textContent = this.gameState.skips; const s = document.getElementById('skipCost'); if (s) s.textContent = `(${this.currentSkipCost})`; document.querySelectorAll('.helper-btn').forEach(b => { const t = b.dataset.type; if (t !== 'skipQuestion') b.disabled = this.gameState.helpersUsed[t]; }); }
         setupGameUI() { document.getElementById('playerAvatar').src = this.gameState.avatar; document.getElementById('playerName').textContent = this.gameState.name; document.getElementById('playerId').textContent = this.gameState.playerId; }
         toggleTheme() { const n = document.body.dataset.theme === 'dark' ? 'light' : 'dark'; document.body.dataset.theme = n; localStorage.setItem('theme', n); this.domElements.themeToggleBtn.textContent = n === 'dark' ? '☀️' : '🌙'; }
-        showConfirmExit() { this.domElements.confirmExitModal.classList.add('active'); }
-        hideConfirmExit() { this.domElements.confirmExitModal.classList.remove('active'); }
+        
+        // *** MODAL FIX: Re-usable modal functions ***
+        showModal(modalElement) { this.lastFocusedElement = document.activeElement; modalElement.setAttribute('aria-hidden', 'false'); modalElement.classList.add('active'); modalElement.querySelector('button').focus(); }
+        hideModal(modalElement) { modalElement.classList.remove('active'); modalElement.setAttribute('aria-hidden', 'true'); if (this.lastFocusedElement) this.lastFocusedElement.focus(); }
+        showConfirmExit() { this.showModal(this.domElements.confirmExitModal); }
+        hideConfirmExit() { this.hideModal(this.domElements.confirmExitModal); }
+
         showToast(m, t = 'info') { const c = document.getElementById('toast-container'); const o = document.createElement('div'); o.className = `toast ${t}`; o.textContent = m; o.setAttribute('role', 'alert'); c.appendChild(o); setTimeout(() => o.remove(), 3000); }
         async apiCall(p) { const w = { apiKey: this.API_KEY, ...p }; try { const r = await fetch(this.API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(w) }); return await r.json(); } catch (e) { console.error('API Error:', e); throw e; } }
-        async displayLeaderboard() { this.showScreen('leaderboard'); const c = document.getElementById('leaderboardContent'); c.innerHTML = '<div class="spinner"></div>'; try { const r = await this.apiCall({ action: 'getLeaderboard' }); if (r && r.success && r.leaderboard) { let t = '<p>لوحة الصدارة فارغة حاليًا!</p>'; if (r.leaderboard.length > 0) { t = `<table class="leaderboard-table" style="width:100%; text-align:right; border-collapse: collapse;"> <thead style="font-weight:bold;"><tr><th style="padding:8px;">الترتيب</th><th style="padding:8px;">الاسم</th><th style="padding:8px;">النقاط</th><th style="padding:8px;">رقم المحاولة</th><th style="padding:8px;">التاريخ</th></tr></thead> <tbody>${r.leaderboard.map((o, i) => ` <tr> <td style="padding:8px;">${['🥇', '🥈', '🥉'][i] || i + 1}</td> <td style="padding:8px;">${o.name || 'غير معروف'}</td> <td style="padding:8px;">${this.formatNumber(o.score || 0)}</td> <td style="padding:8px;">${o.attempt || 'N/A'}</td> <td style="padding:8px;">${o.date || 'N/A'}</td> </tr>`).join('')}</tbody> </table>`; } c.innerHTML = t; } else { c.innerHTML = '<p>حدث خطأ في تحميل لوحة الصدارة.</p>'; } } catch (e) { console.error("Error loading leaderboard:", e); c.innerHTML = '<p>حدث خطأ في تحميل لوحة الصدارة.</p>'; } }
+        async displayLeaderboard() {
+            this.showScreen('leaderboard');
+            const contentDiv = document.getElementById('leaderboardContent');
+            contentDiv.innerHTML = '<div class="spinner"></div>';
+            try {
+                const response = await this.apiCall({ action: 'getLeaderboard' });
+                if (response && response.success && response.leaderboard) {
+                    let tableHTML = '<p>لوحة الصدارة فارغة حاليًا!</p>';
+                    if (response.leaderboard.length > 0) {
+                        // *** LEADERBOARD FIX: Updated columns as requested ***
+                        tableHTML = `<table class="leaderboard-table" style="width:100%; text-align:right; border-collapse: collapse;">
+                            <thead style="font-weight:bold;"><tr>
+                                <th style="padding:8px;">الترتيب</th>
+                                <th style="padding:8px;">الاسم</th>
+                                <th style="padding:8px;">المستوى</th>
+                                <th style="padding:8px;">رقم المحاولة</th>
+                            </tr></thead>
+                            <tbody>${response.leaderboard.map((row, index) => `
+                                <tr>
+                                    <td style="padding:8px;">${['🥇', '🥈', '🥉'][index] || index + 1}</td>
+                                    <td style="padding:8px;">${row.name || 'غير معروف'}</td>
+                                    <td style="padding:8px;">${row.level || 'N/A'}</td>
+                                    <td style="padding:8px;">${row.attempt || 'N/A'}</td>
+                                </tr>`).join('')}</tbody>
+                        </table>`;
+                    }
+                    contentDiv.innerHTML = tableHTML;
+                } else {
+                    contentDiv.innerHTML = '<p>حدث خطأ في تحميل لوحة الصدارة.</p>';
+                }
+            } catch (error) {
+                console.error("Error loading leaderboard:", error);
+                contentDiv.innerHTML = '<p>حدث خطأ في تحميل لوحة الصدارة.</p>';
+            }
+        }
         getShareText() { const p = this.calculatePerformanceRating(); return `🧠 نتائجي في مسابقة المعلومات 🧠\n` + `الاسم: ${this.gameState.name}\n` + `النقاط: ${this.formatNumber(this.currentScoreValue)}\n` + `المستوى: ${this.LEVELS[Math.min(this.gameState.level, this.LEVELS.length - 1)].label}\n` + `التقييم: ${p}\n\n` + `🔗 جرب تحديك أنت أيضاً!`; }
         shareOnX() { const t = encodeURIComponent(this.getShareText()); window.open(`https://twitter.com/intent/tweet?text=${t}`, '_blank'); }
         shareOnInstagram() { navigator.clipboard.writeText(this.getShareText()).then(() => this.showToast("تم نسخ النتيجة! الصقها في قصتك أو رسائلك على إنستغرام.", "success")).catch(() => this.showToast("فشل نسخ النتيجة.", "error")); }
@@ -627,9 +271,6 @@
         new QuizGame();
     });
 </script>
-    
-    <div class="sr-only" aria-live="polite" id="liveAnnouncements"></div>
 </body>
 </html>
-
 
