@@ -298,7 +298,67 @@
 
     <!-- The rest of the HTML screens... -->
     <div id="nameEntry" class="screen" aria-hidden="true"> <div class="content-box"> <header class="screen-header"> <h2>أدخل اسمك</h2> </header> <div class="input-group"> <label for="nameInput" class="sr-only">اسم اللاعب</label> <input type="text" id="nameInput" placeholder="مثلا: عبد الله" maxlength="25" autocomplete="name" aria-required="true" > <div id="nameError" class="error-message" aria-live="polite"></div> </div> <div class="button-group"> <button id="confirmNameBtn" class="btn-main"> تأكيد الإسم </button> </div> </div> </div>
-    <div id="instructionsScreen" class="screen screen--align-top" aria-hidden="true"> <div class="content-box"> <header class="screen-header"> <h2>📋 تعليمات اللعبة</h2> </header> <div class="instructions-content"> <div class="instruction-item"> <span class="instruction-icon">⚖️</span> <div class="instruction-text"> <strong>نظام النقاط:</strong><br> ✅ الإجابة الصحيحة: +100 نقطة<br> ❌ الإجابة الخاطئة: -100 نقطة </div> </div> <div class="instruction-item"> <span class="instruction-icon">⏱️</span> <div class="instruction-text"> <strong>نظام المؤقت:</strong> لكل سؤال وقت محدد يجب الإجابة خلاله. </div> </div> <div class="instruction-item"> <span class="instruction-icon">🛠️</span> <div class="instruction-text"> <strong>المساعدات:</strong> يمكنك طلب المساعدة في أي وقت، مقابل 100 نقطة لكل مساعدة. </div> </div> <div class="instruction-item"> <span class="instruction-icon">🎯</span> <div class="instruction-text"> <strong>المستويات:</strong> أربعة خيارات متاحة: سهل، متوسط، صعب، ومستحيل. </div> </div> <div class="instruction-item"> <span class="instruction-icon">🚫</span> <div class="instruction-text"> <strong>حد الأخطاء:</strong> يُسمح لك بـ 3 أخطاء فقط، وبعدها تنتهي اللعبة. </div> </div> <div class="instruction-item"> <span class="instruction-icon">📩</span> <div class="instruction-text"> <strong>الدعم الفني:</strong> إذا واجهت أي مشكلة، يمكنك التواصل مع المسؤول عبر <a href="https://x.com/_MS_AbuQusay?t=Tv0klH2PdnBYFHj_G8uIEA&s=09" target="_blank" rel="noopener noreferrer">إكس</a> أو <a href="https://www.instagram.com/_ms_abuqusay?igsh=OTRmODR1cTNkcXV1">إنستغرام</a>. </div> </div> </div> <div class="button-group"> <button id="instructionsConfirmBtn" class="btn-main">حسناً، فهمت</button> </div> </div> </div>
+    <div id="instructionsScreen" class="screen screen--align-top" aria-hidden="true">
+        <div class="content-box">
+            <header class="screen-header">
+                <h2>📋 تعليمات اللعبة</h2>
+            </header>
+            
+            <div class="instructions-content">
+                <div class="instruction-item">
+                    <span class="instruction-icon">⚖️</span>
+                    <div class="instruction-text">
+                        <strong>النقاط:</strong><br>
+                        صحيحة: +100 / خاطئة: -100
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <span class="instruction-icon">⏱️</span>
+                    <div class="instruction-text">
+                        <strong>الوقت:</strong><br>
+                        لكل سؤال وقت محدد
+                    </div>
+                </div>
+                
+                <div class="instruction-item">
+                    <span class="instruction-icon">🛠️</span>
+                    <div class="instruction-text">
+                        <strong>المساعدات:</strong><br>
+                        المساعدة: -100 نقطة / التخطي: -20 (وتتزايد)
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <span class="instruction-icon">🎯</span>
+                    <div class="instruction-text">
+                        <strong>المستويات:</strong><br>
+                        سهل / متوسط / صعب / مستحيل
+                    </div>
+                </div>
+
+                <div class="instruction-item">
+                    <span class="instruction-icon">🚫</span>
+                    <div class="instruction-text">
+                        <strong>الأخطاء:</strong><br>
+                        مسموح 3 فقط
+                    </div>
+                </div>
+                
+                <div class="instruction-item">
+                    <span class="instruction-icon">📩</span>
+                    <div class="instruction-text">
+                        <strong>الدعم:</strong><br>
+                        تواصل مع المسؤول عبر <a href="https://x.com/_MS_AbuQusay?t=Tv0klH2PdnBYFHj_G8uIEA&s=09" target="_blank" rel="noopener noreferrer">إكس</a> أو <a href="https://www.instagram.com/_ms_abuqusay?igsh=OTRmODR1cTNkcXV1">إنستغرام</a>.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button id="instructionsConfirmBtn" class="btn-main">حسناً، فهمت</button>
+            </div>
+        </div>
+    </div>
     <main id="gameContainer" class="screen" aria-hidden="true"> <div class="top-bar"> <button id="endQuizBtn" class="end-quiz-btn" aria-label="إنهاء المسابقة"> 🚪 إنهاء </button> <div class="level-progress"> <div class="level-indicator" data-level="easy" data-tooltip="المستوى السهل"> <span>1</span> </div> <div class="level-indicator" data-level="medium" data-tooltip="المستوى المتوسط"> <span>2</span> </div> <div class="level-indicator" data-level="hard" data-tooltip="المستوى الصعب"> <span>3</span> </div> <div class="level-indicator" data-level="impossible" data-tooltip="المستوى المستحيل"> <span>4</span> </div> </div> <button class="theme-toggle-btn" aria-label="تبديل وضع السطوع والظلام"> <span aria-hidden="true">☀️</span> </button> </div> <header class="game-header"> <div class="player-info"> <div class="player-main"> <img id="playerAvatar" src="" alt="" aria-hidden="true"> <div class="player-details"> <span id="playerName" aria-label="اسم اللاعب"></span> <span id="playerId" class="player-id"></span> </div> </div> <div class="player-stats"> <div class="stat-item">النقاط: <strong id="currentScore" aria-live="polite">100</strong></div> <div class="stat-item">الأخطاء: <strong id="wrongAnswersCount" aria-live="assertive">0 / 3</strong></div> <div class="stat-item">التخطي: <strong id="skipCount">0</strong></div> </div> </div> <div class="helpers" aria-label="خيارات المساعدة"> <button class="helper-btn" data-type="fiftyFifty" aria-describedby="fiftyFiftyDesc"> 50:50 <span class="helper-cost">(100)</span> </button> <div id="fiftyFiftyDesc" class="sr-only">يزيل خيارين خاطئين</div> <button class="helper-btn" data-type="freezeTime" aria-describedby="freezeTimeDesc"> ❄️ 10ث <span class="helper-cost">(100)</span> </button> <div id="freezeTimeDesc" class="sr-only">يوقف المؤقت لمدة 10 ثوان</div> <button class="helper-btn" data-type="skipQuestion" aria-describedby="skipQuestionDesc"> ⏭️ تخطي <span id="skipCost" class="helper-cost">(100)</span> </button> <div id="skipQuestionDesc" class="sr-only">تخطي السؤال الحالي</div> </div> </header> <div class="timer-container" aria-label="مؤقت السؤال"> <div class="timer-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"></div> <span id="timer" class="timer-text">30</span> </div> <div class="main-content"> <section class="question-box" aria-labelledby="questionCounter"> <div class="level-badge" id="currentLevelBadge">سهل</div> <h3 id="questionCounter">السؤال 1 من 5</h3> <p id="questionText" aria-live="polite"></p> </section> <section class="options-container" aria-labelledby="questionText"> <div class="options-grid" role="group" aria-label="خيارات الإجابة"></div> </section> </div> </main>
     <div id="levelCompleteScreen" class="screen" aria-hidden="true"> <div class="content-box"> <header class="screen-header"> <h2 id="levelCompleteTitle">🎉 أكملت المستوى السهل!</h2> </header> <div class="level-stats"> <p>النقاط الحالية: <strong id="levelScore"></strong></p> <p>عدد الأخطاء: <strong id="levelErrors"></strong></p> <p>الأسئلة الصحيحة: <strong id="levelCorrect"></strong></p> </div> <div class="button-group"> <button id="nextLevelBtn" class="btn-main">المستوى التالي</button> <button id="quitLevelBtn" class="btn-secondary">الانسحاب وعرض النتائج</button> </div> </div> </div>
     <div id="endScreen" class="screen screen--align-top" aria-hidden="true"> <div class="content-box"> <header class="screen-header"> <h2>🏆 النتائج النهائية 🏆</h2> </header> <div class="final-stats" aria-labelledby="finalStatsHeading"> <h3 id="finalStatsHeading" class="sr-only">الإحصائيات النهائية</h3> <p>✍️ الاسم: <strong id="finalName"></strong></p> <p>🆔 المعرّف: <strong id="finalId"></strong></p> <p>✅ الإجابات الصحيحة: <strong id="finalCorrect"></strong></p> <p>❌ الإجابات الخاطئة: <strong id="finalWrong"></strong></p> <p>⏭️ مرات التخطي: <strong id="finalSkips"></strong></p> <p>⭐ النقاط النهائية: <strong id="finalScore"></strong></p> <p>⏱️ الوقت المستغرق: <strong id="totalTime"></strong></p> <p>📈 المستوى الذي وصلت إليه: <strong id="finalLevel"></strong></p> <p>🎯 نسبة الدقة: <strong id="finalAccuracy"></strong></p> <p>🔥 أفضل سلسلة متتالية: <strong id="finalBestStreak"></strong></p> <p>⏳ متوسط وقت الإجابة: <strong id="finalAvgTime"></strong></p> <div class="performance-rating"> <span>أداؤك: </span> <strong id="performanceText"></strong> </div> </div> <section class="share-section" aria-labelledby="shareHeading"> <h3 id="shareHeading">📢 مشاركة النتائج</h3> <div class="share-buttons"> <button id="shareXBtn" class="share-btn x" aria-label="مشاركة النتيجة على X"> X </button> <button id="shareInstagramBtn" class="share-btn instagram" aria-label="مشاركة النتيجة على Instagram"> Instagram </button> </div> </section> <div class="button-group"> <button id="playAgainBtn" class="btn-main">لعب مرة أخرى</button> <button id="statsBtn" class="btn-secondary">لوحة الصدارة</button> </div> </div> </div>
@@ -571,4 +631,5 @@
     <div class="sr-only" aria-live="polite" id="liveAnnouncements"></div>
 </body>
 </html>
+
 
