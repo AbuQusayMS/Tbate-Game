@@ -36,9 +36,20 @@
 </head>
 <body data-theme="dark" aria-live="polite">
     <div id="toast-container" class="toast-container" aria-live="assertive"></div>
-    <div id="reportErrorFab" class="report-fab" role="button" aria-label="الإبلاغ عن مشكلة">⚠️</div>
+    <div id="reportErrorFab" class="report-fab" role="button" aria-label="الإبلاغ عن مشكلة" data-action="showAdvancedReportModal">⚠️</div>
     <div id="devFloatingBtn" class="dev-fab" role="button" title="تبديل وضع المطور" style="display: none;"><span>⚡</span></div>
 
+    <!-- Global Error Overlay -->
+    <div id="globalErrorOverlay" class="screen">
+        <div class="content-box">
+            <header class="screen-header"><h2>حدث خطأ</h2></header>
+            <p id="globalErrorMessage">لا يمكن تحميل موارد اللعبة. الرجاء التحقق من اتصالك بالإنترنت.</p>
+            <div class="button-group">
+                <button id="retryConnectionBtn" class="btn-main">إعادة المحاولة</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- SCREENS -->
     <div id="loader" class="screen active" role="status" aria-label="جاري التحميل">
         <div class="spinner" aria-hidden="true"></div>
@@ -247,11 +258,27 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label>اقتراحات سريعة:</label>
+                    <div class="suggestion-tags">
+                        <button type="button" class="suggestion-tag" data-suggestion="السؤال لا يظهر بشكل صحيح.">سؤال لا يظهر</button>
+                        <button type="button" class="suggestion-tag" data-suggestion="الإجابة الصحيحة تبدو خاطئة.">إجابة غير صحيحة</button>
+                        <button type="button" class="suggestion-tag" data-suggestion="توقفت اللعبة فجأة.">تجمد اللعبة</button>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="problemDescription">وصف المشكلة:</label>
                     <textarea id="problemDescription" name="problemDescription" placeholder="يرجى تقديم تفاصيل دقيقة..." required></textarea>
                 </div>
+                <div class="form-group">
+                    <label for="reportScreenshotInput" class="upload-btn-label">
+                        📷 إرفاق لقطة شاشة (اختياري)
+                    </label>
+                    <input type="file" id="reportScreenshotInput" accept="image/*" class="sr-only">
+                    <img id="screenshotPreview" src="" alt="معاينة لقطة الشاشة" class="screenshot-preview">
+                </div>
+                <div id="reportSpinner" class="spinner" style="display: none; margin: 1rem auto;"></div>
                 <div class="modal-buttons">
-                    <button type="submit" class="btn-main">إرسال البلاغ</button>
+                    <button type="submit" class="btn-main" id="submitReportBtn">إرسال البلاغ</button>
                     <button type="button" class="btn-secondary" data-action="closeModal" data-modal-id="advancedReportModal">إلغاء</button>
                 </div>
             </form>
@@ -286,13 +313,17 @@
     </div>
     
     <div id="playerDetailsModal" class="modal">
-        <div class="modal-content">
-            <header class="player-details-header">
+        <div class="modal-content player-details-redesigned">
+             <header class="player-details-header">
                 <img id="detailsAvatar" src="" alt="صورة اللاعب الرمزية" class="player-details-avatar">
-                <h3 id="detailsName"></h3>
-                <span id="detailsPlayerId" class="player-id"></span>
+                <div>
+                    <h3 id="detailsName"></h3>
+                    <span id="detailsPlayerId" class="player-id"></span>
+                </div>
             </header>
-            <div id="playerDetailsContent" class="player-details-body"></div>
+            <div id="playerDetailsContent" class="player-details-body">
+                <!-- Content will be injected by JS -->
+            </div>
             <div class="modal-buttons">
                 <button class="btn-secondary" data-action="closeModal" data-modal-id="playerDetailsModal">إغلاق</button>
             </div>
