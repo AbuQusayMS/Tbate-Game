@@ -118,6 +118,7 @@ body {
 }
 .screen.screen--align-top { justify-content: flex-start; }
 .screen.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 10; }
+#globalErrorOverlay { z-index: 9999; }
 .content-box {
   background-color: var(--primary-color); border-radius: var(--radius-2xl);
   padding: var(--space-6); width: 100%; max-width: 30rem; box-shadow: var(--shadow-xl);
@@ -287,16 +288,60 @@ textarea { resize: vertical; min-height: 100px; }
 .leaderboard-details { flex-grow: 1; display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); min-width: 0; }
 .leaderboard-name { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .leaderboard-score { font-weight: 700; color: var(--gold-color); font-size: var(--font-size-lg); flex-shrink: 0; }
-.player-details-header { margin-bottom: var(--space-4); display: flex; flex-direction: column; align-items: center; gap: var(--space-2); padding-bottom: var(--space-4); border-bottom: 1px solid var(--border-color); }
-.player-details-avatar { width: 5rem; height: 5rem; border-radius: 50%; border: 3px solid var(--gold-color); }
-.player-details-body { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); text-align: right; }
-.detail-item { display: flex; flex-direction: column; background-color: var(--secondary-color); padding: var(--space-3); border-radius: var(--radius-lg); border: 1px solid var(--border-color); }
+
+/* === NEW STYLES for Report Modal === */
+.suggestion-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-4); }
+.suggestion-tag {
+  background-color: var(--secondary-color); color: var(--text-color); border: 1px solid var(--border-color);
+  padding: var(--space-2) var(--space-3); border-radius: var(--radius-full); font-size: 0.875rem; cursor: pointer;
+}
+.upload-btn-label {
+    display: block; width: 100%; padding: var(--space-3); border-radius: var(--radius-lg);
+    background-color: var(--secondary-color); color: var(--text-color); cursor: pointer;
+    text-align: center; border: 2px dashed var(--border-color);
+}
+.screenshot-preview {
+    display: none; max-width: 100px; max-height: 100px; border-radius: var(--radius-lg);
+    margin: var(--space-3) auto 0; border: 2px solid var(--border-color);
+}
+.screenshot-preview.active { display: block; }
+
+/* === NEW STYLES for Player Details Modal === */
+.modal-content.player-details-redesigned {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+}
+.player-details-header {
+    display: flex; align-items: center; gap: var(--space-4);
+    padding-bottom: var(--space-4); margin-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-color);
+}
+.player-details-avatar {
+    width: 5rem; height: 5rem; border-radius: 50%;
+    border: 3px solid var(--gold-color); flex-shrink: 0;
+}
+.player-details-header h3 { margin: 0; text-align: right; }
+.player-details-body {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--space-3); text-align: right;
+}
+.detail-item {
+    background-color: var(--secondary-color); padding: var(--space-3);
+    border-radius: var(--radius-lg); border: 1px solid var(--border-color);
+    display: flex; flex-direction: column;
+}
 .detail-item.full-width { grid-column: 1 / -1; }
 .detail-item .label { font-size: 0.8rem; opacity: 0.8; margin-bottom: var(--space-1); }
 .detail-item .value { font-size: var(--font-size-lg); font-weight: 700; word-wrap: break-word; }
 .detail-item .value.score { color: var(--gold-color); }
-.progress-bar-container { width: 100%; height: 8px; background-color: var(--border-color); border-radius: var(--radius-full); margin-top: var(--space-2); overflow: hidden; }
-.progress-bar { height: 100%; background-color: var(--success-color); border-radius: var(--radius-full); transition: width var(--transition-normal); }
+.progress-bar-container {
+    width: 100%; height: 8px; background-color: var(--border-color);
+    border-radius: var(--radius-full); margin-top: var(--space-2); overflow: hidden;
+}
+.progress-bar {
+    height: 100%; background-color: var(--success-color); border-radius: var(--radius-full);
+    transition: width var(--transition-normal);
+}
 @media (min-width: 768px) {
   .screen { padding: var(--space-8); }
   .button-group.start-menu { flex-direction: row; justify-content: center; }
