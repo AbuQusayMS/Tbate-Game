@@ -12,13 +12,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     
-    <!-- Cropper.js for image editing -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
     
-    <!-- Link to external CSS file -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- JSON-LD for SEO -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -26,11 +23,7 @@
       "name": "🧠 مسابقة المعلومات",
       "description": "لعبة مسابقة تفاعلية لاختبار المعلومات في مستويات متعددة",
       "applicationCategory": "GameApplication",
-      "operatingSystem": "Web Browser",
-      "author": {
-        "@type": "Person",
-        "name": "MS AbuQusay"
-      }
+      "operatingSystem": "Web Browser"
     }
     </script>
 </head>
@@ -198,8 +191,8 @@
             <section class="share-section">
                 <h3>📢 مشاركة النتائج</h3>
                 <div class="share-buttons">
-                    <button class="share-btn x" data-action="shareOnX">X</button>
-                    <button class="share-btn instagram" data-action="shareOnInstagram">Instagram</button>
+                    <button class="share-btn x" data-action="shareOnX">انشر على 𝕏</button>
+                    <button class="share-btn instagram" data-action="shareOnInstagram">📋 نسخ</button>
                 </div>
             </section>
             <div class="button-group">
@@ -250,6 +243,11 @@
                     <label for="problemDescription">وصف المشكلة:</label>
                     <textarea id="problemDescription" name="problemDescription" placeholder="يرجى تقديم تفاصيل دقيقة..." required></textarea>
                 </div>
+                <!-- New file upload field -->
+                <div class="form-group">
+                    <label for="reportAttachment">إرفاق لقطة شاشة (اختياري):</label>
+                    <input type="file" id="reportAttachment" name="reportAttachment" accept="image/*">
+                </div>
                 <div class="modal-buttons">
                     <button type="submit" class="btn-main">إرسال البلاغ</button>
                     <button type="button" class="btn-secondary" data-action="closeModal" data-modal-id="advancedReportModal">إلغاء</button>
@@ -299,11 +297,10 @@
         </div>
     </div>
 
-    <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Link to external JS file -->
     <script src="script.js" defer></script>
 </body>
 </html>
+
