@@ -36,8 +36,7 @@
 </head>
 <body data-theme="dark" aria-live="polite">
     <div id="toast-container" class="toast-container" aria-live="assertive"></div>
-    <!-- MODIFICATION: Changed the icon for better visibility and added data-action attribute -->
-    <div id="reportErrorFab" class="report-fab" role="button" aria-label="الإبلاغ عن مشكلة" data-action="showAdvancedReportModal" title="الإبلاغ عن مشكلة">⚠️</div>
+    <div id="reportErrorFab" class="report-fab" role="button" aria-label="الإبلاغ عن مشكلة">⚠️</div>
     <div id="devFloatingBtn" class="dev-fab" role="button" title="تبديل وضع المطور" style="display: none;"><span>⚡</span></div>
 
     <!-- SCREENS -->
@@ -128,7 +127,7 @@
         <header class="game-header">
             <div class="player-info">
                 <div class="player-main">
-                    <img id="playerAvatar" src="https://placehold.co/100x100/16213e/f0f0f0?text=?" alt="الصورة الرمزية للاعب" loading="lazy" decoding="async">
+                    <img id="playerAvatar" src="" alt="الصورة الرمزية للاعب" loading="lazy" decoding="async">
                     <div class="player-details">
                         <span id="playerName" aria-label="اسم اللاعب"></span>
                         <span id="playerId" class="player-id"></span>
@@ -198,9 +197,30 @@
             </div>
             <section class="share-section">
                 <h3>📢 مشاركة النتائج</h3>
-                <div class="share-buttons">
-                    <button class="share-btn x" data-action="shareOnX">X</button>
-                    <button class="share-btn instagram" data-action="shareOnInstagram">Instagram</button>
+                <div class="share-options">
+                    <div class="share-header">
+                        <button class="share-option-btn active" data-platform="x">
+                            <span class="share-icon">🔵</span>
+                            <span>انشر على X</span>
+                        </button>
+                        <button class="share-option-btn" data-platform="copy">
+                            <span class="share-icon">📋</span>
+                            <span>انسخ النص</span>
+                        </button>
+                    </div>
+                    <div class="share-content">
+                        <div id="xShareContent" class="platform-content active">
+                            <p class="share-description">انقر لنشر نتائجك مباشرة على X</p>
+                            <button class="btn-main share-action-btn" data-action="shareOnX">نشر على X</button>
+                        </div>
+                        <div id="copyShareContent" class="platform-content">
+                            <p class="share-description">انسخ النص التالي لمشاركته:</p>
+                            <div class="copy-text-container">
+                                <textarea id="shareText" readonly class="share-text-area"></textarea>
+                                <button class="copy-text-btn" data-action="copyShareText">نسخ</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
             <div class="button-group">
@@ -213,6 +233,11 @@
     <div id="leaderboardScreen" class="screen screen--align-top">
         <div class="content-box">
             <header class="screen-header"><h2>🏆 لوحة الصدارة 🏆</h2></header>
+            <div class="leaderboard-filters">
+                <button class="filter-btn active" data-filter="all">الكل</button>
+                <button class="filter-btn" data-filter="impossible">متخطو المستحيل</button>
+                <button class="filter-btn" data-filter="top10">أفضل 10</button>
+            </div>
             <div id="leaderboardContent" aria-live="polite"></div>
             <div class="button-group">
                 <button class="btn-secondary" data-action="showStartScreen">العودة</button>
@@ -232,7 +257,6 @@
         </div>
     </div>
     
-    <!-- MODIFICATION START: Advanced Report Modal updated with new features -->
     <div id="advancedReportModal" class="modal">
         <div class="modal-content">
             <h3>الإبلاغ عن مشكلة</h3>
@@ -241,31 +265,29 @@
                     <label for="problemType">نوع المشكلة:</label>
                     <select id="problemType" name="problemType" required>
                         <option value="">اختر نوع المشكلة...</option>
+                        <option value="technical">مشكلة تقنية (تجمد، بطء)</option>
                         <option value="question_error">خطأ في السؤال أو الإجابة</option>
-                        <option value="technical_bug">مشكلة تقنية (تجمد، بطء، عطل)</option>
-                        <option value="design_issue">مشكلة في التصميم أو الواجهة</option>
-                        <option value="score_issue">مشكلة في احتساب النقاط</option>
-                        <option value="account_issue">مشكلة في الحساب أو البيانات</option>
+                        <option value="account_issue">مشكلة في الحساب أو النقاط</option>
+                        <option value="ui_issue">مشكلة في واجهة المستخدم</option>
+                        <option value="performance">مشكلة في الأداء</option>
                         <option value="suggestion">اقتراح لتحسين اللعبة</option>
-                        <option value="other">أخرى (يرجى التوضيح)</option>
+                        <option value="other">أخرى</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="problemDescription">وصف المشكلة:</label>
-                    <textarea id="problemDescription" name="problemDescription" placeholder="يرجى تقديم تفاصيل دقيقة للمساعدة في حل المشكلة..." required></textarea>
+                    <textarea id="problemDescription" name="problemDescription" placeholder="يرجى تقديم تفاصيل دقيقة..." required></textarea>
                 </div>
-                <!-- Image Upload Section -->
                 <div class="form-group">
-                    <label for="problemImage" class="file-upload-label">
-                        <span>📷</span> إرفاق صورة (اختياري)
-                    </label>
-                    <input type="file" id="problemImage" name="problemImage" accept="image/*" class="file-upload-input">
-                    <img id="imagePreview" src="" alt="معاينة الصورة" class="image-preview">
+                    <label for="problemScreenshot">رفع صورة (اختياري):</label>
+                    <input type="file" id="problemScreenshot" name="problemScreenshot" accept="image/*">
+                    <div id="screenshotPreview" class="screenshot-preview" style="display: none;"></div>
                 </div>
-                <!-- Auto-detect Section -->
-                 <div class="form-group auto-detect-group">
-                    <input type="checkbox" id="autoDetect" name="autoDetect" checked>
-                    <label for="autoDetect">الكشف التلقائي عن معلومات المشكلة</label>
+                <div class="form-group">
+                    <button type="button" id="autoDetectProblem" class="btn-secondary auto-detect-btn">
+                        <span class="detect-icon">🔍</span>
+                        الكشف التلقائي عن المشكلة
+                    </button>
                 </div>
                 <div class="modal-buttons">
                     <button type="submit" class="btn-main">إرسال البلاغ</button>
@@ -274,7 +296,6 @@
             </form>
         </div>
     </div>
-    <!-- MODIFICATION END: Advanced Report Modal -->
     
     <div id="avatarEditorModal" class="modal">
         <div class="modal-content">
@@ -303,35 +324,78 @@
         </div>
     </div>
     
-    <!-- MODIFICATION START: Player Details Modal redesigned -->
     <div id="playerDetailsModal" class="modal">
-        <div class="modal-content player-details-modal-content">
-             <button class="close-modal-btn" data-action="closeModal" data-modal-id="playerDetailsModal" aria-label="إغلاق">&times;</button>
-            <header class="player-details-header">
-                <img id="detailsAvatar" src="https://placehold.co/120x120/16213e/f0f0f0?text=?" alt="صورة اللاعب الرمزية" class="player-details-avatar">
-                <h3 id="detailsName">اسم اللاعب</h3>
-                <span id="detailsPlayerId" class="player-id">ID: #</span>
-            </header>
-            <div id="playerDetailsContent" class="player-details-body">
-                <!-- Content will be dynamically inserted here by JavaScript -->
-                <!-- Example of how items will look:
-                <div class="detail-item full-width">
-                    <span class="label">النقاط النهائية</span>
-                    <span class="value score" id="detailsScore">0</span>
+        <div class="modal-content player-details-modal">
+            <div class="modal-header">
+                <h3>تفاصيل اللاعب</h3>
+                <button class="close-modal-btn" data-action="closeModal" data-modal-id="playerDetailsModal">&times;</button>
+            </div>
+            <div class="player-details-content">
+                <header class="player-details-header">
+                    <img id="detailsAvatar" src="" alt="صورة اللاعب الرمزية" class="player-details-avatar">
+                    <div class="player-main-info">
+                        <h4 id="detailsName"></h4>
+                        <span id="detailsPlayerId" class="player-id"></span>
+                    </div>
+                </header>
+                <div class="player-stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <span class="stat-label">النقاط</span>
+                            <span id="detailsScore" class="stat-value"></span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <span class="stat-label">الدقة</span>
+                            <span id="detailsAccuracy" class="stat-value"></span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-info">
+                            <span class="stat-label">الوقت</span>
+                            <span id="detailsTime" class="stat-value"></span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-info">
+                            <span class="stat-label">المستوى</span>
+                            <span id="detailsLevel" class="stat-value"></span>
+                        </div>
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <span class="label">المستوى</span>
-                    <span class="value" id="detailsLevel">مبتدئ</span>
+                <div class="detailed-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">✅ الإجابات الصحيحة:</span>
+                        <span id="detailsCorrect" class="stat-value"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">❌ الإجابات الخاطئة:</span>
+                        <span id="detailsWrong" class="stat-value"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">⏭️ مرات التخطي:</span>
+                        <span id="detailsSkips" class="stat-value"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">🔢 رقم المحاولة:</span>
+                        <span id="detailsAttempt" class="stat-value"></span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">📈 تقييم الأداء:</span>
+                        <span id="detailsPerformance" class="stat-value performance-badge"></span>
+                    </div>
                 </div>
-                 <div class="detail-item">
-                    <span class="label">عدد المحاولات</span>
-                    <span class="value" id="detailsAttempts">0</span>
-                </div>
-                -->
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" data-action="closeModal" data-modal-id="playerDetailsModal">إغلاق</button>
             </div>
         </div>
     </div>
-    <!-- MODIFICATION END: Player Details Modal -->
 
     <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
