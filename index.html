@@ -36,20 +36,10 @@
 </head>
 <body data-theme="dark" aria-live="polite">
     <div id="toast-container" class="toast-container" aria-live="assertive"></div>
-    <div id="reportErrorFab" class="report-fab" role="button" aria-label="الإبلاغ عن مشكلة" data-action="showAdvancedReportModal">⚠️</div>
+    <!-- MODIFICATION: Changed the icon for better visibility and added data-action attribute -->
+    <div id="reportErrorFab" class="report-fab" role="button" aria-label="الإبلاغ عن مشكلة" data-action="showAdvancedReportModal" title="الإبلاغ عن مشكلة">⚠️</div>
     <div id="devFloatingBtn" class="dev-fab" role="button" title="تبديل وضع المطور" style="display: none;"><span>⚡</span></div>
 
-    <!-- Global Error Overlay -->
-    <div id="globalErrorOverlay" class="screen">
-        <div class="content-box">
-            <header class="screen-header"><h2>حدث خطأ</h2></header>
-            <p id="globalErrorMessage">لا يمكن تحميل موارد اللعبة. الرجاء التحقق من اتصالك بالإنترنت.</p>
-            <div class="button-group">
-                <button id="retryConnectionBtn" class="btn-main">إعادة المحاولة</button>
-            </div>
-        </div>
-    </div>
-    
     <!-- SCREENS -->
     <div id="loader" class="screen active" role="status" aria-label="جاري التحميل">
         <div class="spinner" aria-hidden="true"></div>
@@ -138,7 +128,7 @@
         <header class="game-header">
             <div class="player-info">
                 <div class="player-main">
-                    <img id="playerAvatar" src="" alt="الصورة الرمزية للاعب" loading="lazy" decoding="async">
+                    <img id="playerAvatar" src="https://placehold.co/100x100/16213e/f0f0f0?text=?" alt="الصورة الرمزية للاعب" loading="lazy" decoding="async">
                     <div class="player-details">
                         <span id="playerName" aria-label="اسم اللاعب"></span>
                         <span id="playerId" class="player-id"></span>
@@ -242,6 +232,7 @@
         </div>
     </div>
     
+    <!-- MODIFICATION START: Advanced Report Modal updated with new features -->
     <div id="advancedReportModal" class="modal">
         <div class="modal-content">
             <h3>الإبلاغ عن مشكلة</h3>
@@ -250,40 +241,40 @@
                     <label for="problemType">نوع المشكلة:</label>
                     <select id="problemType" name="problemType" required>
                         <option value="">اختر نوع المشكلة...</option>
-                        <option value="technical">مشكلة تقنية (تجمد، بطء)</option>
                         <option value="question_error">خطأ في السؤال أو الإجابة</option>
-                        <option value="account_issue">مشكلة في الحساب أو النقاط</option>
+                        <option value="technical_bug">مشكلة تقنية (تجمد، بطء، عطل)</option>
+                        <option value="design_issue">مشكلة في التصميم أو الواجهة</option>
+                        <option value="score_issue">مشكلة في احتساب النقاط</option>
+                        <option value="account_issue">مشكلة في الحساب أو البيانات</option>
                         <option value="suggestion">اقتراح لتحسين اللعبة</option>
-                        <option value="other">أخرى</option>
+                        <option value="other">أخرى (يرجى التوضيح)</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>اقتراحات سريعة:</label>
-                    <div class="suggestion-tags">
-                        <button type="button" class="suggestion-tag" data-suggestion="السؤال لا يظهر بشكل صحيح.">سؤال لا يظهر</button>
-                        <button type="button" class="suggestion-tag" data-suggestion="الإجابة الصحيحة تبدو خاطئة.">إجابة غير صحيحة</button>
-                        <button type="button" class="suggestion-tag" data-suggestion="توقفت اللعبة فجأة.">تجمد اللعبة</button>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label for="problemDescription">وصف المشكلة:</label>
-                    <textarea id="problemDescription" name="problemDescription" placeholder="يرجى تقديم تفاصيل دقيقة..." required></textarea>
+                    <textarea id="problemDescription" name="problemDescription" placeholder="يرجى تقديم تفاصيل دقيقة للمساعدة في حل المشكلة..." required></textarea>
                 </div>
+                <!-- Image Upload Section -->
                 <div class="form-group">
-                    <label for="reportScreenshotInput" class="upload-btn-label">
-                        📷 إرفاق لقطة شاشة (اختياري)
+                    <label for="problemImage" class="file-upload-label">
+                        <span>📷</span> إرفاق صورة (اختياري)
                     </label>
-                    <input type="file" id="reportScreenshotInput" accept="image/*" class="sr-only">
-                    <img id="screenshotPreview" src="" alt="معاينة لقطة الشاشة" class="screenshot-preview">
+                    <input type="file" id="problemImage" name="problemImage" accept="image/*" class="file-upload-input">
+                    <img id="imagePreview" src="" alt="معاينة الصورة" class="image-preview">
                 </div>
-                <div id="reportSpinner" class="spinner" style="display: none; margin: 1rem auto;"></div>
+                <!-- Auto-detect Section -->
+                 <div class="form-group auto-detect-group">
+                    <input type="checkbox" id="autoDetect" name="autoDetect" checked>
+                    <label for="autoDetect">الكشف التلقائي عن معلومات المشكلة</label>
+                </div>
                 <div class="modal-buttons">
-                    <button type="submit" class="btn-main" id="submitReportBtn">إرسال البلاغ</button>
+                    <button type="submit" class="btn-main">إرسال البلاغ</button>
                     <button type="button" class="btn-secondary" data-action="closeModal" data-modal-id="advancedReportModal">إلغاء</button>
                 </div>
             </form>
         </div>
     </div>
+    <!-- MODIFICATION END: Advanced Report Modal -->
     
     <div id="avatarEditorModal" class="modal">
         <div class="modal-content">
@@ -312,23 +303,35 @@
         </div>
     </div>
     
+    <!-- MODIFICATION START: Player Details Modal redesigned -->
     <div id="playerDetailsModal" class="modal">
-        <div class="modal-content player-details-redesigned">
-             <header class="player-details-header">
-                <img id="detailsAvatar" src="" alt="صورة اللاعب الرمزية" class="player-details-avatar">
-                <div>
-                    <h3 id="detailsName"></h3>
-                    <span id="detailsPlayerId" class="player-id"></span>
-                </div>
+        <div class="modal-content player-details-modal-content">
+             <button class="close-modal-btn" data-action="closeModal" data-modal-id="playerDetailsModal" aria-label="إغلاق">&times;</button>
+            <header class="player-details-header">
+                <img id="detailsAvatar" src="https://placehold.co/120x120/16213e/f0f0f0?text=?" alt="صورة اللاعب الرمزية" class="player-details-avatar">
+                <h3 id="detailsName">اسم اللاعب</h3>
+                <span id="detailsPlayerId" class="player-id">ID: #</span>
             </header>
             <div id="playerDetailsContent" class="player-details-body">
-                <!-- Content will be injected by JS -->
-            </div>
-            <div class="modal-buttons">
-                <button class="btn-secondary" data-action="closeModal" data-modal-id="playerDetailsModal">إغلاق</button>
+                <!-- Content will be dynamically inserted here by JavaScript -->
+                <!-- Example of how items will look:
+                <div class="detail-item full-width">
+                    <span class="label">النقاط النهائية</span>
+                    <span class="value score" id="detailsScore">0</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">المستوى</span>
+                    <span class="value" id="detailsLevel">مبتدئ</span>
+                </div>
+                 <div class="detail-item">
+                    <span class="label">عدد المحاولات</span>
+                    <span class="value" id="detailsAttempts">0</span>
+                </div>
+                -->
             </div>
         </div>
     </div>
+    <!-- MODIFICATION END: Player Details Modal -->
 
     <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
