@@ -208,7 +208,8 @@ class QuizGame {
             skips: 0,
             startTime: new Date(),
             helpersUsed: { fiftyFifty: false, freezeTime: false },
-            currentScore: this.config.STARTING_SCORE
+            currentScore: this.config.STARTING_SCORE,
+            attemptNumber: 1 // Start with attempt 1 for this session
         };
     }
 
@@ -295,11 +296,8 @@ class QuizGame {
         const finalStats = this._calculateFinalStats(completedAllLevels);
         
         if (!this.isDevSession) {
-            const { attemptNumber, error } = await this.saveResultsToSupabase(finalStats);
-            if (error) {
-                this.showToast("فشل إرسال النتائج إلى السيرفر", "error");
-            }
-            finalStats.attempt_number = attemptNumber ?? 'N/A';
+            // This function now sends data to GAS and Supabase leaderboard
+            this.saveResults(finalStats); 
         } else {
             finalStats.attempt_number = 'DEV';
         }
@@ -336,7 +334,9 @@ class QuizGame {
             performance_rating: this.getPerformanceRating(accuracy),
             completed_all: completedAll,
             used_fifty_fifty: this.gameState.helpersUsed.fiftyFifty,
-            used_freeze_time: this.gameState.helpersUsed.freezeTime
+            used_freeze_time: this.gameState.helpersUsed.freezeTime,
+            // We use the attempt number from the current game session
+            attempt_number: this.gameState.attemptNumber 
         };
     }
 
@@ -467,23 +467,13 @@ class QuizGame {
         }
     }
     
-    // MODIFICATION: Logic updated to save each attempt and only update leaderboard with a better score.
-    async saveResultsToSupabase(resultsData) {
-        try {
-            // 1. Get the current attempt number for this device
-            const { count, error: countError } = await this.supabase
-                .from('log')
-                .select('id', { count: 'exact', head: true })
-                .eq('device_id', resultsData.device_id);
+    // MODIFICATION: This function now handles BOTH sending to GAS and Supabase.
+    async saveResults(resultsData) {
+        // 1. Send to Google Apps Script for logging and notifications (fire and forget)
+        this.sendTelegramNotification('gameResult', resultsData);
 
-            if (countError) throw countError;
-            const attemptNumber = (count || 0) + 1;
-            
-            // 2. Always insert the detailed attempt into the 'log' table
-            const { error: logError } = await this.supabase.from('log').insert({ ...resultsData, attempt_number: attemptNumber });
-            if (logError) throw logError;
-            
-            // 3. Prepare data for the leaderboard (it needs the new attempt number)
+        // 2. Send to Supabase to update the leaderboard
+        try {
             const leaderboardPayload = {
                 p_device_id: resultsData.device_id,
                 p_player_id: resultsData.player_id,
@@ -497,25 +487,23 @@ class QuizGame {
                 p_correct_answers: resultsData.correct_answers,
                 p_wrong_answers: resultsData.wrong_answers,
                 p_skips: resultsData.skips,
-                p_attempt_number: attemptNumber,
+                p_attempt_number: resultsData.attempt_number,
                 p_performance_rating: resultsData.performance_rating,
                 p_is_impossible_finisher: resultsData.completed_all && resultsData.level === 'مستحيل'
             };
 
-            // 4. Call the database function to intelligently update the leaderboard
             const { error: rpcError } = await this.supabase.rpc('upsert_score', leaderboardPayload);
             if (rpcError) throw rpcError;
             
-            this.showToast("تم حفظ نتيجتك بنجاح!", "success");
-            this.sendTelegramNotification('gameResult', { ...resultsData, attempt_number: attemptNumber });
-            return { attemptNumber, error: null };
+            this.showToast("تم تحديث لوحة الصدارة بنجاح!", "success");
 
         } catch (error) {
-            console.error("Failed to send results to Supabase:", error);
-            return { attemptNumber: null, error: error.message };
+            console.error("Failed to send results to Supabase leaderboard:", error);
+            this.showToast("فشل تحديث لوحة الصدارة.", "error");
         }
     }
     
+    // MODIFICATION: Removed Supabase call. Now only sends to Google Apps Script.
     async handleReportSubmit(event) {
         event.preventDefault();
         const form = event.target;
@@ -529,24 +517,15 @@ class QuizGame {
             question_text: this.dom.questionText.textContent || 'لا يوجد'
         };
 
-        // Note: Image handling would require more complex logic (e.g., uploading to Supabase Storage)
-        // For now, we'll just send the text data.
-
         this.showToast("جاري إرسال البلاغ...", "info");
         this.hideModal('advancedReport');
-
-        try {
-            const { error } = await this.supabase.from('reports').insert(reportData);
-            if (error) throw error;
-            this.showToast("تم إرسال بلاغك بنجاح. شكراً لك!", "success");
-            this.sendTelegramNotification('report', reportData);
-        } catch (error) {
-            console.error("Supabase report error:", error);
-            this.showToast("حدث خطأ أثناء إرسال البلاغ.", "error");
-        } finally {
-            form.reset();
-            this.getEl('#imagePreview').style.display = 'none';
-        }
+        
+        // Only send to Google Apps Script
+        this.sendTelegramNotification('report', reportData);
+        this.showToast("تم إرسال بلاغك بنجاح. شكراً لك!", "success");
+        
+        form.reset();
+        this.getEl('#imagePreview').style.display = 'none';
     }
     
     async sendTelegramNotification(type, data) {
@@ -557,7 +536,7 @@ class QuizGame {
         try {
             await fetch(this.config.APPS_SCRIPT_URL, {
                 method: 'POST', mode: 'no-cors', cache: 'no-cache',
-                headers: { 'Content-Type': 'text/plain' }, // Use text/plain for no-cors
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({ type, data })
             });
         } catch (error) {
@@ -743,6 +722,8 @@ class QuizGame {
             if (this.dom.nameInput.value.trim().toLowerCase() === this.config.DEVELOPER_NAME.toLowerCase()) {
                 this.activateDevSession(false);
             }
+            // Increment attempt number for the next potential game session
+            this.gameState.attemptNumber = (this.gameState.attemptNumber || 1) + 1;
             this.showScreen('instructions');
         }
     }
@@ -987,3 +968,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start the game logic
     new QuizGame();
 });
+
