@@ -4,15 +4,20 @@ class QuizGame {
         // !!!  Game Configuration & Secrets !!!
         // =================================================================
         this.config = {
+            // IMPORTANT: Replace with your own Supabase/Apps Script details.
+            // هام: استبدل بالبيانات الخاصة بك.
             SUPABASE_URL: 'https://qffcnljopolajeufkrah.supabase.co',
             SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmZmNubGpvcG9sYWpldWZrcmFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwNzkzNjMsImV4cCI6MjA3NDY1NTM2M30.0vst_km_pweyF2IslQ24JzMF281oYeaaeIEQM0aKkUg',
             APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxnkvDR3bVTwlCUtHxT8zwAx5fKhG57xL7dCU1UhuEsMcsktoPRO5FykkLcE7eZwU86dw/exec',
             QUESTIONS_URL: 'https://abuqusayms.github.io/Shadow-Game/questions.json',
-            SUPABASE_REPORTS_BUCKET: 'reports',
 
+            // Developer Settings
+            // WARNING: Hardcoding passwords on the client-side is not secure for production.
+            // This is for simple project use only.
             DEVELOPER_NAME: "AbuQusay",
-            DEVELOPER_PASSWORD: "AbuQusay", // Not for production security
+            DEVELOPER_PASSWORD: "AbuQusay",
 
+            // Gameplay Settings
             RANDOMIZE_QUESTIONS: true,
             RANDOMIZE_ANSWERS: true,
             QUESTION_TIME: 80,
@@ -44,36 +49,42 @@ class QuizGame {
         this.leaderboardSubscription = null;
         this.isDevSession = false;
         this.isDevTemporarilyDisabled = false;
-        this.lastError = null; // For auto-problem detection
 
         this.init();
     }
 
+    /**
+     * Initializes the game by caching DOM elements, binding events,
+     * connecting to services, and loading questions.
+     */
     async init() {
         this.cacheDomElements();
         this.bindEventListeners();
         this.populateAvatarGrid();
 
         try {
-            this.dom.screens.loader.classList.add('active');
-            this.dom.screens.globalError.classList.remove('active');
-
             this.supabase = supabase.createClient(this.config.SUPABASE_URL, this.config.SUPABASE_KEY);
             if (!this.supabase) throw new Error("Supabase client failed to initialize.");
-
-            const questionsLoaded = await this.loadQuestions();
-            if (!questionsLoaded) throw new Error("Failed to load questions.");
-
-            this.showScreen('start');
         } catch (error) {
-            console.error("Initialization failed:", error);
-            this.dom.globalErrorMessage.textContent = `فشل تحميل موارد اللعبة. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى. (${error.message})`;
-            this.showScreen('globalError');
-        } finally {
-            this.dom.screens.loader.classList.remove('active');
+            console.error("Error initializing Supabase:", error);
+            this.showToast("خطأ في الاتصال بقاعدة البيانات", "error");
+            document.getElementById('loaderText').textContent = "خطأ في الاتصال بالخادم.";
+            return;
         }
+        
+        const questionsLoaded = await this.loadQuestions();
+        
+        if (questionsLoaded) {
+            this.showScreen('start');
+        } else {
+            document.getElementById('loaderText').textContent = "حدث خطأ في تحميل الأسئلة. الرجاء تحديث الصفحة.";
+        }
+        this.dom.screens.loader.classList.remove('active');
     }
 
+    /**
+     * Caches frequently accessed DOM elements for performance.
+     */
     cacheDomElements() {
         const byId = (id) => document.getElementById(id);
         this.dom = {
@@ -81,8 +92,7 @@ class QuizGame {
                 loader: byId('loader'), start: byId('startScreen'), avatar: byId('avatarScreen'),
                 nameEntry: byId('nameEntryScreen'), instructions: byId('instructionsScreen'),
                 levelSelect: byId('levelSelectScreen'), game: byId('gameContainer'),
-                levelComplete: byId('levelCompleteScreen'), end: byId('endScreen'),
-                leaderboard: byId('leaderboardScreen'), globalError: byId('globalErrorOverlay')
+                levelComplete: byId('levelCompleteScreen'), end: byId('endScreen'), leaderboard: byId('leaderboardScreen')
             },
             modals: {
                 confirmExit: byId('confirmExitModal'), advancedReport: byId('advancedReportModal'),
@@ -101,21 +111,18 @@ class QuizGame {
             leaderboardContent: byId('leaderboardContent'),
             questionText: byId('questionText'),
             optionsGrid: this.getEl('.options-grid'),
-            scoreDisplay: byId('currentScore'),
-            retryConnectionBtn: byId('retryConnectionBtn'),
-            globalErrorMessage: byId('globalErrorMessage'),
-            problemDescription: byId('problemDescription'),
-            reportScreenshotInput: byId('reportScreenshotInput'),
-            screenshotPreview: byId('screenshotPreview'),
-            reportSpinner: byId('reportSpinner'),
-            submitReportBtn: byId('submitReportBtn')
+            scoreDisplay: byId('currentScore')
         };
     }
     
     getEl(selector, parent = document) { return parent.querySelector(selector); }
     getAllEl(selector, parent = document) { return parent.querySelectorAll(selector); }
 
+    /**
+     * Sets up event listeners, primarily using event delegation for efficiency.
+     */
     bindEventListeners() {
+        // Event delegation for all main actions
         document.body.addEventListener('click', (e) => {
             const target = e.target.closest('[data-action]');
             if (!target) return;
@@ -131,7 +138,7 @@ class QuizGame {
                 toggleTheme: () => this.toggleTheme(),
                 showConfirmExitModal: () => this.showModal('confirmExit'),
                 showDevPasswordModal: () => this.showModal('devPassword'),
-                showAdvancedReportModal: () => this.showAdvancedReportModal(),
+                showAdvancedReportModal: () => this.showModal('advancedReport'),
                 closeModal: () => this.hideModal(target.dataset.modalId),
                 endGame: () => this.endGame(),
                 nextLevel: () => this.nextLevel(),
@@ -146,6 +153,7 @@ class QuizGame {
             if (actionHandlers[action]) actionHandlers[action]();
         });
 
+        // Specific listeners for inputs and forms
         this.dom.nameInput.addEventListener('input', () => this.validateNameInput());
         this.dom.nameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.handleNameConfirmation(); });
         this.dom.devPasswordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.checkDevPassword(); });
@@ -160,34 +168,37 @@ class QuizGame {
         this.getEl('.helpers').addEventListener('click', e => {
             const btn = e.target.closest('.helper-btn');
             if (btn) this.useHelper(btn);
-        });
-        this.dom.retryConnectionBtn.addEventListener('click', () => this.init());
-        this.getEl('.suggestion-tags').addEventListener('click', e => {
-            if (e.target.classList.contains('suggestion-tag')) {
-                const suggestion = e.target.dataset.suggestion;
-                this.dom.problemDescription.value += (this.dom.problemDescription.value ? '\n' : '') + suggestion;
-            }
-        });
-        this.dom.reportScreenshotInput.addEventListener('change', e => this.previewScreenshot(e));
+        })
+        // Listener for report image preview
+        const problemImageInput = this.getEl('#problemImage');
+        if(problemImageInput) {
+            problemImageInput.addEventListener('change', (e) => this.previewReportImage(e));
+        }
     }
 
     // =============================================
     // Game Flow & State Management
     // =============================================
 
+    /**
+     * Transitions from instructions to the game or level selection.
+     */
     postInstructionsStart() {
         this.setupInitialGameState();
         if (this.isDevSession) {
             this.showScreen('levelSelect');
         } else {
-            this.startGameFlow(0);
+            this.startGameFlow(0); // Start from level 0 (easy)
         }
     }
     
+    /**
+     * Initializes the game state object at the start of a new game.
+     */
     setupInitialGameState() {
         this.gameState = {
             name: this.dom.nameInput.value.trim(),
-            avatar: this.gameState.avatar,
+            avatar: this.gameState.avatar, // Persist avatar selection
             playerId: `PL${Math.random().toString(36).substring(2, 11).toUpperCase()}`,
             deviceId: this.getOrSetDeviceId(),
             level: 0,
@@ -201,6 +212,10 @@ class QuizGame {
         };
     }
 
+    /**
+     * Starts the main game loop from a specific level.
+     * @param {number} levelIndex - The index of the level to start.
+     */
     startGameFlow(levelIndex = 0) {
         this.gameState.level = levelIndex;
         this.updateScore(this.config.STARTING_SCORE, true);
@@ -209,6 +224,9 @@ class QuizGame {
         this.startLevel();
     }
     
+    /**
+     * Prepares and starts a new level.
+     */
     startLevel() {
         const currentLevel = this.config.LEVELS[this.gameState.level];
         document.body.dataset.level = currentLevel.name;
@@ -223,6 +241,9 @@ class QuizGame {
         this.fetchQuestion();
     }
 
+    /**
+     * Fetches and displays the next question in the current level.
+     */
     fetchQuestion() {
         const questions = this.gameState.shuffledQuestions;
         if (this.gameState.questionIndex >= questions.length) {
@@ -233,6 +254,9 @@ class QuizGame {
         this.displayQuestion(questionData);
     }
 
+    /**
+     * Handles the end of a level, transitioning to the next or ending the game.
+     */
     levelComplete() {
         const isLastLevel = this.gameState.level >= this.config.LEVELS.length - 1;
         if (isLastLevel) {
@@ -247,6 +271,9 @@ class QuizGame {
         this.showScreen('levelComplete');
     }
 
+    /**
+     * Proceeds to the next level.
+     */
     nextLevel() {
         this.gameState.level++;
         if (this.gameState.level >= this.config.LEVELS.length) {
@@ -257,6 +284,10 @@ class QuizGame {
         }
     }
     
+    /**
+     * Ends the game, calculates final stats, and saves the results.
+     * @param {boolean} [completedAllLevels=false] - Whether the player finished the entire game.
+     */
     async endGame(completedAllLevels = false) {
         clearInterval(this.timer.interval);
         this.hideModal('confirmExit');
@@ -264,7 +295,7 @@ class QuizGame {
         const finalStats = this._calculateFinalStats(completedAllLevels);
         
         if (!this.isDevSession) {
-            const { attemptNumber, error } = await this.saveResults(finalStats);
+            const { attemptNumber, error } = await this.saveResultsToSupabase(finalStats);
             if (error) {
                 this.showToast("فشل إرسال النتائج إلى السيرفر", "error");
             }
@@ -277,6 +308,11 @@ class QuizGame {
         this.showScreen('end');
     }
 
+    /**
+     * Calculates all final statistics for the end screen and database.
+     * @param {boolean} completedAll - True if all levels were beaten.
+     * @returns {object} The final stats object.
+     */
     _calculateFinalStats(completedAll) {
         const totalTimeSeconds = (new Date() - this.gameState.startTime) / 1000;
         const currentLevelLabel = this.config.LEVELS[Math.min(this.gameState.level, this.config.LEVELS.length - 1)].label;
@@ -308,6 +344,10 @@ class QuizGame {
     // UI & Display Logic
     // =============================================
 
+    /**
+     * Renders a question and its options on the screen.
+     * @param {object} questionData - The question object from questions.json.
+     */
     displayQuestion(questionData) {
         this.answerSubmitted = false;
         
@@ -318,7 +358,7 @@ class QuizGame {
         const totalQuestions = this.gameState.shuffledQuestions.length;
         this.getEl('#questionCounter').textContent = `السؤال ${this.gameState.questionIndex + 1} من ${totalQuestions}`;
         this.dom.questionText.textContent = questionData.q;
-        this.dom.optionsGrid.innerHTML = ''; 
+        this.dom.optionsGrid.innerHTML = ''; // Clear previous options
 
         const fragment = document.createDocumentFragment();
         options.forEach(optionText => {
@@ -334,6 +374,10 @@ class QuizGame {
         this.startTimer();
     }
 
+    /**
+     * Handles the player's answer selection.
+     * @param {HTMLElement} selectedButton - The button element that was clicked.
+     */
     checkAnswer(selectedButton) {
         if (this.answerSubmitted) return;
         this.answerSubmitted = true;
@@ -367,6 +411,9 @@ class QuizGame {
         }, 2000);
     }
     
+    /**
+     * Updates all dynamic UI elements during gameplay.
+     */
     updateGameStatsUI() {
         this.getEl('#wrongAnswersCount').textContent = `${this.gameState.wrongAnswers} / ${this.config.MAX_WRONG_ANSWERS}`;
         this.getEl('#skipCount').textContent = this.gameState.skips;
@@ -385,6 +432,10 @@ class QuizGame {
         });
     }
     
+    /**
+     * Displays the final stats on the end screen.
+     * @param {object} stats - The final stats object.
+     */
     _displayFinalStats(stats) {
         this.getEl('#finalName').textContent = stats.name;
         this.getEl('#finalId').textContent = stats.player_id;
@@ -416,9 +467,10 @@ class QuizGame {
         }
     }
     
-    async saveResults(resultsData) {
+    // MODIFICATION: Logic updated to save each attempt and only update leaderboard with a better score.
+    async saveResultsToSupabase(resultsData) {
         try {
-            // 1. Get current attempt number and log the new attempt
+            // 1. Get the current attempt number for this device
             const { count, error: countError } = await this.supabase
                 .from('log')
                 .select('id', { count: 'exact', head: true })
@@ -427,32 +479,32 @@ class QuizGame {
             if (countError) throw countError;
             const attemptNumber = (count || 0) + 1;
             
+            // 2. Always insert the detailed attempt into the 'log' table
             const { error: logError } = await this.supabase.from('log').insert({ ...resultsData, attempt_number: attemptNumber });
             if (logError) throw logError;
             
-            // 2. Conditionally update leaderboard with the best score
-            const { data: existingEntry, error: selectError } = await this.supabase
-                .from('leaderboard')
-                .select('score')
-                .eq('device_id', resultsData.device_id)
-                .single();
+            // 3. Prepare data for the leaderboard (it needs the new attempt number)
+            const leaderboardPayload = {
+                p_device_id: resultsData.device_id,
+                p_player_id: resultsData.player_id,
+                p_name: resultsData.name,
+                p_avatar: resultsData.avatar,
+                p_score: resultsData.score,
+                p_level: resultsData.level,
+                p_accuracy: resultsData.accuracy,
+                p_total_time: resultsData.total_time,
+                p_avg_time: resultsData.avg_time,
+                p_correct_answers: resultsData.correct_answers,
+                p_wrong_answers: resultsData.wrong_answers,
+                p_skips: resultsData.skips,
+                p_attempt_number: attemptNumber,
+                p_performance_rating: resultsData.performance_rating,
+                p_is_impossible_finisher: resultsData.completed_all && resultsData.level === 'مستحيل'
+            };
 
-            if (selectError && selectError.code !== 'PGRST116') { // Ignore "missing row" error
-                throw selectError;
-            }
-
-            if (!existingEntry || resultsData.score > existingEntry.score) {
-                const leaderboardData = {
-                    device_id: resultsData.device_id, player_id: resultsData.player_id, name: resultsData.name,
-                    avatar: resultsData.avatar, score: resultsData.score, level: resultsData.level, accuracy: resultsData.accuracy,
-                    total_time: resultsData.total_time, avg_time: resultsData.avg_time, correct_answers: resultsData.correct_answers,
-                    wrong_answers: resultsData.wrong_answers, skips: resultsData.skips, attempt_number: attemptNumber,
-                    performance_rating: resultsData.performance_rating,
-                    is_impossible_finisher: resultsData.completed_all && resultsData.level === 'مستحيل'
-                };
-                const { error: leaderboardError } = await this.supabase.from('leaderboard').upsert(leaderboardData);
-                if (leaderboardError) throw leaderboardError;
-            }
+            // 4. Call the database function to intelligently update the leaderboard
+            const { error: rpcError } = await this.supabase.rpc('upsert_score', leaderboardPayload);
+            if (rpcError) throw rpcError;
             
             this.showToast("تم حفظ نتيجتك بنجاح!", "success");
             this.sendTelegramNotification('gameResult', { ...resultsData, attempt_number: attemptNumber });
@@ -466,72 +518,50 @@ class QuizGame {
     
     async handleReportSubmit(event) {
         event.preventDefault();
-        this.dom.submitReportBtn.disabled = true;
-        this.dom.reportSpinner.style.display = 'block';
+        const form = event.target;
+        const formData = new FormData(form);
+        const reportData = {
+            type: formData.get('problemType'),
+            description: formData.get('problemDescription'),
+            name: this.gameState.name || 'لم يبدأ اللعب',
+            player_id: this.gameState.playerId || 'N/A',
+            device_id: this.getOrSetDeviceId(),
+            question_text: this.dom.questionText.textContent || 'لا يوجد'
+        };
 
-        const formData = new FormData(event.target);
-        const file = this.dom.reportScreenshotInput.files[0];
-        let screenshot_url = null;
+        // Note: Image handling would require more complex logic (e.g., uploading to Supabase Storage)
+        // For now, we'll just send the text data.
+
+        this.showToast("جاري إرسال البلاغ...", "info");
+        this.hideModal('advancedReport');
 
         try {
-            if (file) {
-                screenshot_url = await this.uploadScreenshot(file);
-            }
-
-            const reportData = {
-                type: formData.get('problemType'),
-                description: formData.get('problemDescription'),
-                name: this.gameState.name || 'لم يبدأ اللعب',
-                player_id: this.gameState.playerId || 'N/A',
-                question_text: this.dom.questionText.textContent || 'لا يوجد',
-                screenshot_url: screenshot_url
-            };
-
             const { error } = await this.supabase.from('reports').insert(reportData);
             if (error) throw error;
-            
             this.showToast("تم إرسال بلاغك بنجاح. شكراً لك!", "success");
             this.sendTelegramNotification('report', reportData);
-            this.hideModal('advancedReport');
-            this.dom.reportProblemForm.reset();
-            this.dom.screenshotPreview.classList.remove('active');
-
         } catch (error) {
-            console.error("Report submission error:", error);
-            this.showToast(`حدث خطأ أثناء إرسال البلاغ: ${error.message}`, "error");
+            console.error("Supabase report error:", error);
+            this.showToast("حدث خطأ أثناء إرسال البلاغ.", "error");
         } finally {
-            this.dom.submitReportBtn.disabled = false;
-            this.dom.reportSpinner.style.display = 'none';
+            form.reset();
+            this.getEl('#imagePreview').style.display = 'none';
         }
-    }
-    
-    async uploadScreenshot(file) {
-        const fileName = `${this.gameState.deviceId || 'anon'}/${Date.now()}-${file.name}`;
-        const { data, error } = await this.supabase.storage
-            .from(this.config.SUPABASE_REPORTS_BUCKET)
-            .upload(fileName, file);
-
-        if (error) {
-            throw new Error(`Failed to upload screenshot: ${error.message}`);
-        }
-        
-        const { data: { publicUrl } } = this.supabase.storage
-            .from(this.config.SUPABASE_REPORTS_BUCKET)
-            .getPublicUrl(fileName);
-
-        return publicUrl;
     }
     
     async sendTelegramNotification(type, data) {
-        if (!this.config.APPS_SCRIPT_URL) return;
+        if (!this.config.APPS_SCRIPT_URL) {
+            console.warn("Apps Script URL is not configured. Skipping notification.");
+            return;
+        }
         try {
             await fetch(this.config.APPS_SCRIPT_URL, {
                 method: 'POST', mode: 'no-cors', cache: 'no-cache',
-                headers: { 'Content-Type': 'text/plain' },
+                headers: { 'Content-Type': 'text/plain' }, // Use text/plain for no-cors
                 body: JSON.stringify({ type, data })
             });
         } catch (error) {
-            console.error('Error sending notification to Apps Script:', error.message);
+            console.error('Error sending notification request to Apps Script:', error.message);
         }
     }
     
@@ -585,7 +615,8 @@ class QuizGame {
         timerDisplay.textContent = timeLeft;
         timerBar.style.transition = 'none';
         timerBar.style.width = '100%';
-        void timerBar.offsetWidth; // Force reflow
+        // Force reflow to restart animation
+        void timerBar.offsetWidth;
         timerBar.style.transition = `width ${this.config.QUESTION_TIME}s linear`;
         timerBar.style.width = '0%';
 
@@ -596,7 +627,7 @@ class QuizGame {
             if (timeLeft <= 0) {
                 clearInterval(this.timer.interval);
                 this.showToast("انتهى الوقت!", "error");
-                this.checkAnswer({ dataset: { correct: 'false' } });
+                this.checkAnswer({ dataset: { correct: 'false' } }); // Simulate wrong answer
             }
         }, 1000);
     }
@@ -648,9 +679,8 @@ class QuizGame {
     formatNumber(num) { return new Intl.NumberFormat('ar-EG').format(num); }
     
     // =============================================
-    // Dev Mode, UI Helpers (Screens, Modals, Toasts, etc.)
+    // Dev Mode
     // =============================================
-    
     checkDevPassword() {
         const input = this.dom.devPasswordInput.value;
         if (input.toLowerCase() === this.config.DEVELOPER_PASSWORD.toLowerCase()) {
@@ -672,6 +702,10 @@ class QuizGame {
         fab.querySelector('span').innerHTML = '⚡';
     }
 
+    // =============================================
+    // UI Helpers (Screens, Modals, Toasts, etc.)
+    // =============================================
+
     showScreen(screenName) {
         Object.values(this.dom.screens).forEach(screen => screen.classList.remove('active'));
         if (this.dom.screens[screenName]) this.dom.screens[screenName].classList.add('active');
@@ -681,9 +715,6 @@ class QuizGame {
     hideModal(modalName) { if(this.dom.modals[modalName]) this.dom.modals[modalName].classList.remove('active'); }
 
     showToast(message, type = 'info') {
-        if (type === 'error') {
-            this.lastError = message; // Store last error for reporting
-        }
         const toastContainer = this.getEl('#toast-container');
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
@@ -722,14 +753,6 @@ class QuizGame {
         this.dom.nameError.textContent = isValid ? "" : "الاسم يجب أن يتكون من ٣ أحرف على الأقل.";
         this.dom.nameError.classList.toggle('show', !isValid);
         this.dom.confirmNameBtn.disabled = !isValid;
-    }
-
-    showAdvancedReportModal() {
-        if (this.lastError) {
-            this.dom.problemDescription.value = `حدثت مشكلة قبل قليل:\n"${this.lastError}"\n\n(تمت إضافة هذا النص تلقائيًا)`;
-            this.lastError = null; // Clear after use
-        }
-        this.showModal('advancedReport');
     }
         
     // =============================================
@@ -789,7 +812,7 @@ class QuizGame {
 
             item.innerHTML = `
                 <span class="leaderboard-rank">${rankDisplay}</span>
-                <img src="${player.avatar || ''}" alt="صورة ${player.name}" class="leaderboard-avatar" loading="lazy" style="visibility: ${player.avatar ? 'visible' : 'hidden'}">
+                <img src="${player.avatar || 'https://placehold.co/100x100/16213e/f0f0f0?text=?'}" alt="صورة ${player.name}" class="leaderboard-avatar" loading="lazy">
                 <div class="leaderboard-details">
                     <span class="leaderboard-name">${player.name || 'غير معروف'}</span>
                     <span class="leaderboard-score">${this.formatNumber(player.score)}</span>
@@ -802,24 +825,33 @@ class QuizGame {
     }
     
     subscribeToLeaderboardChanges() {
-        if (this.leaderboardSubscription) this.leaderboardSubscription.unsubscribe();
+        if (this.leaderboardSubscription) {
+            this.supabase.removeChannel(this.leaderboardSubscription);
+            this.leaderboardSubscription = null;
+        }
         
         this.leaderboardSubscription = this.supabase
             .channel('public:leaderboard')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'leaderboard' }, () => this.displayLeaderboard())
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'leaderboard' }, () => {
+                // Add a small delay to allow the database to settle before re-fetching
+                setTimeout(() => this.displayLeaderboard(), 500);
+             })
             .subscribe();
     }
 
     showPlayerDetails(player) {
         this.getEl('#detailsName').textContent = player.name || 'غير معروف';
-        this.getEl('#detailsPlayerId').textContent = player.player_id || 'N/A';
+        this.getEl('#detailsPlayerId').textContent = `ID: ${player.player_id || 'N/A'}`;
         const avatar = this.getEl('#detailsAvatar');
-        avatar.src = player.avatar || '';
-        avatar.style.visibility = player.avatar ? 'visible' : 'hidden';
-
+        avatar.src = player.avatar || 'https://placehold.co/120x120/16213e/f0f0f0?text=?';
+        
         this.getEl('#playerDetailsContent').innerHTML = `
-            <div class="detail-item"><span class="label">⭐ النقاط النهائية</span><span class="value score">${this.formatNumber(player.score || 0)}</span></div>
+            <div class="detail-item full-width">
+                <span class="label">⭐ النقاط النهائية</span>
+                <span class="value score">${this.formatNumber(player.score || 0)}</span>
+            </div>
             <div class="detail-item"><span class="label">👑 المستوى</span><span class="value">${player.level || 'N/A'}</span></div>
+            <div class="detail-item"><span class="label">🔢 المحاولة الأفضل</span><span class="value">${this.formatNumber(player.attempt_number || 0)}</span></div>
             <div class="detail-item"><span class="label">✅ الصحيحة</span><span class="value">${this.formatNumber(player.correct_answers || 0)}</span></div>
             <div class="detail-item"><span class="label">❌ الخاطئة</span><span class="value">${this.formatNumber(player.wrong_answers || 0)}</span></div>
             <div class="detail-item"><span class="label">⏱️ الوقت</span><span class="value">${this.formatTime(player.total_time || 0)}</span></div>
@@ -828,15 +860,13 @@ class QuizGame {
                 <span class="label">🎯 نسبة الدقة</span><span class="value">${player.accuracy || 0}%</span>
                 <div class="progress-bar-container"><div class="progress-bar" style="width: ${player.accuracy || 0}%;"></div></div>
             </div>
-            <div class="detail-item"><span class="label">⏭️ التخطي</span><span class="value">${this.formatNumber(player.skips || 0)}</span></div>
-            <div class="detail-item"><span class="label">🔢 المحاولة</span><span class="value">${this.formatNumber(player.attempt_number || 0)}</span></div>
             <div class="detail-item full-width"><span class="label">📊 الأداء</span><span class="value">${player.performance_rating || 'جيد'}</span></div>
         `;
         this.showModal('playerDetails');
     }
 
     // =============================================
-    // Avatar & Sharing
+    // Avatar Handling
     // =============================================
 
     populateAvatarGrid() {
@@ -896,19 +926,29 @@ class QuizGame {
         this.selectAvatar(customAvatar);
         this.hideModal('avatarEditor');
     }
-
-    previewScreenshot(event) {
+    
+    previewReportImage(event) {
+        const preview = this.getEl('#imagePreview');
         const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = function() {
+            preview.src = reader.result;
+            preview.style.display = 'block';
+        }
+
         if (file) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                this.dom.screenshotPreview.src = e.target.result;
-                this.dom.screenshotPreview.classList.add('active');
-            };
             reader.readAsDataURL(file);
+        } else {
+            preview.src = "";
+            preview.style.display = 'none';
         }
     }
     
+    // =============================================
+    // Sharing
+    // =============================================
+
     getShareText() {
         const finalScore = this.getEl('#finalScore').textContent;
         const finalLevel = this.getEl('#finalLevel').textContent;
@@ -934,14 +974,16 @@ class QuizGame {
     setupGameUI() {
         this.getEl('#playerAvatar').src = this.gameState.avatar;
         this.getEl('#playerName').textContent = this.gameState.name;
-        this.getEl('#playerId').textContent = this.gameState.playerId;
+        this.getEl('#playerId').textContent = `ID: ${this.gameState.playerId}`;
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Set theme on load
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.body.dataset.theme = savedTheme;
     document.querySelector('.theme-toggle-btn').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
     
+    // Start the game logic
     new QuizGame();
 });
