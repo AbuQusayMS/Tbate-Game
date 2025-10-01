@@ -280,4 +280,202 @@ function finalizeAndShowResults(reason=''){
   const answered = state.game.correct + state.game.wrong;
   const accuracy = answered ? +(100*state.game.correct/answered).toFixed(1) : 0;
   const avg = answered ? Math.round(state.game.totalTimeSec/answered) : 0;
-  cons
+  const levelKey = currentLevelKey();
+  const rating = accuracy>=85 ? 'ممتاز' : accuracy>=60 ? 'جيّد' : 'يحتاج تحسين';
+
+  const stats = {
+    name: state.player.name, playerId: state.player.playerId, attempt: 1,
+    correct: state.game.correct, wrong: state.game.wrong, skips: state.game.skips,
+    score: state.game.score, total: state.game.totalTimeSec,
+    level: LEVEL_LABEL[levelKey], accuracy, avg, rating
+  };
+
+  showScreen('results'); renderResults(stats);
+
+  // GAS: إرسال نتيجة + سجل
+  if(CONFIG.APPS_SCRIPT_URL && CONFIG.APPS_SCRIPT_URL.startsWith('http')){
+    sendToGAS('gameResult', stats).catch(()=>{});
+    sendToGAS('log', {
+      attemptNumber: stats.attempt,
+      deviceId: state.player.deviceId,
+      playerId: state.player.playerId,
+      name: stats.name,
+      correct: stats.correct, wrong: stats.wrong, accuracy: stats.accuracy,
+      skips: stats.skips, usedFifty: state.game.usedFifty, usedFreeze: state.game.usedFreeze,
+      score: stats.score, totalTimeSec: stats.total, avgTimeSec: stats.avg,
+      lastLevel: levelKey, rating: stats.rating, createdAt: new Date().toISOString(), reason
+    }).catch(()=>{});
+  }
+
+  // Supabase: تحديث الصدارة (اختياري)
+  if(supa){
+    supa.from('leaderboard').upsert({
+      device_id: state.player.deviceId,
+      player_id: state.player.playerId,
+      name: state.player.name,
+      avatar: state.player.avatar,
+      score: stats.score,
+      level: levelKey,
+      accuracy: stats.accuracy,
+      total_time: stats.total,
+      avg_time: stats.avg,
+      correct_answers: stats.correct,
+      wrong_answers: stats.wrong,
+      skips: stats.skips,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'device_id' }).then(()=> refreshLeaderboard());
+  }
+}
+
+function renderResults(s){
+  const rows = [
+    ['الاسم', s.name], ['المعرّف', s.playerId], ['رقم المحاولة', s.attempt],
+    ['الإجابات الصحيحة', s.correct], ['الإجابات الخاطئة', s.wrong],
+    ['مرات التخطي', s.skips], ['النقاط النهائية', s.score],
+    ['الوقت المستغرق (د.ث)', toMinSec(s.total)], ['المستوى الذي وصلت إليه', s.level],
+    ['نسبة الدقة', `${s.accuracy}%`], ['متوسط وقت الإجابة (د.ث)', toMinSec(s.avg)],
+    ['أداؤك', s.rating]
+  ];
+  els.finalResults.innerHTML = rows.map(([k,v])=> `<div class="kv"><b>${k}:</b><div>${v}</div></div>`).join('');
+  els.shareText.value = buildShareText(s);
+}
+function buildShareText(s){
+  return `🏆 النتائج النهائية 🏆
+
+الاسم: ${s.name}
+المعرّف: ${s.playerId}
+رقم المحاولة: ${s.attempt}
+الإجابات الصحيحة: ${s.correct}
+الإجابات الخاطئة: ${s.wrong}
+مرات التخطي: ${s.skips}
+النقاط النهائية: ${s.score}
+الوقت المستغرق (د.ث): ${toMinSec(s.total)}
+المستوى الذي وصلت إليه: ${s.level}
+نسبة الدقة: ${s.accuracy}%
+متوسط وقت الإجابة (د.ث): ${toMinSec(s.avg)}
+أداؤك: ${s.rating}`;
+}
+els.copyShareTextBtn.addEventListener('click', async ()=>{
+  try{
+    if(navigator.clipboard){ await navigator.clipboard.writeText(els.shareText.value); }
+    else{ els.shareText.select(); document.execCommand('copy'); }
+    toast('تم نسخ النص');
+  }catch(e){ console.error(e); toast('تعذّر النسخ'); }
+});
+els.shareXBtn.addEventListener('click', ()=>{
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(els.shareText.value)}`,'_blank');
+});
+
+/* ============ البلاغات ============ */
+els.openReportBtn.addEventListener('click', ()=> els.reportModal.classList.remove('hidden'));
+els.closeReport.addEventListener('click', ()=> els.reportModal.classList.add('hidden'));
+els.sendReportBtn.addEventListener('click', async ()=>{
+  const type = els.reportType.value;
+  const description = els.reportDesc.value.trim();
+  let screenshot_b64 = '';
+  if(els.reportImage.files[0]) screenshot_b64 = await fileToBase64(els.reportImage.files[0]);
+  const payload = {
+    playerId: state.player.playerId, name: state.player.name,
+    type, description,
+    question_text: $('#questionText')?.textContent || '',
+    user_agent: navigator.userAgent,
+    screen_resolution: `${screen.width}x${screen.height}`,
+    auto_detected: !!els.reportAuto.checked,
+    screenshot_b64
+  };
+  if(CONFIG.APPS_SCRIPT_URL){ await sendToGAS('report', payload); toast('تم إرسال البلاغ'); }
+  els.reportModal.classList.add('hidden');
+});
+function fileToBase64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]); r.onerror=rej; r.readAsDataURL(file); }); }
+
+/* ============ GAS Helper ============ */
+async function sendToGAS(type, data){
+  const r = await fetch(CONFIG.APPS_SCRIPT_URL, {
+    method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ type, secretKey: CONFIG.TEST_KEY, data })
+  });
+  return r.json();
+}
+
+/* ============ Supabase (اختياري) ============ */
+let supa = null;
+if (CONFIG.SUPABASE_URL && CONFIG.SUPABASE_KEY && window.supabase) {
+  supa = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_KEY);
+}
+async function refreshLeaderboard(filter='all'){
+  if(!supa){ els.leaderboardList.innerHTML = `<div class="muted">Supabase غير مفعّل.</div>`; return; }
+  let q = supa.from('leaderboard').select('player_id,name,avatar,score,is_impossible_finisher').order('score',{ascending:false});
+  if(filter==='top10') q = q.limit(10);
+  if(filter==='impossible') q = q.eq('is_impossible_finisher', true);
+  const { data, error } = await q;
+  if(error){ els.leaderboardList.innerHTML = `<div class="muted">خطأ: ${error.message}</div>`; return; }
+  els.leaderboardList.innerHTML = (data||[]).map((row,i)=> `
+    <div class="row-item" data-player="${row.player_id}">
+      <div class="rank">${i+1}</div>
+      <div class="avatar">${row.avatar || '🙂'}</div>
+      <div class="grow">
+        <div><b>${row.name}</b></div>
+        <div class="muted">النقاط: ${row.score}</div>
+      </div>
+    </div>
+  `).join('');
+  $$('#leaderboardList .row-item').forEach(el=>{
+    el.addEventListener('click', ()=> openPlayerDetails(el.dataset.player));
+  });
+}
+async function openPlayerDetails(playerId){
+  if(!supa){ return; }
+  const { data } = await supa.from('game_logs').select('*').eq('player_id', playerId).order('created_at',{ascending:false}).limit(25);
+  els.playerDetailsBody.innerHTML = (data||[]).map(x=>`
+    <div class="row-item">
+      <div class="grow">
+        <div><b>${new Date(x.created_at).toLocaleString('ar')}</b></div>
+        <div class="muted">نقاط: ${x.score} · دقة: ${x.accuracy}% · مستوى: ${x.level}</div>
+      </div>
+    </div>
+  `).join('') || `<div class="muted">لا توجد بيانات.</div>`;
+  els.playerDetailsModal.classList.remove('hidden');
+}
+els.closePlayerModal.addEventListener('click', ()=> els.playerDetailsModal.classList.add('hidden'));
+els.lbFilters.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.pill'); if(!btn) return;
+  $$('.pill', els.lbFilters).forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active'); refreshLeaderboard(btn.dataset.filter);
+});
+setInterval(()=> {
+  if($('.screen.active') === screens.leaderboard) {
+    const active = $('.pill.active', els.lbFilters)?.dataset.filter || 'all';
+    refreshLeaderboard(active);
+  }
+}, 60000);
+
+/* ============ تنقّلات عامة ============ */
+$$('.back-btn').forEach(b=> b.addEventListener('click', ()=> showScreen(b.dataset.back) ));
+els.startBtn.addEventListener('click', ()=> showScreen('avatar'));
+els.avatarNextBtn.addEventListener('click', ()=> showScreen('name'));
+els.playerNameInput.addEventListener('input', ()=>{
+  const name = els.playerNameInput.value.trim();
+  els.confirmNameBtn.disabled = !(name.length>=2 && name.length<=25);
+});
+els.confirmNameBtn.addEventListener('click', ()=>{
+  state.player.name = els.playerNameInput.value.trim();
+  if(!state.player.playerId) state.player.playerId = uuid('PL');
+  if(!state.player.deviceId) state.player.deviceId = getDeviceId();
+  showScreen('instructions');
+});
+els.startRoundBtn.addEventListener('click', ()=> { state.game.currentLevelIndex=0; startLevel(); });
+$('#openDevBtn').addEventListener('click', ()=>{
+  const p = prompt('أدخل كلمة مرور المطوّر'); if(p !== CONFIG.DEV_PASSWORD) return toast('كلمة المرور غير صحيحة');
+  state.ui.devMode = true; showScreen('levelSelect');
+});
+$('#screen-level-select').addEventListener('click', (e)=>{
+  const btn = e.target.closest('.pill'); if(!btn) return;
+  startLevel(btn.dataset.level);
+});
+
+/* ============ بدء التطبيق ============ */
+(async function bootstrap(){
+  initAvatars();
+  await loadQuestions();
+  updateHUD(); renderLevelDots();
+})();
