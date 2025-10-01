@@ -2,8 +2,7 @@
   --bg:#1a1a2e; --surface:#16213e; --surface-2:#0f3460; --text:#f0f0f0; --accent:#e7b416;
   --muted:#c9d1d9; --danger:#ef4444; --ok:#10b981; --primary:#2563eb;
   --radius:16px; --shadow:0 10px 20px rgba(0,0,0,.15);
-  --gap:14px; --gap-lg:20px;
-  --btn-h:46px;
+  --gap:14px; --gap-lg:20px; --btn-h:46px;
 }
 .theme-light{
   --bg:#f8fafc; --surface:#ffffff; --surface-2:#e2e8f0; --text:#1e293b; --accent:#e7b416;
@@ -26,7 +25,7 @@ body{font-family:"Cairo",system-ui,-apple-system,"Segoe UI",sans-serif;backgroun
 .primary{background:var(--accent);color:#1b1b1b}
 .secondary{background:var(--surface-2);color:var(--text);border:1px solid rgba(255,255,255,.1)}
 .helper{background:var(--surface-2);color:var(--text);border:1px solid rgba(255,255,255,.1);min-width:110px}
-.helper small{opacity:.8}
+.helper small{opacity:.85}
 .pill{background:var(--surface-2);color:var(--text);border:1px solid rgba(255,255,255,.1);height:36px;padding:0 12px}
 .pill.active{outline:2px solid var(--accent)}
 
