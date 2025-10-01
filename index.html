@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
-  <!-- Supabase SDK (اختياري للوحة الصدارة) -->
+  <!-- Supabase SDK (مطلوب للوحة الصدارة) -->
   <script defer src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body class="theme-dark">
@@ -68,7 +68,7 @@
           <li>المساعدات: 50:50 (مرة/جولة) | التجميد 10ث (مرة/جولة) | التخطي غير محدود (20 نقطة وتزداد 20 مع كل استخدام)</li>
           <li>الأخطاء: مسموح 3 فقط</li>
           <li>المستويات (31 سؤال): 10 سهل، 10 متوسط، 10 صعب، 1 مستحيل</li>
-          <li>نهاية كل مستوى: التالي / الانسحاب وعرض النتائج</li>
+          <li>نهاية كل مستوى: <b>المستوى التالي</b> أو <b>الانسحاب وعرض النتائج</b></li>
         </ul>
         <div class="stack mt-4">
           <button id="startRoundBtn" class="primary">بدء الجولة</button>
@@ -144,9 +144,7 @@
     <section id="screen-results" class="screen">
       <div class="card">
         <h2>🏆 النتائج النهائية 🏆</h2>
-        <div class="result-grid" id="finalResults">
-          <!-- سيتم التعبئة ديناميكيًا -->
-        </div>
+        <div class="result-grid" id="finalResults"></div>
 
         <div class="share-box">
           <h3>مشاركة النتائج 📢</h3>
