@@ -2,142 +2,46 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>مسابقة المعلومات</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>مسابقة المعلومات الترفيهية</title>
+<!-- جلب خط Cairo لدعم اللغة العربية -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-<!-- Supabase SDK (اختياري للوحة الصدارة) -->
+<!-- ربط ملف التنسيقات الخارجي -->
+<link rel="stylesheet" href="styles.css">
+<!-- جلب مكتبة Supabase للتعامل مع قاعدة البيانات -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
-<style>
-/*** === Design System === ***/
-:root{
-  --bg:#1a1a2e; --surface:#16213e; --surface-2:#0f3460; --text:#f0f0f0; --accent:#e7b416;
-  --muted:#c9d1d9; --danger:#ef4444; --ok:#10b981; --primary:#2563eb;
-  --radius:16px; --shadow:0 10px 20px rgba(0,0,0,.15);
-  --gap:14px; --btn-h:46px;
-}
-.theme-light{
-  --bg:#f8fafc; --surface:#ffffff; --surface-2:#e2e8f0; --text:#1e293b; --accent:#e7b416;
-  --muted:#475569; --danger:#ef4444; --ok:#10b981; --primary:#2563eb;
-}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{font-family:"Cairo",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-main{max-width:980px;margin:0 auto;padding:16px}
-
-/*** Header / Footer ***/
-.app-header,.app-footer{position:sticky;background:transparent;backdrop-filter:saturate(1.2) blur(6px);z-index:20}
-.app-header{top:0;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
-.app-footer{bottom:0;padding:10px 14px}
-.brand{font-weight:700}
-.header-actions{display:flex;gap:8px;align-items:center}
-
-/*** Buttons ***/
-.icon-btn,.ghost-btn,.primary,.secondary,.helper,.pill{
-  height:var(--btn-h);border-radius:999px;border:1px solid transparent;padding:0 16px;cursor:pointer;font-weight:700
-}
-.icon-btn{width:var(--btn-h);display:grid;place-items:center;background:var(--surface-2);color:var(--text);border:1px solid rgba(255,255,255,.08)}
-.ghost-btn{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--text)}
-.primary{background:var(--accent);color:#1b1b1b}
-.secondary{background:var(--surface-2);color:var(--text);border:1px solid rgba(255,255,255,.12)}
-.helper{background:var(--surface-2);color:var(--text);border:1px solid rgba(255,255,255,.12);min-width:120px}
-.helper small{opacity:.85}
-.pill{background:var(--surface-2);color:var(--text);border:1px solid rgba(255,255,255,.12);height:36px;padding:0 12px}
-.pill.active{outline:2px solid var(--accent)}
-
-.text-input,.text-area,select{
-  width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.15);
-  background:var(--surface-2);color:var(--text);outline:none
-}
-.text-input:focus,.text-area:focus,select:focus{border-color:var(--accent)}
-textarea.share-text{height:160px}
-
-/*** Layout ***/
-.screen{display:none;animation:fade .25s ease}
-.screen.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
-.card.center{text-align:center}
-.hint,.muted{color:var(--muted);font-size:.95rem}
-.mt-3{margin-top:12px}.mt-4{margin-top:18px}
-.row{display:flex;gap:10px;align-items:center}
-.stack{display:flex;flex-direction:column}
-.gap-3{gap:12px}
-.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-
-/*** Avatars ***/
-.avatar-grid{display:grid;grid-template-columns:repeat(5,minmax(56px,1fr));gap:10px}
-.avatar{display:grid;place-items:center;height:56px;border-radius:14px;background:var(--surface-2);font-size:28px;cursor:pointer;border:2px solid transparent}
-.avatar.selected{border-color:var(--accent)}
-.avatar-chip{display:flex;gap:6px;align-items:center}
-
-/*** Game HUD ***/
-.hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.hud-right{display:flex;gap:8px;align-items:center}
-.chip{background:var(--surface-2);padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.1);font-size:.95rem}
-
-/*** Helpers / Timer ***/
-.helpers{display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-.timer{position:relative;height:14px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin:12px 0}
-.timer-bar{position:absolute;left:0;top:0;bottom:0;width:100%;background:linear-gradient(90deg,#10b981,#f59e0b,#ef4444)}
-.timer-label{position:absolute;inset:0;display:grid;place-items:center;font-weight:700}
-
-/*** Question ***/
-.level-badge{display:inline-block;background:var(--surface-2);padding:4px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.1);font-size:.9rem;margin-bottom:6px}
-.options{display:grid;gap:10px;margin-top:12px}
-.option{padding:14px;border-radius:12px;background:var(--surface-2);border:1px solid rgba(255,255,255,.12);cursor:pointer;text-align:right}
-.option.disabled{opacity:.5;pointer-events:none}
-.option.correct{outline:2px solid var(--ok)}
-.option.wrong{outline:2px solid var(--danger)}
-
-/*** Lists ***/
-.list{display:flex;flex-direction:column;gap:8px}
-.row-item{display:flex;align-items:center;gap:10px;background:var(--surface-2);padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.1);cursor:pointer}
-.row-item .rank{width:28px;text-align:center;font-weight:700}
-.row-item .avatar{height:40px;width:40px;font-size:22px}
-
-/*** Results ***/
-.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-.kv{background:var(--surface-2);padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.1)}
-.kv b{display:block;margin-bottom:6px}
-.share-box{margin-top:16px}
-
-/*** Modals ***/
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:grid;place-items:center;padding:14px}
-.modal.hidden{display:none}
-.modal-content{max-width:700px;width:100%;background:var(--surface);border-radius:16px;padding:16px;position:relative}
-.modal-close{position:absolute;left:10px;top:8px;background:transparent;border:0;font-size:22px;color:var(--text);cursor:pointer}
-
-/*** FAB ***/
-.fab{height:56px;width:56px;border-radius:999px;border:0;background:var(--accent);color:#111;box-shadow:var(--shadow);cursor:pointer;position:fixed;bottom:16px;right:16px}
-
-/*** Small screens ***/
-@media (max-width:480px){
-  main{padding:12px}
-  .avatar-grid{grid-template-columns:repeat(4,minmax(56px,1fr))}
-}
-</style>
 </head>
 <body class="theme-dark">
 <header class="app-header">
   <div class="brand">مسابقة المعلومات 🧠</div>
   <div class="header-actions">
+    <!-- زر تبديل الوضع (مظلم/فاتح) -->
     <button id="themeToggle" class="icon-btn" title="تبديل الوضع">🌓</button>
+    <!-- زر الانتقال للوحة الصدارة -->
     <button id="gotoLeaderboard" class="ghost-btn">لوحة الصدارة 🏆</button>
   </div>
 </header>
 
 <main id="app">
 
+  <!-- شاشة التحميل (Loader) - يمكن أن تكون أول شاشة قبل تهيئة الحالة -->
+  <section id="screen-loader" class="screen active">
+      <div class="card center" style="padding: 50px;">
+          <h1>جاري التحميل...</h1>
+          <p class="muted">الرجاء الانتظار قليلاً</p>
+      </div>
+  </section>
+
   <!-- شاشة البداية -->
-  <section id="screen-start" class="screen active">
+  <section id="screen-start" class="screen">
     <div class="card center">
       <h1>مرحبًا بك 👋</h1>
       <p class="muted">اختبر معلوماتك في مسابقة ممتعة وسريعة</p>
       <div class="stack gap-3">
         <button id="startBtn" class="primary">ابدأ اللعب</button>
-        <button id="openDevBtn" class="ghost-btn">وضع المطوّر ⚙️</button>
+        <!-- زر فتح وضع المطوّر -->
+        <button id="openDevBtn" class="secondary">وضع المطوّر ⚙️</button>
       </div>
     </div>
   </section>
@@ -147,9 +51,9 @@ textarea.share-text{height:160px}
     <div class="card">
       <h2>اختر صورتك الرمزية</h2>
       <div id="avatarGrid" class="avatar-grid"></div>
-      <div class="stack mt-4">
+      <div class="stack mt-4 gap-3">
         <button id="avatarNextBtn" class="primary" disabled>التالي</button>
-        <button data-back="#screen-start" class="secondary back-btn">رجوع</button>
+        <button data-back="start" class="secondary back-btn">رجوع</button>
       </div>
     </div>
   </section>
@@ -159,10 +63,10 @@ textarea.share-text{height:160px}
     <div class="card">
       <h2>ادخل اسمك</h2>
       <input id="playerNameInput" class="text-input" placeholder="مثال: عبد الله" maxlength="25"/>
-      <div class="hint">بين 2 و 25 حرفًا</div>
-      <div class="stack mt-4">
+      <div class="hint">بين 2 و 25 حرفًا، سيُستخدم في لوحة الصدارة</div>
+      <div class="stack mt-4 gap-3">
         <button id="confirmNameBtn" class="primary" disabled>تأكيد الاسم</button>
-        <button data-back="#screen-avatar" class="secondary back-btn">رجوع</button>
+        <button data-back="avatar" class="secondary back-btn">رجوع</button>
       </div>
     </div>
   </section>
@@ -172,18 +76,16 @@ textarea.share-text{height:160px}
     <div class="card">
       <h2>تعليمات اللعبة 📋</h2>
       <ul class="bullets">
-        <li>✅ صحيحة +100 | ❌ خاطئة -50 | 🎁 مكافأة السرعة +50</li>
-        <li>⏱ لكل سؤال 30 ثانية</li>
-        <li>🛠 المساعدات:
-          50:50 (مرة/جولة) | ❄️ التجميد 10ث (مرة/جولة) | ⏭ التخطي غير محدود (يبدأ 20 ويزيد +20 كل مرة)
-        </li>
-        <li>🚫 الأخطاء المسموح بها: 3</li>
-        <li>🎯 المستويات (31 سؤال): 10 سهل، 10 متوسط، 10 صعب، 1 مستحيل</li>
-        <li>نهاية كل مستوى: <b>المستوى التالي</b> أو <b>الانسحاب وعرض النتائج</b></li>
+        <li>✅ الإجابة الصحيحة: <b>+100 نقطة</b> | ❌ الإجابة الخاطئة: <b>-50 نقطة</b></li>
+        <li>🎁 مكافأة السرعة: <b>+50 نقطة</b> إذا أجبت قبل نصف الوقت (15 ثانية).</li>
+        <li>⏱ المؤقت: لديك <b>30 ثانية</b> لكل سؤال، وانتهاء الوقت يُعتبر خطأ.</li>
+        <li>🚫 الأخطاء المسموح بها: <b>3 أخطاء</b> لكل جولة.</li>
+        <li>🎯 عدد الأسئلة الإجمالي: <b>31 سؤالًا</b> (10 سهل، 10 متوسط، 10 صعب، 1 مستحيل).</li>
+        <li>🔚 نهاية كل مستوى: اختر <b>"المستوى التالي"</b> أو <b>"الانسحاب"</b>.</li>
       </ul>
-      <div class="stack mt-4">
+      <div class="stack mt-4 gap-3">
         <button id="startRoundBtn" class="primary">بدء الجولة</button>
-        <button data-back="#screen-name" class="secondary back-btn">رجوع</button>
+        <button data-back="name" class="secondary back-btn">رجوع</button>
       </div>
     </div>
   </section>
@@ -192,14 +94,15 @@ textarea.share-text{height:160px}
   <section id="screen-level-select" class="screen">
     <div class="card">
       <h2>اختيار المستوى (وضع المطوّر فقط)</h2>
-      <div class="pill-row">
-        <button class="pill" data-level="easy">سهل</button>
-        <button class="pill" data-level="medium">متوسط</button>
-        <button class="pill" data-level="hard">صعب</button>
-        <button class="pill" data-level="impossible">مستحيل</button>
+      <p class="muted">تجاوز التسلسل وابدأ من أي مستوى.</p>
+      <div class="pill-row" id="devLevelSelect">
+        <button class="pill" data-level="easy">سهل (1)</button>
+        <button class="pill" data-level="medium">متوسط (2)</button>
+        <button class="pill" data-level="hard">صعب (3)</button>
+        <button class="pill" data-level="impossible">مستحيل (4)</button>
       </div>
       <div class="stack mt-4">
-        <button data-back="#screen-instructions" class="secondary back-btn">رجوع</button>
+        <button data-back="start" class="secondary back-btn">العودة للبداية</button>
       </div>
     </div>
   </section>
@@ -215,30 +118,35 @@ textarea.share-text{height:160px}
       </div>
     </div>
 
+    <!-- شريط المساعدات -->
     <div class="helpers">
-      <button id="btnSkip" class="helper">⏭ تخطي <small id="skipCost">(20)</small></button>
-      <button id="btnFreeze" class="helper">❄️ تجميد <small>10ث</small></button>
-      <button id="btnFifty" class="helper">🔀 50:50</button>
+      <button id="btnFifty" class="helper" title="يُحذف خياران خاطئان - مرة واحدة فقط">🔀 50:50</button>
+      <button id="btnFreeze" class="helper" title="يوقف المؤقت 10 ثوانٍ - مرة واحدة فقط">❄️ تجميد <small>10ث</small></button>
+      <button id="btnSkip" class="helper" title="تخطي السؤال - غير محدود">⏭ تخطي <small id="skipCost">(20)</small></button>
     </div>
 
+    <!-- شريط المؤقت -->
     <div class="timer">
       <div id="timerBar" class="timer-bar"></div>
       <div id="timerLabel" class="timer-label">30</div>
     </div>
 
     <div class="card question-card">
-      <div class="level-badge" id="levelBadge">سهل</div>
+      <div class="level-badge" id="levelBadge" data-level="easy">سهل</div>
       <div id="qCounter" class="muted">السؤال 1 من 10</div>
       <h3 id="questionText">...</h3>
-      <div id="options" class="options"></div>
+      <div id="options" class="options">
+        <!-- خيارات الإجابة ستُعرض هنا -->
+      </div>
     </div>
   </section>
 
   <!-- نهاية المستوى -->
   <section id="screen-level-end" class="screen">
     <div class="card center">
-      <h2>انتهى المستوى 🎯</h2>
-      <div class="stack mt-4">
+      <h2>تهانينا! انتهى المستوى <span id="currentLevelEndBadge" class="level-badge" data-level="easy"></span> 🎯</h2>
+      <p>اختر ما تريد فعله الآن:</p>
+      <div class="stack mt-4 gap-3">
         <button id="btnNextLevel" class="primary">المستوى التالي</button>
         <button id="btnWithdraw" class="ghost-btn">الانسحاب وعرض النتائج</button>
       </div>
@@ -253,16 +161,16 @@ textarea.share-text{height:160px}
 
       <div class="share-box">
         <h3>مشاركة النتائج 📢</h3>
-        <div class="stack">
-          <button id="shareXBtn" class="primary">انشر على 𝕏</button>
-          <button id="copyShareTextBtn" class="secondary">انسخ النص</button>
-        </div>
         <textarea id="shareText" class="share-text" readonly></textarea>
+        <div class="stack mt-3 row gap-3">
+          <button id="shareXBtn" class="primary" style="flex-grow: 1;">انشر على 𝕏</button>
+          <button id="copyShareTextBtn" class="secondary" style="flex-grow: 1;">انسخ النص</button>
+        </div>
       </div>
 
-      <div class="stack mt-4">
+      <div class="stack mt-4 gap-3">
         <button id="playAgainBtn" class="primary">لعب مرة أخرى</button>
-        <button id="openLeaderboardBtn" class="ghost-btn">لوحة الصدارة</button>
+        <button id="openLeaderboardBtn" class="secondary">لوحة الصدارة</button>
       </div>
     </div>
   </section>
@@ -271,6 +179,7 @@ textarea.share-text{height:160px}
   <section id="screen-leaderboard" class="screen">
     <div class="card">
       <h2>لوحة الصدارة 🏆</h2>
+      <p class="muted">يتم تحديث القائمة كل دقيقة (Polling).</p>
       <div class="pill-row" id="lbFilters">
         <button class="pill active" data-filter="all">الكل</button>
         <button class="pill" data-filter="top10">أفضل 10</button>
@@ -278,25 +187,31 @@ textarea.share-text{height:160px}
       </div>
       <div id="leaderboardList" class="list"></div>
       <div class="stack mt-4">
-        <button data-back="#screen-start" class="secondary back-btn">العودة</button>
+        <button data-back="start" class="secondary back-btn">العودة للبداية</button>
       </div>
     </div>
   </section>
 
-  <!-- تفاصيل اللاعب -->
+  <!-- نوافذ منبثقة (Modals) -->
+
+  <!-- 1. نافذة تفاصيل اللاعب (تظهر عند الضغط على اسم في الصدارة) -->
   <div id="playerDetailsModal" class="modal hidden">
     <div class="modal-content">
-      <button class="modal-close" id="closePlayerModal">×</button>
+      <button class="modal-close" id="closePlayerModal" title="إغلاق">×</button>
       <h3>تفاصيل نتائج اللاعب</h3>
-      <div id="playerDetailsBody" class="list thin"></div>
+      <div id="playerDetailsBody" class="list thin">
+        <!-- سجلات نتائج اللاعب ستُعرض هنا -->
+      </div>
     </div>
   </div>
 
-  <!-- نافذة البلاغات -->
+  <!-- 2. نافذة الإبلاغ عن مشكلة (تُفتح عبر زر FAB) -->
   <div id="reportModal" class="modal hidden">
     <div class="modal-content">
-      <button class="modal-close" id="closeReport">×</button>
+      <button class="modal-close" id="closeReport" title="إغلاق">×</button>
       <h3>إبلاغ عن مشكلة 🛠️</h3>
+      <p class="muted">سيتم إرسال بلاغك بشكل سري إلى فريق الإشراف.</p>
+
       <label class="label">نوع المشكلة</label>
       <select id="reportType" class="text-input">
         <option>سؤال غير واضح</option>
@@ -305,446 +220,30 @@ textarea.share-text{height:160px}
         <option>مشكلة في المؤقت</option>
         <option>مشكلة عرض/لغة</option>
       </select>
+      
       <label class="label">الوصف</label>
-      <textarea id="reportDesc" class="text-area" rows="3" placeholder="اشرح المشكلة بإيجاز"></textarea>
-      <label class="label">صورة (اختياري)</label>
+      <textarea id="reportDesc" class="text-area" rows="3" placeholder="اشرح المشكلة بإيجاز ووضوح"></textarea>
+      
+      <label class="label">صورة مرفقة (اختياري)</label>
       <input id="reportImage" type="file" accept="image/*"/>
-      <div class="row"><label><input type="checkbox" id="reportAuto" checked/> اكتشاف تلقائي</label></div>
-      <div class="stack mt-3"><button id="sendReportBtn" class="primary">إرسال البلاغ</button></div>
+      
+      <div class="row mt-3"><label><input type="checkbox" id="reportAuto" checked/> إرسال بيانات الجهاز والسؤال تلقائيًا</label></div>
+      
+      <div class="stack mt-3">
+        <button id="sendReportBtn" class="primary">إرسال البلاغ</button>
+      </div>
     </div>
   </div>
 
 </main>
 
 <footer class="app-footer">
-  <button id="openReportBtn" class="fab" title="إبلاغ">⚠️</button>
+  <!-- زر الإبلاغ العائم (FAB) -->
+  <button id="openReportBtn" class="fab" title="إبلاغ عن مشكلة">⚠️</button>
 </footer>
 
-<script>
-/* ====== الإعدادات ====== */
-const CONFIG = {
-  TEST_KEY: 'AbuQusay',
-  APPS_SCRIPT_URL: 'PUT_YOUR_GAS_ENDPOINT_HERE', // ضع رابط GAS (Web App) هنا
-  SUPABASE_URL: 'PUT_SUPABASE_URL_HERE',
-  SUPABASE_KEY: 'PUT_SUPABASE_ANON_KEY_HERE',
-  QUESTION_TIME: 30,
-  MAX_WRONG: 3,
-  STARTING_SCORE: 100,
-  DEV_PASSWORD: 'developer'
-};
-const LEVEL_LABEL = { easy:'سهل', medium:'متوسط', hard:'صعب', impossible:'مستحيل' };
-const LEVEL_ORDER = ['easy','medium','hard','impossible'];
-const LEVEL_COUNTS = { easy:10, medium:10, hard:10, impossible:1 };
-
-/* ====== الأسئلة المدمجة (31 سؤالًا) ====== */
-const BUILTIN_QUESTIONS = {
-  "easy": [
-    { "q": "ما لون السماء في النهار؟", "options": ["أزرق", "أحمر", "أسود", "أخضر"], "correct": 0 },
-    { "q": "كم عدد أصابع اليد الواحدة؟", "options": ["5", "4", "6", "7"], "correct": 0 },
-    { "q": "ما الحيوان الذي يُلقب بملك الغابة؟", "options": ["الأسد", "الفيل", "النمر", "الذئب"], "correct": 0 },
-    { "q": "ما الشيء الذي نشربه كل يوم؟", "options": ["ماء", "زيت", "حبر", "رمل"], "correct": 0 },
-    { "q": "كم دقيقة في الساعة؟", "options": ["60", "30", "45", "90"], "correct": 0 },
-    { "q": "ما عاصمة مصر؟", "options": ["القاهرة", "الرياض", "دمشق", "طرابلس"], "correct": 0 },
-    { "q": "ما هو لون الموز الناضج؟", "options": ["أصفر", "أخضر", "أسود", "أزرق"], "correct": 0 },
-    { "q": "ما هو الحيوان الذي يقول 'موو'؟", "options": ["بقرة", "كلب", "قطة", "حصان"], "correct": 0 },
-    { "q": "ما لون الحليب؟", "options": ["أبيض", "أصفر", "أحمر", "أزرق"], "correct": 0 },
-    { "q": "كم يوم في الأسبوع؟", "options": ["7", "5", "6", "8"], "correct": 0 }
-  ],
-  "medium": [
-    { "q": "كم رجل للعنكبوت؟", "options": ["8", "6", "10", "12"], "correct": 0 },
-    { "q": "كم ثانية في الدقيقة؟", "options": ["60", "30", "120", "90"], "correct": 0 },
-    { "q": "ما اسم الشهر الذي يأتي بعد رمضان؟", "options": ["شوال", "رجب", "ذو الحجة", "محرم"], "correct": 0 },
-    { "q": "ما الحيوان الذي يعطي الحليب؟", "options": ["بقرة", "دجاجة", "سمكة", "نملة"], "correct": 0 },
-    { "q": "ما لون التفاحة غالبًا؟", "options": ["أحمر", "أسود", "أصفر", "بنفسجي"], "correct": 0 },
-    { "q": "كم أذناً للإنسان؟", "options": ["اثنتان", "واحدة", "ثلاث", "أربع"], "correct": 0 },
-    { "q": "من هو أبو البشر؟", "options": ["آدم", "نوح", "إبراهيم", "موسى"], "correct": 0 },
-    { "q": "ما الكوكب الذي نعيش عليه؟", "options": ["الأرض", "عطارد", "المريخ", "القمر"], "correct": 0 },
-    { "q": "ما اسم صوت القطة؟", "options": ["مواء", "نباح", "صهيل", "نهيق"], "correct": 0 },
-    { "q": "من أين تشرق الشمس؟", "options": ["من الشرق", "من الغرب", "من الشمال", "من الجنوب"], "correct": 0 }
-  ],
-  "hard": [
-    { "q": "ما هو الكوكب الأقرب للشمس؟", "options": ["عطارد", "المريخ", "الأرض", "زحل"], "correct": 0 },
-    { "q": "ما الطائر الذي لا يطير؟", "options": ["بطريق", "حمامة", "عصفور", "غراب"], "correct": 0 },
-    { "q": "ما البحر الذي يقع في فلسطين؟", "options": ["البحر الميت", "البحر الأحمر", "بحر قزوين", "بحر العرب"], "correct": 0 },
-    { "q": "ما هو الشيء الذي نراه في الليل في السماء؟", "options": ["قمر", "شمس", "بحر", "جبل"], "correct": 0 },
-    { "q": "ما الحيوان الذي يعيش في البحر وله 8 أذرع؟", "options": ["أخطبوط", "حوت", "تمساح", "سلحفاة"], "correct": 0 },
-    { "q": "ما لون العشب؟", "options": ["أخضر", "أصفر", "أزرق", "أسود"], "correct": 0 },
-    { "q": "كم عدد قلوب الإنسان؟", "options": ["1", "2", "3", "4"], "correct": 0 },
-    { "q": "ما هو الحيوان الذي يُسمى صديق الإنسان؟", "options": ["كلب", "قط", "حصان", "بطة"], "correct": 0 },
-    { "q": "ما هو الغاز الذي نتنفسه؟", "options": ["أكسجين", "ثاني أكسيد الكربون", "هيدروجين", "نيتروجين"], "correct": 0 },
-    { "q": "ما اسم أول سورة في القرآن؟", "options": ["الفاتحة", "البقرة", "الناس", "الكوثر"], "correct": 0 }
-  ],
-  "impossible": [
-    { "q": "كم إصبع في اليدين معاً؟", "options": ["10", "8", "9", "20"], "correct": 0 }
-  ]
-};
-
-/* ====== حالة التطبيق ====== */
-const state = {
-  player: { name:'', avatar:'🙂', playerId:'', deviceId:'' },
-  game: {
-    currentLevelIndex: 0,
-    score: CONFIG.STARTING_SCORE,
-    correct: 0, wrong: 0,
-    skips: 0, skipCost: 20,
-    usedFifty: false, usedFreeze: false,
-    questionIndex: 0,
-    totalTimeSec: 0,
-    timer: null, remaining: CONFIG.QUESTION_TIME, frozen: false
-  },
-  ui: { devMode:false },
-  questions: BUILTIN_QUESTIONS
-};
-
-/* ====== DOM ====== */
-const $ = (s, r=document)=> r.querySelector(s);
-const $$ = (s, r=document)=> [...r.querySelectorAll(s)];
-const screens = {
-  start: $('#screen-start'), avatar: $('#screen-avatar'), name: $('#screen-name'),
-  instructions: $('#screen-instructions'), levelSelect: $('#screen-level-select'),
-  game: $('#screen-game'), levelEnd: $('#screen-level-end'),
-  results: $('#screen-results'), leaderboard: $('#screen-leaderboard')
-};
-const els = {
-  themeToggle: $('#themeToggle'), gotoLeaderboard: $('#gotoLeaderboard'),
-  startBtn: $('#startBtn'), openDevBtn: $('#openDevBtn'),
-  avatarGrid: $('#avatarGrid'), avatarNextBtn: $('#avatarNextBtn'),
-  playerNameInput: $('#playerNameInput'), confirmNameBtn: $('#confirmNameBtn'),
-  startRoundBtn: $('#startRoundBtn'),
-  levelDots: $('#levelDots'), hudScore: $('#hudScore'), hudMistakes: $('#hudMistakes'),
-  hudAvatar: $('#hudAvatar'), hudName: $('#hudName'),
-  btnSkip: $('#btnSkip'), btnFreeze: $('#btnFreeze'), btnFifty: $('#btnFifty'),
-  skipCost: $('#skipCost'), timerBar: $('#timerBar'), timerLabel: $('#timerLabel'),
-  levelBadge: $('#levelBadge'), qCounter: $('#qCounter'), questionText: $('#questionText'), options: $('#options'),
-  btnNextLevel: $('#btnNextLevel'), btnWithdraw: $('#btnWithdraw'),
-  finalResults: $('#finalResults'), shareText: $('#shareText'),
-  shareXBtn: $('#shareXBtn'), copyShareTextBtn: $('#copyShareTextBtn'),
-  playAgainBtn: $('#playAgainBtn'), openLeaderboardBtn: $('#openLeaderboardBtn'),
-  lbFilters: $('#lbFilters'), leaderboardList: $('#leaderboardList'),
-  playerDetailsModal: $('#playerDetailsModal'), closePlayerModal: $('#closePlayerModal'), playerDetailsBody: $('#playerDetailsBody'),
-  openReportBtn: $('#openReportBtn'), reportModal: $('#reportModal'), closeReport: $('#closeReport'),
-  reportType: $('#reportType'), reportDesc: $('#reportDesc'), reportImage: $('#reportImage'), reportAuto: $('#reportAuto'),
-  sendReportBtn: $('#sendReportBtn')
-};
-
-/* ====== Utilities ====== */
-function showScreen(key){ $$('.screen').forEach(s=>s.classList.remove('active')); screens[key].classList.add('active'); }
-function toMinSec(sec){ sec = Math.round(+sec||0); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,'0')}`; }
-function uuid(prefix='PL'){ return prefix + Math.random().toString(36).slice(2,6).toUpperCase() + Date.now().toString(36).slice(-4).toUpperCase(); }
-function getDeviceId(){ let d=localStorage.getItem('quizDeviceId'); if(!d){ d='D'+uuid('').slice(2); localStorage.setItem('quizDeviceId', d); } return d; }
-function toast(m){ alert(m); }
-function nextAttemptNumber(){ const k='quizAttemptCount'; let n=+(localStorage.getItem(k)||0); n+=1; localStorage.setItem(k, String(n)); return n; }
-
-/* ====== Theme ====== */
-(function initTheme(){
-  let saved = localStorage.getItem('theme'); if(saved!=='light' && saved!=='dark') saved='dark';
-  document.body.classList.toggle('theme-light', saved==='light');
-  document.body.classList.toggle('theme-dark',  saved==='dark');
-})();
-els.themeToggle.addEventListener('click', ()=>{
-  const isLight = document.body.classList.toggle('theme-light');
-  document.body.classList.toggle('theme-dark', !isLight);
-  localStorage.setItem('theme', isLight?'light':'dark');
-});
-
-/* ====== Init Avatars ====== */
-function initAvatars(){
-  const emojis = ['🙂','😁','🤓','🧑‍💻','🧔','👩‍🦱','🧑‍🎓','🧑‍🎨','🧑‍🚀','🧑‍🚒'];
-  els.avatarGrid.innerHTML = '';
-  emojis.forEach(e=>{
-    const d = document.createElement('div');
-    d.className='avatar'; d.textContent=e;
-    d.onclick = ()=>{ $$('.avatar',els.avatarGrid).forEach(x=>x.classList.remove('selected')); d.classList.add('selected'); state.player.avatar=e; els.avatarNextBtn.disabled=false; };
-    els.avatarGrid.appendChild(d);
-  });
-}
-
-/* ====== HUD ====== */
-function updateHUD(){
-  els.hudScore.textContent = `النقاط: ${state.game.score}`;
-  els.hudMistakes.textContent = `الأخطاء: ${state.game.wrong}/${CONFIG.MAX_WRONG}`;
-  els.hudAvatar.textContent = state.player.avatar;
-  els.hudName.textContent = state.player.name || '—';
-  els.skipCost.textContent = `(${state.game.skipCost})`;
-}
-function renderLevelDots(){
-  els.levelDots.innerHTML=''; LEVEL_ORDER.forEach((k,i)=>{ const s=document.createElement('span'); s.className='chip'; s.textContent=String(i+1); if(i===state.game.currentLevelIndex) s.style.outline='2px solid var(--accent)'; els.levelDots.appendChild(s); });
-}
-
-/* ====== Game Flow ====== */
-const getLevelKey = ()=> LEVEL_ORDER[state.game.currentLevelIndex];
-const getBucket   = ()=> state.questions[getLevelKey()] || [];
-
-function startLevel(levelKey){
-  if(levelKey && !state.ui.devMode){ toast('اختيار المستوى يدويًا متاح في وضع المطوّر فقط'); return; }
-  if(levelKey) state.game.currentLevelIndex = LEVEL_ORDER.indexOf(levelKey);
-
-  state.game.questionIndex=0; state.game.usedFifty=false; state.game.usedFreeze=false; state.game.skipCost=20;
-  renderLevelDots(); showScreen('game'); nextQuestion();
-}
-function nextQuestion(){
-  const bucket=getBucket(); const total=LEVEL_COUNTS[getLevelKey()];
-  if(state.game.questionIndex >= total){ showScreen('levelEnd'); return; }
-
-  const q=bucket[state.game.questionIndex];
-  els.levelBadge.textContent = LEVEL_LABEL[getLevelKey()];
-  els.qCounter.textContent = `السؤال ${state.game.questionIndex+1} من ${total}`;
-  els.questionText.textContent = q.q;
-  els.options.innerHTML='';
-
-  q.options.forEach((opt,i)=>{
-    const b=document.createElement('button'); b.className='option'; b.textContent=opt;
-    b.onclick = ()=> onAnswer(i, q.correct);
-    els.options.appendChild(b);
-  });
-
-  if(state.game.usedFifty) applyFiftyToOptions(q.correct); // لو سبق استخدام 50:50
-  startTimer(); updateHUD();
-}
-function onAnswer(chosen, correct){
-  stopTimer(); markOptions(chosen, correct);
-  const timeSpent = CONFIG.QUESTION_TIME - state.game.remaining; state.game.totalTimeSec += Math.max(0, timeSpent);
-
-  const ok = (chosen === correct);
-  if(ok){
-    state.game.correct++; state.game.score += 100;
-    if(state.game.remaining >= CONFIG.QUESTION_TIME/2) state.game.score += 50; // مكافأة السرعة
-  }else{
-    state.game.wrong++; state.game.score -= 50;
-  }
-  updateHUD();
-
-  setTimeout(()=>{
-    if(state.game.wrong >= CONFIG.MAX_WRONG){ finalizeAndShowResults('الخروج بسبب الأخطاء'); }
-    else { state.game.questionIndex++; nextQuestion(); }
-  }, 600);
-}
-function markOptions(choice, correct){
-  $$('.option', els.options).forEach((b,i)=>{ b.classList.add(i===correct?'correct':(i===choice?'wrong':'')); b.disabled=true; });
-}
-
-/* ====== Timer / Freeze ====== */
-function startTimer(){
-  state.game.remaining = CONFIG.QUESTION_TIME; els.timerBar.style.width='100%'; els.timerLabel.textContent=String(state.game.remaining);
-  state.game.frozen = false;
-  state.game.timer = setInterval(()=>{
-    if(state.game.frozen) return;
-    state.game.remaining--; els.timerLabel.textContent=String(state.game.remaining);
-    els.timerBar.style.width = `${(state.game.remaining/CONFIG.QUESTION_TIME)*100}%`;
-    if(state.game.remaining<=0){ clearInterval(state.game.timer); onAnswer(-1, getBucket()[state.game.questionIndex].correct); }
-  },1000);
-}
-function stopTimer(){ clearInterval(state.game.timer); }
-
-/* ====== Helpers ====== */
-function applyFiftyToOptions(correctIdx){
-  const ops=$$('.option',els.options); let removed=0;
-  for(let i=0;i<ops.length && removed<2;i++){ if(i!==correctIdx && !ops[i].classList.contains('disabled')){ ops[i].classList.add('disabled'); ops[i].disabled=true; removed++; } }
-}
-els.btnFifty.onclick = ()=>{
-  if(state.game.usedFifty) return toast('تم استخدام 50:50 بالفعل في هذه الجولة');
-  state.game.usedFifty = true;
-  const q=getBucket()[state.game.questionIndex]; applyFiftyToOptions(q.correct);
-};
-els.btnFreeze.onclick = ()=>{
-  if(state.game.usedFreeze) return toast('تم استخدام التجميد بالفعل في هذه الجولة');
-  state.game.usedFreeze = true; state.game.frozen = true; let s=10;
-  const tmp=setInterval(()=>{ s--; if(s<=0){ clearInterval(tmp); state.game.frozen=false; } },1000);
-};
-els.btnSkip.onclick = ()=>{
-  state.game.score -= state.game.skipCost; state.game.skips++; state.game.skipCost += 20; stopTimer(); updateHUD();
-  state.game.questionIndex++; nextQuestion();
-};
-
-/* ====== Level End / Results ====== */
-els.btnNextLevel.onclick = ()=>{
-  state.game.currentLevelIndex++;
-  if(state.game.currentLevelIndex >= LEVEL_ORDER.length){ finalizeAndShowResults('انتهت جميع المستويات'); }
-  else { startLevel(); }
-};
-els.btnWithdraw.onclick = ()=> finalizeAndShowResults('انسحاب اللاعب');
-els.playAgainBtn.onclick = ()=> location.reload();
-els.openLeaderboardBtn.onclick = ()=> { showScreen('leaderboard'); refreshLeaderboard(); };
-els.gotoLeaderboard.onclick = ()=> { showScreen('leaderboard'); refreshLeaderboard(); };
-
-function finalizeAndShowResults(reason=''){
-  const answered = state.game.correct + state.game.wrong;
-  const accuracy = answered ? +(100*state.game.correct/answered).toFixed(1) : 0;
-  const avg = answered ? Math.round(state.game.totalTimeSec/Math.max(1, answered)) : 0;
-  const levelKey = getLevelKey();
-  const rating = accuracy>=85 ? 'ممتاز' : accuracy>=60 ? 'جيّد' : 'يحتاج تحسين';
-  const attemptNumber = nextAttemptNumber();
-
-  const stats = {
-    name: state.player.name,
-    playerId: state.player.playerId,
-    attempt: attemptNumber,
-    correct: state.game.correct,
-    wrong: state.game.wrong,
-    skips: state.game.skips,
-    score: state.game.score,
-    total: state.game.totalTimeSec,
-    level: LEVEL_LABEL[levelKey],
-    accuracy,
-    avg,
-    rating
-  };
-
-  showScreen('results'); renderResults(stats);
-
-  if(CONFIG.APPS_SCRIPT_URL && CONFIG.APPS_SCRIPT_URL.startsWith('http')){
-    sendToGAS('gameResult', stats).catch(()=>{});
-    sendToGAS('log', {
-      attemptNumber,
-      deviceId: state.player.deviceId,
-      playerId: state.player.playerId,
-      name: state.player.name,
-      correct: stats.correct, wrong: stats.wrong, accuracy: stats.accuracy,
-      skips: stats.skips, usedFifty: state.game.usedFifty, usedFreeze: state.game.usedFreeze,
-      score: stats.score, totalTimeSec: stats.total, avgTimeSec: stats.avg,
-      lastLevel: levelKey, rating: stats.rating, createdAt: new Date().toISOString(), reason
-    }).catch(()=>{});
-  }
-
-  if(supa){ // تحديث الصدارة
-    const isImpossibleFinisher = (levelKey==='impossible' && state.game.questionIndex>=LEVEL_COUNTS['impossible']);
-    supa.from('leaderboard').upsert({
-      device_id: state.player.deviceId,
-      player_id: state.player.playerId,
-      name: state.player.name,
-      avatar: state.player.avatar,
-      score: stats.score,
-      level: levelKey,
-      accuracy: stats.accuracy,
-      total_time: stats.total,
-      avg_time: stats.avg,
-      correct_answers: stats.correct,
-      wrong_answers: stats.wrong,
-      skips: stats.skips,
-      is_impossible_finisher: isImpossibleFinisher,
-      updated_at: new Date().toISOString()
-    }, { onConflict:'device_id' }).then(()=> refreshLeaderboard());
-  }
-}
-function renderResults(s){
-  const rows = [
-    ['الاسم', s.name], ['المعرّف', s.playerId], ['رقم المحاولة', s.attempt],
-    ['الإجابات الصحيحة', s.correct], ['الإجابات الخاطئة', s.wrong],
-    ['مرات التخطي', s.skips], ['النقاط النهائية', s.score],
-    ['الوقت المستغرق (د.ث)', toMinSec(s.total)], ['المستوى الذي وصلت إليه', s.level],
-    ['نسبة الدقة', `${s.accuracy}%`], ['متوسط وقت الإجابة (د.ث)', toMinSec(s.avg)],
-    ['أداؤك', s.rating]
-  ];
-  els.finalResults.innerHTML = rows.map(([k,v])=> `<div class="kv"><b>${k}:</b><div>${v}</div></div>`).join('');
-  els.shareText.value = buildShareText(s);
-}
-function buildShareText(s){
-  return `🏆 النتائج النهائية 🏆
-
-الاسم: ${s.name}
-المعرّف: ${s.playerId}
-رقم المحاولة: ${s.attempt}
-الإجابات الصحيحة: ${s.correct}
-الإجابات الخاطئة: ${s.wrong}
-مرات التخطي: ${s.skips}
-النقاط النهائية: ${s.score}
-الوقت المستغرق (د.ث): ${toMinSec(s.total)}
-المستوى الذي وصلت إليه: ${s.level}
-نسبة الدقة: ${s.accuracy}%
-متوسط وقت الإجابة (د.ث): ${toMinSec(s.avg)}
-أداؤك: ${s.rating}`;
-}
-els.copyShareTextBtn.onclick = ()=>{ els.shareText.select(); document.execCommand('copy'); toast('تم نسخ النص'); };
-els.shareXBtn.onclick = ()=>{ window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(els.shareText.value)}`,'_blank'); };
-
-/* ====== Reports (GAS) ====== */
-els.openReportBtn.onclick = ()=> els.reportModal.classList.remove('hidden');
-els.closeReport.onclick = ()=> els.reportModal.classList.add('hidden');
-els.sendReportBtn.onclick = async ()=>{
-  const type=els.reportType.value, description=els.reportDesc.value.trim();
-  let screenshot_b64=''; if(els.reportImage.files[0]) screenshot_b64 = await fileToBase64(els.reportImage.files[0]);
-  const payload = {
-    playerId: state.player.playerId, name: state.player.name, type, description,
-    question_text: $('#questionText')?.textContent || '', user_agent: navigator.userAgent,
-    screen_resolution: `${screen.width}x${screen.height}`, auto_detected: !!els.reportAuto.checked,
-    screenshot_b64
-  };
-  if(CONFIG.APPS_SCRIPT_URL){ await sendToGAS('report', payload); toast('تم إرسال البلاغ، شكرًا لك!'); }
-  els.reportModal.classList.add('hidden');
-};
-function fileToBase64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]); r.onerror=rej; r.readAsDataURL(file); }); }
-async function sendToGAS(type,data){
-  const r = await fetch(CONFIG.APPS_SCRIPT_URL, { method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ type, secretKey: CONFIG.TEST_KEY, data }) });
-  return r.json();
-}
-
-/* ====== Supabase Leaderboard ====== */
-let supa = null;
-if(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_KEY && window.supabase){
-  supa = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_KEY);
-}
-async function refreshLeaderboard(filter='all'){
-  if(!supa){ $('#leaderboardList').innerHTML=`<div class="muted">لم تُهيّأ Supabase بعد.</div>`; return; }
-  let q = supa.from('leaderboard').select('player_id,name,avatar,score,is_impossible_finisher').order('score',{ascending:false});
-  if(filter==='top10') q=q.limit(10);
-  if(filter==='impossible') q=q.eq('is_impossible_finisher', true);
-  const { data, error } = await q;
-  if(error){ $('#leaderboardList').innerHTML = `<div class="muted">خطأ: ${error.message}</div>`; return; }
-  $('#leaderboardList').innerHTML = (data||[]).map((row,i)=>`
-    <div class="row-item" data-player="${row.player_id}">
-      <div class="rank">${i+1}</div>
-      <div class="avatar">${row.avatar || '🙂'}</div>
-      <div class="grow">
-        <div><b>${row.name}</b></div>
-        <div class="muted">النقاط: ${row.score}${row.is_impossible_finisher ? ' · مستحيل ✅' : ''}</div>
-      </div>
-    </div>
-  `).join('') || `<div class="muted">لا يوجد بيانات بعد.</div>`;
-  $$('#leaderboardList .row-item').forEach(el=> el.onclick = ()=> openPlayerDetails(el.dataset.player) );
-}
-async function openPlayerDetails(playerId){
-  if(!supa){ return; }
-  const { data, error } = await supa.from('game_logs').select('*').eq('player_id', playerId).order('created_at',{ascending:false}).limit(25);
-  if(error){ els.playerDetailsBody.innerHTML=`<div class="muted">خطأ: ${error.message}</div>`; }
-  else{
-    els.playerDetailsBody.innerHTML = (data||[]).map(x=>`
-      <div class="row-item">
-        <div class="grow">
-          <div><b>${new Date(x.created_at).toLocaleString('ar')}</b></div>
-          <div class="muted">نقاط: ${x.score} · دقة: ${x.accuracy}% · مستوى: ${x.level} · تخطي: ${x.skips}</div>
-        </div>
-      </div>
-    `).join('') || `<div class="muted">لا توجد بيانات.</div>`;
-  }
-  els.playerDetailsModal.classList.remove('hidden');
-}
-els.closePlayerModal.onclick = ()=> els.playerDetailsModal.classList.add('hidden');
-els.lbFilters.onclick = (e)=>{ const b=e.target.closest('.pill'); if(!b) return; $$('.pill',els.lbFilters).forEach(p=>p.classList.remove('active')); b.classList.add('active'); refreshLeaderboard(b.dataset.filter); };
-setInterval(()=>{ if($('.screen.active')===screens.leaderboard){ const f=$('.pill.active',els.lbFilters)?.dataset.filter||'all'; refreshLeaderboard(f);} }, 60000);
-
-/* ====== Navigation ====== */
-$$('.back-btn').forEach(b=> b.addEventListener('click', ()=> showScreen(b.dataset.back.slice(1)) ));
-els.openDevBtn.onclick = ()=>{ const p=prompt('أدخل كلمة مرور المطوّر'); if(p!==CONFIG.DEV_PASSWORD) return toast('كلمة المرور غير صحيحة'); state.ui.devMode=true; showScreen('levelSelect'); };
-$('#screen-level-select').onclick = (e)=>{ const b=e.target.closest('.pill'); if(!b) return; startLevel(b.dataset.level); };
-els.startBtn.onclick = ()=> showScreen('avatar');
-els.avatarNextBtn.onclick = ()=> showScreen('name');
-els.playerNameInput.oninput = ()=>{ const ok=validateName(els.playerNameInput.value); els.confirmNameBtn.disabled=!ok; };
-els.confirmNameBtn.onclick = ()=>{
-  const name = els.playerNameInput.value.trim(); if(!validateName(name)) return toast('الاسم بين 2 و 25 حرفًا');
-  state.player.name=name; if(!state.player.playerId) state.player.playerId=uuid('PL'); if(!state.player.deviceId) state.player.deviceId=getDeviceId();
-  showScreen('instructions');
-};
-els.startRoundBtn.onclick = ()=>{
-  state.game.currentLevelIndex=0; state.game.score=CONFIG.STARTING_SCORE; state.game.correct=0; state.game.wrong=0;
-  state.game.skips=0; state.game.skipCost=20; state.game.totalTimeSec=0; startLevel();
-};
-function validateName(n){ n=(n||'').trim(); return n.length>=2 && n.length<=25; }
-
-/* ====== Bootstrap ====== */
-(function bootstrap(){
-  initAvatars(); updateHUD(); renderLevelDots();
-})();
-</script>
+<!-- ربط ملف جافاسكريبت للوظائف -->
+<script src="script.js"></script>
 </body>
 </html>
+
