@@ -790,14 +790,16 @@
     // ---------------------------------- //
 
     async function init() {
+        // إعادة تعيين الحالة أولاً لإنشاء كائن 'state'
+        resetState();
+
         // تطبيق الوضع المحفوظ
         applyTheme(localStorage.getItem('theme') || 'dark');
         
         // إضافة مستمعي الأحداث
         addEventListeners();
         
-        // إعادة تعيين الحالة وبدء اللعبة
-        resetState();
+        // عرض الشاشة الأولى
         showScreen('start');
         
         // تحميل ملف الأسئلة
@@ -827,4 +829,5 @@
     document.addEventListener('DOMContentLoaded', init);
 
 })();
+
 
