@@ -1,249 +1,0 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>مسابقة المعلومات الترفيهية</title>
-<!-- جلب خط Cairo لدعم اللغة العربية -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-<!-- ربط ملف التنسيقات الخارجي -->
-<link rel="stylesheet" href="styles.css">
-<!-- جلب مكتبة Supabase للتعامل مع قاعدة البيانات -->
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-</head>
-<body class="theme-dark">
-<header class="app-header">
-  <div class="brand">مسابقة المعلومات 🧠</div>
-  <div class="header-actions">
-    <!-- زر تبديل الوضع (مظلم/فاتح) -->
-    <button id="themeToggle" class="icon-btn" title="تبديل الوضع">🌓</button>
-    <!-- زر الانتقال للوحة الصدارة -->
-    <button id="gotoLeaderboard" class="ghost-btn">لوحة الصدارة 🏆</button>
-  </div>
-</header>
-
-<main id="app">
-
-  <!-- شاشة التحميل (Loader) - يمكن أن تكون أول شاشة قبل تهيئة الحالة -->
-  <section id="screen-loader" class="screen active">
-      <div class="card center" style="padding: 50px;">
-          <h1>جاري التحميل...</h1>
-          <p class="muted">الرجاء الانتظار قليلاً</p>
-      </div>
-  </section>
-
-  <!-- شاشة البداية -->
-  <section id="screen-start" class="screen">
-    <div class="card center">
-      <h1>مرحبًا بك 👋</h1>
-      <p class="muted">اختبر معلوماتك في مسابقة ممتعة وسريعة</p>
-      <div class="stack gap-3">
-        <button id="startBtn" class="primary">ابدأ اللعب</button>
-        <!-- زر فتح وضع المطوّر -->
-        <button id="openDevBtn" class="secondary">وضع المطوّر ⚙️</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- اختيار الصورة الرمزية -->
-  <section id="screen-avatar" class="screen">
-    <div class="card">
-      <h2>اختر صورتك الرمزية</h2>
-      <div id="avatarGrid" class="avatar-grid"></div>
-      <div class="stack mt-4 gap-3">
-        <button id="avatarNextBtn" class="primary" disabled>التالي</button>
-        <button data-back="start" class="secondary back-btn">رجوع</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- إدخال الاسم -->
-  <section id="screen-name" class="screen">
-    <div class="card">
-      <h2>ادخل اسمك</h2>
-      <input id="playerNameInput" class="text-input" placeholder="مثال: عبد الله" maxlength="25"/>
-      <div class="hint">بين 2 و 25 حرفًا، سيُستخدم في لوحة الصدارة</div>
-      <div class="stack mt-4 gap-3">
-        <button id="confirmNameBtn" class="primary" disabled>تأكيد الاسم</button>
-        <button data-back="avatar" class="secondary back-btn">رجوع</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- التعليمات -->
-  <section id="screen-instructions" class="screen">
-    <div class="card">
-      <h2>تعليمات اللعبة 📋</h2>
-      <ul class="bullets">
-        <li>✅ الإجابة الصحيحة: <b>+100 نقطة</b> | ❌ الإجابة الخاطئة: <b>-50 نقطة</b></li>
-        <li>🎁 مكافأة السرعة: <b>+50 نقطة</b> إذا أجبت قبل نصف الوقت (15 ثانية).</li>
-        <li>⏱ المؤقت: لديك <b>30 ثانية</b> لكل سؤال، وانتهاء الوقت يُعتبر خطأ.</li>
-        <li>🚫 الأخطاء المسموح بها: <b>3 أخطاء</b> لكل جولة.</li>
-        <li>🎯 عدد الأسئلة الإجمالي: <b>31 سؤالًا</b> (10 سهل، 10 متوسط، 10 صعب، 1 مستحيل).</li>
-        <li>🔚 نهاية كل مستوى: اختر <b>"المستوى التالي"</b> أو <b>"الانسحاب"</b>.</li>
-      </ul>
-      <div class="stack mt-4 gap-3">
-        <button id="startRoundBtn" class="primary">بدء الجولة</button>
-        <button data-back="name" class="secondary back-btn">رجوع</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- اختيار المستوى (وضع المطوّر فقط) -->
-  <section id="screen-level-select" class="screen">
-    <div class="card">
-      <h2>اختيار المستوى (وضع المطوّر فقط)</h2>
-      <p class="muted">تجاوز التسلسل وابدأ من أي مستوى.</p>
-      <div class="pill-row" id="devLevelSelect">
-        <button class="pill" data-level="easy">سهل (1)</button>
-        <button class="pill" data-level="medium">متوسط (2)</button>
-        <button class="pill" data-level="hard">صعب (3)</button>
-        <button class="pill" data-level="impossible">مستحيل (4)</button>
-      </div>
-      <div class="stack mt-4">
-        <button data-back="start" class="secondary back-btn">العودة للبداية</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- شاشة اللعب -->
-  <section id="screen-game" class="screen">
-    <div class="hud">
-      <div class="level-dots" id="levelDots"></div>
-      <div class="hud-right">
-        <div class="chip" id="hudScore">النقاط: 0</div>
-        <div class="chip" id="hudMistakes">الأخطاء: 0/3</div>
-        <div class="chip avatar-chip"><span id="hudAvatar">🙂</span><span id="hudName">—</span></div>
-      </div>
-    </div>
-
-    <!-- شريط المساعدات -->
-    <div class="helpers">
-      <button id="btnFifty" class="helper" title="يُحذف خياران خاطئان - مرة واحدة فقط">🔀 50:50</button>
-      <button id="btnFreeze" class="helper" title="يوقف المؤقت 10 ثوانٍ - مرة واحدة فقط">❄️ تجميد <small>10ث</small></button>
-      <button id="btnSkip" class="helper" title="تخطي السؤال - غير محدود">⏭ تخطي <small id="skipCost">(20)</small></button>
-    </div>
-
-    <!-- شريط المؤقت -->
-    <div class="timer">
-      <div id="timerBar" class="timer-bar"></div>
-      <div id="timerLabel" class="timer-label">30</div>
-    </div>
-
-    <div class="card question-card">
-      <div class="level-badge" id="levelBadge" data-level="easy">سهل</div>
-      <div id="qCounter" class="muted">السؤال 1 من 10</div>
-      <h3 id="questionText">...</h3>
-      <div id="options" class="options">
-        <!-- خيارات الإجابة ستُعرض هنا -->
-      </div>
-    </div>
-  </section>
-
-  <!-- نهاية المستوى -->
-  <section id="screen-level-end" class="screen">
-    <div class="card center">
-      <h2>تهانينا! انتهى المستوى <span id="currentLevelEndBadge" class="level-badge" data-level="easy"></span> 🎯</h2>
-      <p>اختر ما تريد فعله الآن:</p>
-      <div class="stack mt-4 gap-3">
-        <button id="btnNextLevel" class="primary">المستوى التالي</button>
-        <button id="btnWithdraw" class="ghost-btn">الانسحاب وعرض النتائج</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- النتائج النهائية -->
-  <section id="screen-results" class="screen">
-    <div class="card">
-      <h2>🏆 النتائج النهائية 🏆</h2>
-      <div class="result-grid" id="finalResults"></div>
-
-      <div class="share-box">
-        <h3>مشاركة النتائج 📢</h3>
-        <textarea id="shareText" class="share-text" readonly></textarea>
-        <div class="stack mt-3 row gap-3">
-          <button id="shareXBtn" class="primary" style="flex-grow: 1;">انشر على 𝕏</button>
-          <button id="copyShareTextBtn" class="secondary" style="flex-grow: 1;">انسخ النص</button>
-        </div>
-      </div>
-
-      <div class="stack mt-4 gap-3">
-        <button id="playAgainBtn" class="primary">لعب مرة أخرى</button>
-        <button id="openLeaderboardBtn" class="secondary">لوحة الصدارة</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- لوحة الصدارة -->
-  <section id="screen-leaderboard" class="screen">
-    <div class="card">
-      <h2>لوحة الصدارة 🏆</h2>
-      <p class="muted">يتم تحديث القائمة كل دقيقة (Polling).</p>
-      <div class="pill-row" id="lbFilters">
-        <button class="pill active" data-filter="all">الكل</button>
-        <button class="pill" data-filter="top10">أفضل 10</button>
-        <button class="pill" data-filter="impossible">متخطّو المستحيل</button>
-      </div>
-      <div id="leaderboardList" class="list"></div>
-      <div class="stack mt-4">
-        <button data-back="start" class="secondary back-btn">العودة للبداية</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- نوافذ منبثقة (Modals) -->
-
-  <!-- 1. نافذة تفاصيل اللاعب (تظهر عند الضغط على اسم في الصدارة) -->
-  <div id="playerDetailsModal" class="modal hidden">
-    <div class="modal-content">
-      <button class="modal-close" id="closePlayerModal" title="إغلاق">×</button>
-      <h3>تفاصيل نتائج اللاعب</h3>
-      <div id="playerDetailsBody" class="list thin">
-        <!-- سجلات نتائج اللاعب ستُعرض هنا -->
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. نافذة الإبلاغ عن مشكلة (تُفتح عبر زر FAB) -->
-  <div id="reportModal" class="modal hidden">
-    <div class="modal-content">
-      <button class="modal-close" id="closeReport" title="إغلاق">×</button>
-      <h3>إبلاغ عن مشكلة 🛠️</h3>
-      <p class="muted">سيتم إرسال بلاغك بشكل سري إلى فريق الإشراف.</p>
-
-      <label class="label">نوع المشكلة</label>
-      <select id="reportType" class="text-input">
-        <option>سؤال غير واضح</option>
-        <option>إجابة خاطئة</option>
-        <option>خطأ تقني</option>
-        <option>مشكلة في المؤقت</option>
-        <option>مشكلة عرض/لغة</option>
-      </select>
-      
-      <label class="label">الوصف</label>
-      <textarea id="reportDesc" class="text-area" rows="3" placeholder="اشرح المشكلة بإيجاز ووضوح"></textarea>
-      
-      <label class="label">صورة مرفقة (اختياري)</label>
-      <input id="reportImage" type="file" accept="image/*"/>
-      
-      <div class="row mt-3"><label><input type="checkbox" id="reportAuto" checked/> إرسال بيانات الجهاز والسؤال تلقائيًا</label></div>
-      
-      <div class="stack mt-3">
-        <button id="sendReportBtn" class="primary">إرسال البلاغ</button>
-      </div>
-    </div>
-  </div>
-
-</main>
-
-<footer class="app-footer">
-  <!-- زر الإبلاغ العائم (FAB) -->
-  <button id="openReportBtn" class="fab" title="إبلاغ عن مشكلة">⚠️</button>
-</footer>
-
-<!-- ربط ملف جافاسكريبت للوظائف -->
-<script src="script.js"></script>
-</body>
-</html>
-
