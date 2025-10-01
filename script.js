@@ -1,18 +1,18 @@
 /* ===========================
-   إعدادات عامة (حدّثها قبل النشر)
+   الإعدادات العامة
 =========================== */
 const CONFIG = {
-  TEST_KEY: 'AbuQusay', // مفتاح بسيط للتحقق مع GAS
-  APPS_SCRIPT_URL: 'PUT_YOUR_GAS_ENDPOINT_HERE', // ضع رابط GAS
-  SUPABASE_URL: '',     // اختياري: ضع URL
-  SUPABASE_KEY: '',     // اختياري: ضع anon key
+  TEST_KEY: 'AbuQusay', // مفتاح بسيط مع GAS
+  APPS_SCRIPT_URL: 'PUT_YOUR_GAS_ENDPOINT_HERE', // ضع رابط GAS بعد النشر
+  SUPABASE_URL: 'PUT_SUPABASE_URL_HERE',
+  SUPABASE_KEY: 'PUT_SUPABASE_ANON_KEY_HERE',
   QUESTION_TIME: 30,
   MAX_WRONG: 3,
   STARTING_SCORE: 100,
-  DEV_PASSWORD: 'developer' // كلمة مرور وضع المطور (يمكن تغييرها)
+  DEV_PASSWORD: 'developer' // كلمة مرور وضع المطوّر
 };
 
-// ترجمات مستويات
+// الترتيب والعناوين
 const LEVEL_LABEL = { easy: 'سهل', medium: 'متوسط', hard: 'صعب', impossible: 'مستحيل' };
 const LEVEL_ORDER = ['easy', 'medium', 'hard', 'impossible'];
 const LEVEL_COUNTS = { easy: 10, medium: 10, hard: 10, impossible: 1 };
@@ -34,12 +34,11 @@ const state = {
     timer: null, remaining: CONFIG.QUESTION_TIME, frozen: false
   },
   ui: { devMode: false },
-  questions: { easy: [], medium: [], hard: [], impossible: [] },
-  flat: []
+  questions: { easy: [], medium: [], hard: [], impossible: [] }
 };
 
 /* ===========================
-   عناصر DOM سريعة
+   عناصر DOM
 =========================== */
 const $ = (s, root=document) => root.querySelector(s);
 const $$ = (s, root=document) => [...root.querySelectorAll(s)];
@@ -65,6 +64,7 @@ const els = {
   playerNameInput: $('#playerNameInput'),
   confirmNameBtn: $('#confirmNameBtn'),
   startRoundBtn: $('#startRoundBtn'),
+
   levelDots: $('#levelDots'), hudScore: $('#hudScore'), hudMistakes: $('#hudMistakes'),
   hudAvatar: $('#hudAvatar'), hudName: $('#hudName'),
   btnSkip: $('#btnSkip'), btnFreeze: $('#btnFreeze'), btnFifty: $('#btnFifty'),
@@ -72,15 +72,17 @@ const els = {
   timerBar: $('#timerBar'), timerLabel: $('#timerLabel'),
   levelBadge: $('#levelBadge'), qCounter: $('#qCounter'),
   questionText: $('#questionText'), options: $('#options'),
+
   btnNextLevel: $('#btnNextLevel'), btnWithdraw: $('#btnWithdraw'),
   finalResults: $('#finalResults'), shareText: $('#shareText'),
   shareXBtn: $('#shareXBtn'), copyShareTextBtn: $('#copyShareTextBtn'),
   playAgainBtn: $('#playAgainBtn'), openLeaderboardBtn: $('#openLeaderboardBtn'),
   gotoLeaderboard: $('#gotoLeaderboard'),
+
   lbFilters: $('#lbFilters'), leaderboardList: $('#leaderboardList'),
-  playerDetailsModal: $('#playerDetailsModal'),
-  closePlayerModal: $('#closePlayerModal'),
+  playerDetailsModal: $('#playerDetailsModal'), closePlayerModal: $('#closePlayerModal'),
   playerDetailsBody: $('#playerDetailsBody'),
+
   openReportBtn: $('#openReportBtn'), reportModal: $('#reportModal'),
   closeReport: $('#closeReport'), reportType: $('#reportType'),
   reportDesc: $('#reportDesc'), reportImage: $('#reportImage'),
@@ -88,18 +90,25 @@ const els = {
 };
 
 /* ===========================
-   أدوات
+   أدوات عامة
 =========================== */
-function showScreen(id){
-  $$('.screen').forEach(sc=>sc.classList.remove('active'));
-  screens[id].classList.add('active');
-}
+function showScreen(id){ $$('.screen').forEach(sc=>sc.classList.remove('active')); screens[id].classList.add('active'); }
 function toMinSec(sec){ const m=Math.floor(sec/60), s=Math.floor(sec%60); return `${m}:${String(s).padStart(2,'0')}`; }
 function uuid(prefix='PL'){ return prefix + Math.random().toString(36).slice(2,6).toUpperCase() + Date.now().toString(36).slice(-4).toUpperCase(); }
-function deviceId(){ let d=localStorage.getItem('quizDeviceId'); if(!d){ d='D'+uuid('').slice(2); localStorage.setItem('quizDeviceId',d);} return d; }
-function toast(msg){ alert(msg); } // يمكن لاحقاً استبداله بـ Toast أجمل
+function getDeviceId(){ let d=localStorage.getItem('quizDeviceId'); if(!d){ d='D'+uuid('').slice(2); localStorage.setItem('quizDeviceId',d);} return d; }
+function toast(msg){ alert(msg); } // استبدل لاحقاً بـ Toast أجمل لو رغبت
 
-// تبديل الوضع
+// محاولة رقم (يزيد عند إظهار النتائج)
+function nextAttemptNumber(){
+  const key = 'quizAttemptCount';
+  let n = +(localStorage.getItem(key) || 0);
+  n += 1; localStorage.setItem(key, String(n));
+  return n;
+}
+
+/* ===========================
+   تبديل الوضع (مظلم/فاتح)
+=========================== */
 (function initTheme(){
   const saved = localStorage.getItem('theme') || 'dark';
   document.body.classList.toggle('theme-light', saved==='light');
@@ -140,6 +149,11 @@ function initAvatars(){
   });
 }
 
+function validateName(name){
+  const n = (name||'').trim();
+  return n.length>=2 && n.length<=25;
+}
+
 function updateHUD(){
   els.hudScore.textContent = `النقاط: ${state.game.score}`;
   els.hudMistakes.textContent = `الأخطاء: ${state.game.wrong}/${CONFIG.MAX_WRONG}`;
@@ -166,10 +180,16 @@ function getCurrentLevelKey(){ return LEVEL_ORDER[state.game.currentLevelIndex];
 function getCurrentBucket(){ return state.questions[getCurrentLevelKey()] || []; }
 
 function startLevel(levelKey){
-  // ضبط المؤشرات
+  // الإذن: في الوضع العادي لا نسمح باختيار مستوى يدويًا
+  if(levelKey && !state.ui.devMode){
+    toast('اختيار المستوى يدويًا متاح فقط في وضع المطوّر');
+    return;
+  }
   if(levelKey){
     state.game.currentLevelIndex = LEVEL_ORDER.indexOf(levelKey);
   }
+
+  // إعادة ضبط حالة الجولة
   state.game.questionIndex = 0;
   state.game.usedFifty = false;
   state.game.usedFreeze = false;
@@ -183,7 +203,7 @@ function startLevel(levelKey){
 function nextQuestion(){
   const bucket = getCurrentBucket();
   const totalInLevel = LEVEL_COUNTS[getCurrentLevelKey()];
-  // حماية
+
   if(state.game.questionIndex >= totalInLevel){
     showScreen('levelEnd');
     return;
@@ -202,10 +222,8 @@ function nextQuestion(){
     els.options.appendChild(btn);
   });
 
-  // 50:50 إن استُخدم
-  if(state.game.usedFifty){
-    applyFiftyToOptions(q.correct);
-  }
+  // إن كان 50:50 مستخدم سابقًا أثناء نفس الجولة
+  if(state.game.usedFifty){ applyFiftyToOptions(q.correct); }
 
   // بدء المؤقت
   startTimer();
@@ -218,22 +236,21 @@ function onAnswer(choiceIdx, correctIdx){
   markOptions(choiceIdx, correctIdx);
 
   const timeSpent = CONFIG.QUESTION_TIME - state.game.remaining;
-  state.game.totalTimeSec += timeSpent;
+  state.game.totalTimeSec += Math.max(0, timeSpent);
 
   if(isCorrect){
     state.game.correct++;
     state.game.score += 100;
-    if(state.game.remaining >= CONFIG.QUESTION_TIME/2) state.game.score += 50; // مكافأة السرعة
+    // مكافأة السرعة
+    if(state.game.remaining >= CONFIG.QUESTION_TIME/2) state.game.score += 50;
   }else{
     state.game.wrong++;
     state.game.score -= 50;
   }
   updateHUD();
 
-  // نهاية السؤال بعد لحظة
   setTimeout(()=>{
     if(state.game.wrong >= CONFIG.MAX_WRONG){
-      // نهاية جولة/انسحاب لعرض النتائج
       finalizeAndShowResults('الخروج بسبب الأخطاء');
     }else{
       state.game.questionIndex++;
@@ -249,13 +266,15 @@ function markOptions(choice, correct){
   });
 }
 
+/* ===========================
+   المؤقت والتجميد
+=========================== */
 function startTimer(){
   state.game.remaining = CONFIG.QUESTION_TIME;
   els.timerBar.style.width = '100%';
   els.timerLabel.textContent = `${state.game.remaining}`;
   state.game.frozen = false;
 
-  state.game.questionStart = performance.now();
   state.game.timer = setInterval(()=>{
     if(state.game.frozen) return;
     state.game.remaining--;
@@ -283,12 +302,14 @@ function applyFiftyToOptions(correctIdx){
     }
   }
 }
+// 50:50 مرة واحدة في الجولة
 els.btnFifty.addEventListener('click', ()=>{
   if(state.game.usedFifty) return toast('تم استخدام 50:50 بالفعل في هذه الجولة');
   state.game.usedFifty = true;
   const q = getCurrentBucket()[state.game.questionIndex];
   applyFiftyToOptions(q.correct);
 });
+// تجميد 10 ثوانٍ مرة واحدة في الجولة
 els.btnFreeze.addEventListener('click', ()=>{
   if(state.game.usedFreeze) return toast('تم استخدام التجميد بالفعل في هذه الجولة');
   state.game.usedFreeze = true;
@@ -302,13 +323,12 @@ els.btnFreeze.addEventListener('click', ()=>{
     }
   },1000);
 });
+// تخطي غير محدود بسعر متزايد
 els.btnSkip.addEventListener('click', ()=>{
-  // خصم النقاط حسب السعر المتزايد
   state.game.score -= state.game.skipCost;
   state.game.skips++; state.game.skipCost += 20;
   stopTimer();
   updateHUD();
-  // عدم احتساب السؤال (لا صحيح ولا خطأ)
   state.game.questionIndex++;
   nextQuestion();
 });
@@ -324,27 +344,23 @@ els.btnNextLevel.addEventListener('click', ()=>{
     startLevel();
   }
 });
-els.btnWithdraw.addEventListener('click', ()=>{
-  finalizeAndShowResults('انسحاب اللاعب');
-});
-els.playAgainBtn.addEventListener('click', ()=> {
-  location.reload();
-});
-els.openLeaderboardBtn.addEventListener('click', ()=> showScreen('leaderboard'));
-els.gotoLeaderboard.addEventListener('click', ()=> showScreen('leaderboard'));
+els.btnWithdraw.addEventListener('click', ()=> finalizeAndShowResults('انسحاب اللاعب'));
+els.playAgainBtn.addEventListener('click', ()=> location.reload());
+els.openLeaderboardBtn.addEventListener('click', ()=> { showScreen('leaderboard'); refreshLeaderboard(); });
+els.gotoLeaderboard.addEventListener('click', ()=> { showScreen('leaderboard'); refreshLeaderboard(); });
 
 function finalizeAndShowResults(reason=''){
-  // بناء الإحصاءات
   const answered = state.game.correct + state.game.wrong;
   const accuracy = answered ? +(100*state.game.correct/answered).toFixed(1) : 0;
-  const avg = answered ? Math.round(state.game.totalTimeSec/answered) : 0;
+  const avg = answered ? Math.round(state.game.totalTimeSec/Math.max(1, answered)) : 0;
   const levelKey = getCurrentLevelKey();
   const rating = accuracy>=85 ? 'ممتاز' : accuracy>=60 ? 'جيّد' : 'يحتاج تحسين';
+  const attemptNumber = nextAttemptNumber();
 
   const stats = {
     name: state.player.name,
     playerId: state.player.playerId,
-    attempt: 1, // يمكن زيادتها لاحقًا
+    attempt: attemptNumber,
     correct: state.game.correct,
     wrong: state.game.wrong,
     skips: state.game.skips,
@@ -356,18 +372,17 @@ function finalizeAndShowResults(reason=''){
     rating
   };
 
-  // عرض النتائج
   showScreen('results');
   renderResults(stats);
 
-  // إرسال: نتائج + سجل إلى GAS (إذا كان مُعدًّا)
+  // إرسال إلى GAS (نتيجة + سجل)
   if(CONFIG.APPS_SCRIPT_URL && CONFIG.APPS_SCRIPT_URL.startsWith('http')){
     sendToGAS('gameResult', stats).catch(()=>{});
     sendToGAS('log', {
-      attemptNumber: stats.attempt,
+      attemptNumber,
       deviceId: state.player.deviceId,
       playerId: state.player.playerId,
-      name: stats.name,
+      name: state.player.name,
       correct: stats.correct, wrong: stats.wrong, accuracy: stats.accuracy,
       skips: stats.skips, usedFifty: state.game.usedFifty, usedFreeze: state.game.usedFreeze,
       score: stats.score, totalTimeSec: stats.total, avgTimeSec: stats.avg,
@@ -375,8 +390,9 @@ function finalizeAndShowResults(reason=''){
     }).catch(()=>{});
   }
 
-  // تحديث لوحة الصدارة (اختياري عبر Supabase)
-  if(supa) {
+  // تحديث لوحة الصدارة عبر Supabase
+  if(supa){
+    const isImpossibleFinisher = (levelKey === 'impossible' && state.game.questionIndex >= LEVEL_COUNTS['impossible']);
     supa.from('leaderboard').upsert({
       device_id: state.player.deviceId,
       player_id: state.player.playerId,
@@ -390,6 +406,7 @@ function finalizeAndShowResults(reason=''){
       correct_answers: stats.correct,
       wrong_answers: stats.wrong,
       skips: stats.skips,
+      is_impossible_finisher: isImpossibleFinisher,
       updated_at: new Date().toISOString()
     }, { onConflict: 'device_id' }).then(()=> refreshLeaderboard());
   }
@@ -434,7 +451,7 @@ els.shareXBtn.addEventListener('click', ()=>{
 });
 
 /* ===========================
-   البلاغات
+   البلاغات (Reports)
 =========================== */
 els.openReportBtn.addEventListener('click', ()=> els.reportModal.classList.remove('hidden'));
 els.closeReport.addEventListener('click', ()=> els.reportModal.classList.add('hidden'));
@@ -442,9 +459,7 @@ els.sendReportBtn.addEventListener('click', async ()=>{
   const type = els.reportType.value;
   const description = els.reportDesc.value.trim();
   let screenshot_b64 = '';
-  if(els.reportImage.files[0]){
-    screenshot_b64 = await fileToBase64(els.reportImage.files[0]);
-  }
+  if(els.reportImage.files[0]){ screenshot_b64 = await fileToBase64(els.reportImage.files[0]); }
   const auto = !!els.reportAuto.checked;
   const payload = {
     playerId: state.player.playerId,
@@ -484,7 +499,7 @@ async function sendToGAS(type, data){
 }
 
 /* ===========================
-   Supabase (اختياري)
+   Supabase (لوحة الصدارة)
 =========================== */
 let supa = null;
 if (CONFIG.SUPABASE_URL && CONFIG.SUPABASE_KEY && window.supabase) {
@@ -497,31 +512,35 @@ async function refreshLeaderboard(filter='all'){
   if(filter==='impossible') q = q.eq('is_impossible_finisher', true);
   const { data, error } = await q;
   if(error){ $('#leaderboardList').innerHTML = `<div class="muted">خطأ: ${error.message}</div>`; return; }
-  $('#leaderboardList').innerHTML = data.map((row,i)=> `
+  $('#leaderboardList').innerHTML = (data||[]).map((row,i)=> `
     <div class="row-item" data-player="${row.player_id}">
       <div class="rank">${i+1}</div>
       <div class="avatar">${row.avatar || '🙂'}</div>
       <div class="grow">
         <div><b>${row.name}</b></div>
-        <div class="muted">النقاط: ${row.score}</div>
+        <div class="muted">النقاط: ${row.score}${row.is_impossible_finisher ? ' · مستحيل ✅' : ''}</div>
       </div>
     </div>
-  `).join('');
+  `).join('') || `<div class="muted">لا يوجد بيانات بعد.</div>`;
   $$('#leaderboardList .row-item').forEach(el=>{
     el.addEventListener('click', ()=> openPlayerDetails(el.dataset.player));
   });
 }
+// تفاصيل اللاعب (من game_logs)
 async function openPlayerDetails(playerId){
   if(!supa){ return; }
-  const { data } = await supa.from('game_logs').select('*').eq('player_id', playerId).order('created_at', {ascending:false}).limit(25);
-  els.playerDetailsBody.innerHTML = (data||[]).map(x=>`
-    <div class="row-item">
-      <div class="grow">
-        <div><b>${new Date(x.created_at).toLocaleString('ar')}</b></div>
-        <div class="muted">نقاط: ${x.score} · دقة: ${x.accuracy}% · مستوى: ${x.level}</div>
+  const { data, error } = await supa.from('game_logs').select('*').eq('player_id', playerId).order('created_at', {ascending:false}).limit(25);
+  if(error){ els.playerDetailsBody.innerHTML = `<div class="muted">خطأ: ${error.message}</div>`; }
+  else {
+    els.playerDetailsBody.innerHTML = (data||[]).map(x=>`
+      <div class="row-item">
+        <div class="grow">
+          <div><b>${new Date(x.created_at).toLocaleString('ar')}</b></div>
+          <div class="muted">نقاط: ${x.score} · دقة: ${x.accuracy}% · مستوى: ${x.level} · تخطي: ${x.skips}</div>
+        </div>
       </div>
-    </div>
-  `).join('') || `<div class="muted">لا توجد بيانات.</div>`;
+    `).join('') || `<div class="muted">لا توجد بيانات.</div>`;
+  }
   els.playerDetailsModal.classList.remove('hidden');
 }
 els.closePlayerModal.addEventListener('click', ()=> els.playerDetailsModal.classList.add('hidden'));
@@ -544,7 +563,7 @@ setInterval(()=> {
    تنقّلات عامة
 =========================== */
 $$('.back-btn').forEach(b=> b.addEventListener('click', ()=> showScreen(b.dataset.back.slice(1)) ));
-$('#openDevBtn').addEventListener('click', ()=>{
+els.openDevBtn.addEventListener('click', ()=>{
   const p = prompt('أدخل كلمة مرور المطوّر'); if(p !== CONFIG.DEV_PASSWORD) return toast('كلمة المرور غير صحيحة');
   state.ui.devMode = true;
   showScreen('levelSelect');
@@ -553,26 +572,28 @@ $('#screen-level-select').addEventListener('click', (e)=>{
   const btn = e.target.closest('.pill'); if(!btn) return;
   startLevel(btn.dataset.level);
 });
-
 els.startBtn.addEventListener('click', ()=> showScreen('avatar'));
 els.avatarNextBtn.addEventListener('click', ()=> showScreen('name'));
 els.playerNameInput.addEventListener('input', ()=>{
-  const name = els.playerNameInput.value.trim();
-  els.confirmNameBtn.disabled = !(name.length>=2 && name.length<=25);
+  const ok = validateName(els.playerNameInput.value);
+  els.confirmNameBtn.disabled = !ok;
 });
 els.confirmNameBtn.addEventListener('click', ()=>{
-  state.player.name = els.playerNameInput.value.trim();
+  const name = els.playerNameInput.value.trim();
+  if(!validateName(name)) return toast('الاسم بين 2 و 25 حرفًا');
+  state.player.name = name;
   if(!state.player.playerId) state.player.playerId = uuid('PL');
-  if(!state.player.deviceId) state.player.deviceId = deviceId();
+  if(!state.player.deviceId) state.player.deviceId = getDeviceId();
   showScreen('instructions');
 });
 els.startRoundBtn.addEventListener('click', ()=>{
   state.game.currentLevelIndex = 0;
+  state.game.score = CONFIG.STARTING_SCORE;
+  state.game.correct = 0; state.game.wrong = 0;
+  state.game.skips = 0; state.game.skipCost = 20;
+  state.game.totalTimeSec = 0;
   startLevel();
 });
-
-// فتح الصدارة من النتائج
-els.openLeaderboardBtn.addEventListener('click', ()=> showScreen('leaderboard'));
 
 /* ===========================
    بدء التطبيق
@@ -582,6 +603,5 @@ els.openLeaderboardBtn.addEventListener('click', ()=> showScreen('leaderboard'))
   await loadQuestions();
   updateHUD();
   renderLevelDots();
-  $('#closePlayerModal')?.addEventListener('click', ()=> els.playerDetailsModal.classList.add('hidden'));
   $('#gotoLeaderboard')?.addEventListener('click', ()=> { showScreen('leaderboard'); refreshLeaderboard(); });
 })();
