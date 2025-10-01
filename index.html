@@ -4,15 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>مسابقة المعلومات</title>
+
+  <!-- خط كايرو -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css" />
-  <!-- Supabase SDK (مطلوب للوحة الصدارة) -->
+
+  <!-- الأنماط -->
+  <link rel="stylesheet" href="./style.css?v=4" />
+
+  <!-- Supabase SDK -->
   <script defer src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body class="theme-dark">
   <header class="app-header">
-    <div class="brand">مسابقة المعلومات 🧠</div>
+    <div class="brand">🧠 مسابقة المعلومات</div>
     <div class="header-actions">
       <button id="themeToggle" class="icon-btn" title="تبديل الوضع">🌓</button>
       <button id="gotoLeaderboard" class="ghost-btn">لوحة الصدارة 🏆</button>
@@ -63,7 +68,7 @@
       <div class="card">
         <h2>تعليمات اللعبة 📋</h2>
         <ul class="bullets">
-          <li>النقاط: صحيحة +100 | خاطئة -50 | مكافأة السرعة +50</li>
+          <li>النقاط: صحيحة +100 | خاطئة -50</li>
           <li>الوقت: 30 ثانية لكل سؤال</li>
           <li>المساعدات: 50:50 (مرة/جولة) | التجميد 10ث (مرة/جولة) | التخطي غير محدود (20 نقطة وتزداد 20 مع كل استخدام)</li>
           <li>الأخطاء: مسموح 3 فقط</li>
@@ -77,7 +82,7 @@
       </div>
     </section>
 
-    <!-- اختيار المستوى (للمطوّر فقط) -->
+    <!-- اختيار المستوى (وضع المطور فقط) -->
     <section id="screen-level-select" class="screen">
       <div class="card">
         <h2>اختيار المستوى (وضع المطوّر فقط)</h2>
@@ -105,15 +110,9 @@
       </div>
 
       <div class="helpers">
-        <button id="btnSkip" class="helper">
-          تخطي <small id="skipCost">(20)</small>
-        </button>
-        <button id="btnFreeze" class="helper">
-          ❄️ تجميد <small>10ث</small>
-        </button>
-        <button id="btnFifty" class="helper">
-          50:50
-        </button>
+        <button id="btnSkip" class="helper">⏭ تخطي <small id="skipCost">(20)</small></button>
+        <button id="btnFreeze" class="helper">❄️ تجميد <small>10ث</small></button>
+        <button id="btnFifty" class="helper">🔀 50:50</button>
       </div>
 
       <div class="timer">
@@ -129,7 +128,7 @@
       </div>
     </section>
 
-    <!-- نافذة نهاية المستوى -->
+    <!-- نهاية المستوى -->
     <section id="screen-level-end" class="screen">
       <div class="card center">
         <h2>انتهى المستوى 🎯</h2>
@@ -140,7 +139,7 @@
       </div>
     </section>
 
-    <!-- شاشة النتائج النهائية -->
+    <!-- النتائج النهائية -->
     <section id="screen-results" class="screen">
       <div class="card">
         <h2>🏆 النتائج النهائية 🏆</h2>
@@ -178,7 +177,7 @@
       </div>
     </section>
 
-    <!-- نافذة تفاصيل اللاعب (من الصدارة) -->
+    <!-- نافذة تفاصيل اللاعب -->
     <div id="playerDetailsModal" class="modal hidden">
       <div class="modal-content">
         <button class="modal-close" id="closePlayerModal">×</button>
@@ -188,37 +187,3 @@
     </div>
 
     <!-- نافذة البلاغات -->
-    <div id="reportModal" class="modal hidden">
-      <div class="modal-content">
-        <button class="modal-close" id="closeReport">×</button>
-        <h3>إبلاغ عن مشكلة 🛠️</h3>
-        <label class="label">نوع المشكلة</label>
-        <select id="reportType" class="text-input">
-          <option>سؤال غير واضح</option>
-          <option>إجابة خاطئة</option>
-          <option>خطأ تقني</option>
-          <option>مشكلة في المؤقت</option>
-          <option>مشكلة عرض/لغة</option>
-        </select>
-        <label class="label">الوصف</label>
-        <textarea id="reportDesc" class="text-area" rows="3" placeholder="اشرح المشكلة بإيجاز"></textarea>
-        <label class="label">صورة (اختياري)</label>
-        <input id="reportImage" type="file" accept="image/*" />
-        <div class="row">
-          <label><input type="checkbox" id="reportAuto" checked /> اكتشاف تلقائي (نوع المتصفح/الشاشة/السؤال الحالي)</label>
-        </div>
-        <div class="stack mt-3">
-          <button id="sendReportBtn" class="primary">إرسال البلاغ</button>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <footer class="app-footer">
-    <button id="openReportBtn" class="fab" title="إبلاغ">⚠️</button>
-  </footer>
-
-  <script src="./script.js"></script>
-</body>
-</html>
