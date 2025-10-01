@@ -36,7 +36,7 @@
 </head>
 <body data-theme="dark" aria-live="polite">
     <div id="toast-container" class="toast-container" aria-live="assertive"></div>
-    <div id="reportErrorFab" class="report-fab" role="button" aria-label="الإبلاغ عن مشكلة">⚠️</div>
+    <div id="reportErrorFab" class="report-fab" role="button" aria-label="الإبلاغ عن مشكلة"⚠️</div>
     <div id="devFloatingBtn" class="dev-fab" role="button" title="تبديل وضع المطور" style="display: none;"><span>⚡</span></div>
 
     <!-- SCREENS -->
@@ -197,30 +197,9 @@
             </div>
             <section class="share-section">
                 <h3>📢 مشاركة النتائج</h3>
-                <div class="share-options">
-                    <div class="share-header">
-                        <button class="share-option-btn active" data-platform="x">
-                            <span class="share-icon">🔵</span>
-                            <span>انشر على X</span>
-                        </button>
-                        <button class="share-option-btn" data-platform="copy">
-                            <span class="share-icon">📋</span>
-                            <span>انسخ النص</span>
-                        </button>
-                    </div>
-                    <div class="share-content">
-                        <div id="xShareContent" class="platform-content active">
-                            <p class="share-description">انقر لنشر نتائجك مباشرة على X</p>
-                            <button class="btn-main share-action-btn" data-action="shareOnX">نشر على X</button>
-                        </div>
-                        <div id="copyShareContent" class="platform-content">
-                            <p class="share-description">انسخ النص التالي لمشاركته:</p>
-                            <div class="copy-text-container">
-                                <textarea id="shareText" readonly class="share-text-area"></textarea>
-                                <button class="copy-text-btn" data-action="copyShareText">نسخ</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="share-buttons">
+                    <button class="share-btn x" data-action="shareOnX">X</button>
+                    <button class="share-btn instagram" data-action="shareOnInstagram">Instagram</button>
                 </div>
             </section>
             <div class="button-group">
@@ -233,11 +212,6 @@
     <div id="leaderboardScreen" class="screen screen--align-top">
         <div class="content-box">
             <header class="screen-header"><h2>🏆 لوحة الصدارة 🏆</h2></header>
-            <div class="leaderboard-filters">
-                <button class="filter-btn active" data-filter="all">الكل</button>
-                <button class="filter-btn" data-filter="impossible">متخطو المستحيل</button>
-                <button class="filter-btn" data-filter="top10">أفضل 10</button>
-            </div>
             <div id="leaderboardContent" aria-live="polite"></div>
             <div class="button-group">
                 <button class="btn-secondary" data-action="showStartScreen">العودة</button>
@@ -268,8 +242,6 @@
                         <option value="technical">مشكلة تقنية (تجمد، بطء)</option>
                         <option value="question_error">خطأ في السؤال أو الإجابة</option>
                         <option value="account_issue">مشكلة في الحساب أو النقاط</option>
-                        <option value="ui_issue">مشكلة في واجهة المستخدم</option>
-                        <option value="performance">مشكلة في الأداء</option>
                         <option value="suggestion">اقتراح لتحسين اللعبة</option>
                         <option value="other">أخرى</option>
                     </select>
@@ -277,17 +249,6 @@
                 <div class="form-group">
                     <label for="problemDescription">وصف المشكلة:</label>
                     <textarea id="problemDescription" name="problemDescription" placeholder="يرجى تقديم تفاصيل دقيقة..." required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="problemScreenshot">رفع صورة (اختياري):</label>
-                    <input type="file" id="problemScreenshot" name="problemScreenshot" accept="image/*">
-                    <div id="screenshotPreview" class="screenshot-preview" style="display: none;"></div>
-                </div>
-                <div class="form-group">
-                    <button type="button" id="autoDetectProblem" class="btn-secondary auto-detect-btn">
-                        <span class="detect-icon">🔍</span>
-                        الكشف التلقائي عن المشكلة
-                    </button>
                 </div>
                 <div class="modal-buttons">
                     <button type="submit" class="btn-main">إرسال البلاغ</button>
@@ -325,72 +286,13 @@
     </div>
     
     <div id="playerDetailsModal" class="modal">
-        <div class="modal-content player-details-modal">
-            <div class="modal-header">
-                <h3>تفاصيل اللاعب</h3>
-                <button class="close-modal-btn" data-action="closeModal" data-modal-id="playerDetailsModal">&times;</button>
-            </div>
-            <div class="player-details-content">
-                <header class="player-details-header">
-                    <img id="detailsAvatar" src="" alt="صورة اللاعب الرمزية" class="player-details-avatar">
-                    <div class="player-main-info">
-                        <h4 id="detailsName"></h4>
-                        <span id="detailsPlayerId" class="player-id"></span>
-                    </div>
-                </header>
-                <div class="player-stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">⭐</div>
-                        <div class="stat-info">
-                            <span class="stat-label">النقاط</span>
-                            <span id="detailsScore" class="stat-value"></span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">🎯</div>
-                        <div class="stat-info">
-                            <span class="stat-label">الدقة</span>
-                            <span id="detailsAccuracy" class="stat-value"></span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">⏱️</div>
-                        <div class="stat-info">
-                            <span class="stat-label">الوقت</span>
-                            <span id="detailsTime" class="stat-value"></span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">📊</div>
-                        <div class="stat-info">
-                            <span class="stat-label">المستوى</span>
-                            <span id="detailsLevel" class="stat-value"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="detailed-stats">
-                    <div class="stat-row">
-                        <span class="stat-label">✅ الإجابات الصحيحة:</span>
-                        <span id="detailsCorrect" class="stat-value"></span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">❌ الإجابات الخاطئة:</span>
-                        <span id="detailsWrong" class="stat-value"></span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">⏭️ مرات التخطي:</span>
-                        <span id="detailsSkips" class="stat-value"></span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">🔢 رقم المحاولة:</span>
-                        <span id="detailsAttempt" class="stat-value"></span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">📈 تقييم الأداء:</span>
-                        <span id="detailsPerformance" class="stat-value performance-badge"></span>
-                    </div>
-                </div>
-            </div>
+        <div class="modal-content">
+            <header class="player-details-header">
+                <img id="detailsAvatar" src="" alt="صورة اللاعب الرمزية" class="player-details-avatar">
+                <h3 id="detailsName"></h3>
+                <span id="detailsPlayerId" class="player-id"></span>
+            </header>
+            <div id="playerDetailsContent" class="player-details-body"></div>
             <div class="modal-buttons">
                 <button class="btn-secondary" data-action="closeModal" data-modal-id="playerDetailsModal">إغلاق</button>
             </div>
