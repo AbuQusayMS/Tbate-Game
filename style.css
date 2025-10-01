@@ -1,0 +1,33 @@
+body {
+  font-family: "Cairo", sans-serif;
+  background: #0f172a;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.screen {
+  display: none;
+  padding: 20px;
+}
+
+.screen.active {
+  display: block;
+}
+
+button {
+  background: #facc15;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#options button {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+}
