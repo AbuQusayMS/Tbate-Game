@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مسابقة المعلومات 🎮</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- شاشة البداية -->
+  <div id="start-screen" class="screen active">
+    <h1>مسابقة المعلومات 🧠</h1>
+    <button onclick="goToScreen('name-screen')">ابدأ اللعب</button>
+    <button onclick="goToScreen('leaderboard-screen')">لوحة الصدارة 🏆</button>
+    <button onclick="goToScreen('dev-screen')">وضع المطور ⚙️</button>
+  </div>
+
+  <!-- شاشة إدخال الاسم -->
+  <div id="name-screen" class="screen">
+    <h2>أدخل اسمك</h2>
+    <input type="text" id="playerName" placeholder="مثلاً: عبد الله" />
+    <button onclick="confirmName()">تأكيد الاسم</button>
+  </div>
+
+  <!-- شاشة اختيار الصورة الرمزية -->
+  <div id="avatar-screen" class="screen">
+    <h2>اختر صورتك الرمزية</h2>
+    <div id="avatar-grid"></div>
+    <button onclick="confirmAvatar()">التالي</button>
+  </div>
+
+  <!-- شاشة التعليمات -->
+  <div id="instructions-screen" class="screen">
+    <h2>تعليمات اللعبة 📋</h2>
+    <ul>
+      <li>✅ صحيحة: +100 | ❌ خاطئة: -50</li>
+      <li>⏱ لكل سؤال 30 ثانية</li>
+      <li>🛠 المساعدات: 50:50 – تجميد – تخطي (متغير)</li>
+      <li>🎯 المستويات: سهل / متوسط / صعب / مستحيل</li>
+      <li>⚠️ الأخطاء المسموح بها: 3 فقط</li>
+    </ul>
+    <button onclick="goToScreen('level-screen')">حسناً، فهمت</button>
+  </div>
+
+  <!-- شاشة اختيار المستوى -->
+  <div id="level-screen" class="screen">
+    <h2>اختر المستوى</h2>
+    <button onclick="startGame('easy')">سهل</button>
+    <button onclick="startGame('medium')">متوسط</button>
+    <button onclick="startGame('hard')">صعب</button>
+    <button onclick="startGame('impossible')">مستحيل</button>
+  </div>
+
+  <!-- شاشة اللعبة -->
+  <div id="game-screen" class="screen">
+    <div id="game-header">
+      <span id="level-label"></span>
+      <span id="score-label">النقاط: 0</span>
+      <span id="timer-label">30</span>
+    </div>
+    <h3 id="question-text"></h3>
+    <div id="options"></div>
+    <div id="helpers">
+      <button onclick="useHelper('skip')">⏭ تخطي (20+)</button>
+      <button onclick="useHelper('freeze')">❄️ تجميد</button>
+      <button onclick="useHelper('fifty')">🔀 50:50</button>
+    </div>
+  </div>
+
+  <!-- شاشة النتائج -->
+  <div id="results-screen" class="screen">
+    <h2>🏆 النتائج النهائية 🏆</h2>
+    <div id="final-results"></div>
+    <button onclick="shareResults()">انشر على 𝕏</button>
+    <button onclick="restartGame()">لعب مرة أخرى</button>
+    <button onclick="goToScreen('leaderboard-screen')">لوحة الصدارة</button>
+  </div>
+
+  <!-- شاشة لوحة الصدارة -->
+  <div id="leaderboard-screen" class="screen">
+    <h2>🏆 لوحة الصدارة 🏆</h2>
+    <div id="leaderboard"></div>
+    <button onclick="goToScreen('start-screen')">العودة</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
