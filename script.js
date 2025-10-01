@@ -524,7 +524,7 @@
     async function fetchAndDisplayLeaderboard(filter = 'all') {
         toggleLoader(true);
         try {
-            let query = supabase.from('leaderboard').select('*').order('score', { ascending: false });
+            let query = supabaseClient.from('leaderboard').select('*').order('score', { ascending: false });
             
             if (filter === 'top10') {
                 query = query.limit(10);
@@ -569,7 +569,7 @@
     async function showPlayerDetails(playerId) {
         toggleLoader(true);
         try {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('game_logs')
                 .select('*')
                 .eq('player_id', playerId)
@@ -606,7 +606,7 @@
     // ---------------------------------- //
     
     // إنشاء عميل Supabase
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     
     // دالة لحفظ بيانات اللعبة
     async function saveGameData() {
@@ -631,12 +631,12 @@
         
         try {
             // 1. إدراج في سجلات اللعبة
-            const { error: logError } = await supabase.from('game_logs').insert(logData);
+            const { error: logError } = await supabaseClient.from('game_logs').insert(logData);
             if(logError) console.error('Error saving game log:', logError);
             
             // 2. تحديث لوحة الصدارة (Upsert)
             // Upsert يعني: إذا كان اللاعب موجوداً قم بتحديث بياناته (فقط إذا كانت النتيجة الجديدة أعلى)، وإذا لم يكن موجوداً قم بإضافته.
-            const { error: leaderboardError } = await supabase.rpc('upsert_leaderboard', {
+            const { error: leaderboardError } = await supabaseClient.rpc('upsert_leaderboard', {
                 p_player_id: logData.player_id,
                 p_name: logData.name,
                 p_avatar: logData.avatar,
@@ -827,3 +827,4 @@
     document.addEventListener('DOMContentLoaded', init);
 
 })();
+
