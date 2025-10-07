@@ -313,17 +313,19 @@
           </select>
         </div>
 
+        <!-- MODIFIED: Changed checkboxes to a dropdown select -->
         <div class="form-group">
-          <label>أين ظهرت المشكلة؟ (اختياري)</label>
-          <div class="detail-item" style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
-            <label><input type="checkbox" name="where[]" value="start"> شاشة البداية</label>
-            <label><input type="checkbox" name="where[]" value="avatar"> اختيار الصورة الرمزية</label>
-            <label><input type="checkbox" name="where[]" value="name"> إدخال الاسم</label>
-            <label><input type="checkbox" name="where[]" value="instructions"> التعليمات</label>
-            <label><input type="checkbox" name="where[]" value="game"> أثناء الأسئلة</label>
-            <label><input type="checkbox" name="where[]" value="leaderboard"> لوحة الصدارة</label>
-            <label><input type="checkbox" name="where[]" value="end"> شاشة النتيجة</label>
-          </div>
+          <label for="problemLocation">أين ظهرت المشكلة؟ (اختياري)</label>
+          <select id="problemLocation" name="problemLocation">
+            <option value="unspecified">لم أحدد...</option>
+            <option value="start">شاشة البداية</option>
+            <option value="avatar">اختيار الصورة الرمزية</option>
+            <option value="name">إدخال الاسم</option>
+            <option value="instructions">التعليمات</option>
+            <option value="game">أثناء الأسئلة</option>
+            <option value="leaderboard">لوحة الصدارة</option>
+            <option value="end">شاشة النتيجة</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -405,3 +407,4 @@
   <script src="script.js?v=18" defer></script>
 </body>
 </html>
+
