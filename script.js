@@ -575,11 +575,12 @@ class QuizGame {
     }
   } 
 
-  async handleReportSubmit(event) {  // === CHANGED
+  async handleReportSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
-    const whereList = formData.getAll('where[]');
+    // MODIFIED: Get single value from the new dropdown
+    const problemLocation = formData.get('problemLocation');
 
     const reportData = {
       type: formData.get('problemType'),
@@ -593,7 +594,8 @@ class QuizGame {
     let meta = null;
     if (this.dom.includeAutoDiagnostics?.checked) {
       meta = this.getAutoDiagnostics();
-      meta.locationHints = whereList;
+      // MODIFIED: Use the new single value
+      meta.locationHint = problemLocation;
     }
 
     // NEW: بناء سياق دقيق للسؤال الحالي
@@ -621,7 +623,7 @@ class QuizGame {
       const payloadDB = {
         ...reportData,
         image_url,
-        meta: { ...(meta || {}), context: ctx } // === NEW
+        meta: { ...(meta || {}), context: ctx }
       };
       const { error } = await this.supabase.from('reports').insert(payloadDB);
       if (error) throw error;
@@ -629,7 +631,7 @@ class QuizGame {
       this.showToast("تم إرسال بلاغك بنجاح. شكراً لك!", "success");
 
       // 3) إخطار تيليغرام: نرسل السياق كحقل مستقل أيضًا
-      const payloadMsg = { ...reportData, image_url, meta, context: ctx }; // === NEW
+      const payloadMsg = { ...reportData, image_url, meta, context: ctx };
       this.sendTelegramNotification('report', payloadMsg);
 
     } catch (err) {
@@ -1485,3 +1487,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     new QuizGame();
 });
+
