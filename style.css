@@ -45,7 +45,8 @@
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.25rem;
   --font-size-2xl: 1.5rem;
-  --font-size-3xl: 1.575rem;
+  /* MODIFIED: Slightly smaller main title */
+  --font-size-3xl: 1.5rem;
 
   /* Spacing */
   --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
@@ -171,10 +172,15 @@ img { display: block; max-width: 100%; }
 
 .content-box {
   background-color: var(--primary-color); border-radius: var(--radius-2xl);
-  padding: var(--space-6); width: 100%; max-width: 30rem; box-shadow: var(--shadow-xl);
+  /* MODIFIED: Reduced padding for more compact UI */
+  padding: var(--space-4);
+  width: 100%; max-width: 30rem; box-shadow: var(--shadow-xl);
   text-align: center; border: 1px solid var(--border-color); position: relative;
 }
-.screen-header { margin-bottom: var(--space-6); }
+.screen-header {
+  /* MODIFIED: Reduced margin for more compact UI */
+  margin-bottom: var(--space-4);
+}
 .game-title {
   font-size: var(--font-size-3xl); font-weight: 900; color: var(--gold-color);
   text-shadow: 2px 2px 4px rgba(0,0,0,.3);
@@ -190,12 +196,27 @@ h3 { font-size: var(--font-size-xl); }
 /* =========================
    🧠 Buttons & Forms
    ========================= */
-.button-group { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-6); }
-.level-selection-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--space-4); margin-top: var(--space-6); }
+.button-group {
+    display: flex;
+    flex-direction: column;
+    /* MODIFIED: Reduced gap and margin for more compact UI */
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+}
+.level-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    /* MODIFIED: Reduced gap and margin for more compact UI */
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+}
 
 .btn-main, .btn-secondary {
-  padding: var(--space-3) var(--space-6); border-radius: var(--radius-lg); font-weight: 700;
-  font-size: var(--font-size-lg); cursor: pointer; transition: all var(--transition-fast);
+  /* MODIFIED: Reduced padding and font-size for thinner buttons */
+  padding: var(--space-2) var(--space-4);
+  font-size: 1rem;
+  border-radius: var(--radius-lg); font-weight: 700;
+  cursor: pointer; transition: all var(--transition-fast);
   border: 2px solid transparent;
 }
 .btn-main { background-color: var(--gold-color); color: var(--color-black); border-color: var(--gold-color); box-shadow: var(--shadow-md); }
@@ -379,11 +400,19 @@ textarea { resize: vertical; min-height: 100px; }
 /* =========================
    🧯 Helpers
    ========================= */
-.helpers { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-3); }
+.helpers {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    /* MODIFIED: Reduced gap for more compact UI */
+    gap: var(--space-2);
+}
 .helper-btn {
   padding: var(--space-2); background-color: var(--secondary-color); color: var(--text-color); border: 1px solid var(--border-color);
   border-radius: var(--radius-lg); cursor: pointer; transition: all var(--transition-fast); display: flex; flex-direction: column;
-  align-items: center; justify-content: center; font-size: 1.1rem; text-align: center;
+  align-items: center; justify-content: center;
+  /* MODIFIED: Reduced font-size */
+  font-size: 1rem;
+  text-align: center;
 }
 .helper-cost { font-size: .75rem; font-weight: bold; color: var(--gold-color); margin-top: var(--space-1); }
 .helper-btn:not(:disabled):hover { background-color: var(--accent-color); color: var(--color-white); }
@@ -412,17 +441,31 @@ textarea { resize: vertical; min-height: 100px; }
 .main-content { width: 100%; }
 .question-box {
   background-color: var(--primary-color); border-radius: var(--radius-xl);
-  padding: var(--space-6); margin-bottom: var(--space-6); box-shadow: var(--shadow-md); text-align: center; position: relative;
+  /* MODIFIED: Reduced padding and margin for more compact UI */
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  box-shadow: var(--shadow-md); text-align: center; position: relative;
 }
 .level-badge {
   position: absolute; top: -0.75rem; left: 50%; transform: translateX(-50%);
   background-color: var(--level-color); color: #fff; padding: 0.25rem 0.75rem; border-radius: 1rem; font-weight: bold; font-size: .875rem;
 }
 #questionCounter { color: var(--gold-color); font-size: var(--font-size-lg); }
-#questionText { font-size: var(--font-size-xl); font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
-.options-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+#questionText {
+  /* MODIFIED: Slightly smaller question text */
+  font-size: 1.15rem;
+  font-weight: 600; line-height: 1.5; overflow-wrap: anywhere;
+}
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* MODIFIED: Reduced gap for more compact UI */
+    gap: var(--space-3);
+}
 .option-btn {
-  padding: var(--space-4); background-color: var(--primary-color); border: 2px solid var(--border-color);
+  /* MODIFIED: Reduced padding for thinner buttons */
+  padding: var(--space-3);
+  background-color: var(--primary-color); border: 2px solid var(--border-color);
   border-radius: var(--radius-xl); color: var(--text-color); font-size: var(--font-size-base);
   font-weight: 700; cursor: pointer; transition: all var(--transition-fast); text-align: center;
 }
@@ -456,11 +499,19 @@ textarea { resize: vertical; min-height: 100px; }
 }
 .modal.active { opacity: 1; visibility: visible; }
 .modal-content {
-  background-color: var(--primary-color); border-radius: var(--radius-2xl); padding: var(--space-6);
+  background-color: var(--primary-color); border-radius: var(--radius-2xl);
+  /* MODIFIED: Reduced padding for more compact UI */
+  padding: var(--space-4);
   width: 90%; max-width: 30rem; text-align: center; box-shadow: var(--shadow-xl);
   max-height: 90vh; overflow-y: auto;
 }
-.modal-buttons { display: flex; gap: var(--space-4); justify-content: center; margin-top: var(--space-6); }
+.modal-buttons {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    /* MODIFIED: Reduced margin for more compact UI */
+    margin-top: var(--space-4);
+}
 
 #reportImagePreview img { display:block; max-height: 240px; object-fit: contain; }
 .modal { cursor: default; }
@@ -719,3 +770,4 @@ textarea { resize: vertical; min-height: 100px; }
     --size: 86px;
   }
 }
+
