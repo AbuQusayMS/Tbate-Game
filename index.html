@@ -1,178 +1,149 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <!-- =============================================================
-       🧠 مسابقة المعلومات — ملف الواجهة الرئيسية index.html
-       هذا الملف يعرّف الهيكل العام لكل الشاشات (Screens) والنوافذ المنبثقة (Modals)
-       مع إعدادات الوصول (Accessibility) والدعم للمظهرين الداكن/الفاتح،
-       وروابط الملفات الخارجية (CSS/JS) والمكتبات اللازمة (CropperJS + Supabase)
-       جميع التعليقات توضيحية باللغة العربية لتسهيل الفهم.
-  ================================================================ -->
-
-  <!-- الترميز ودعم الأجهزة المحمولة -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <meta name="description" content="لعبة مسابقة معلومات تفاعلية متعددة المستويات مع لوحة صدارة ومساعدات." />
-  <meta name="theme-color" content="#0f3460" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-
-  <!-- العنوان والأيقونة -->
+  <meta charset="UTF-8">
+  <!-- MODIFIED: Added viewport-fit=cover to enable safe area insets -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="مسابقة معلومات تفاعلية لاختبار ثقافتك في مستويات متعددة.">
   <title>🧠 مسابقة المعلومات | Hybrid Edition</title>
-  <link rel="icon" type="image/png" href="https://em-content.zobj.net/thumbs/120/apple/354/brain_1f9e0.png" />
 
-  <!-- خطوط غوغل: خط Cairo يدعم العربية -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="https://em-content.zobj.net/thumbs/120/apple/354/brain_1f9e0.png">
 
-  <!-- مكتبة CropperJS لتعديل/قص الصورة الرمزية داخل نافذة المحرّر -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" integrity="sha512-yNw2Jb7l8yH0bS2p1n2s0uH3jI8Xz0P4m9JbO9m9U0p8XQp9g7Vf1mC2xgZzNDN+Gxwqk8Zz0x2x5wS8h0C0wA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
-  <!-- ملف التنسيقات الرئيسي للمشروع (يحتوي على تصميم الشاشات والثيم) -->
-  <link rel="stylesheet" href="style.css" />
+  <!-- Cropper.js CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
 
-  <!-- بيانات منظّمة (Structured Data) لتحسين الظهور في محركات البحث -->
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- JSON-LD for SEO -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "VideoGame",
     "name": "🧠 مسابقة المعلومات",
-    "description": "لعبة مسابقة تفاعلية لاختبار المعلومات في مستويات متعددة مع لوحة صدارة.",
+    "description": "لعبة مسابقة تفاعلية لاختبار المعلومات في مستويات متعددة",
     "applicationCategory": "GameApplication",
     "operatingSystem": "Web Browser",
     "author": { "@type": "Person", "name": "MS AbuQusay" }
   }
   </script>
-
-  <!--
-    ✅ ملاحظة مهمة لتقليل وميض تغيير المظهر (FART):
-    نضبط سمة المظهر (داكن/فاتح) مبكّرًا قبل رسم الصفحة اعتمادًا على LocalStorage.
-    هذا السكربت صغير جدًا ومضمّن هنا لضمان التنفيذ المبكر.
-  -->
-  <script>
-    (function() {
-      try {
-        var saved = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', saved);
-      } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      }
-    })();
-  </script>
 </head>
+<body data-theme="dark">
+  <noscript>هذه اللعبة تتطلب تفعيل JavaScript.</noscript>
 
-<body aria-live="polite">
-  <!-- =============================================================
-       ❗ رسالة بديلة عند تعطيل الجافاسكربت
-       توضح للمستخدم أن اللعبة تحتاج JavaScript لتعمل
-  ================================================================ -->
-  <noscript>
-    الرجاء تفعيل الجافاسكربت في المتصفح لتعمل اللعبة بشكل صحيح.
-  </noscript>
-
-  <!-- =============================================================
-       ✅ حاوية التنبيهات (Toasts)
-       تُستخدم لعرض رسائل نجاح/خطأ/معلومات أعلى الصفحة.
-       يتعامل معها الكود عبر إضافة عناصر .toast داخل هذا العنصر.
-  ================================================================ -->
   <div id="toast-container" class="toast-container" aria-live="assertive"></div>
 
-  <!-- =============================================================
-       🆘 زر عائم للإبلاغ عن مشكلة بسرعة (يفتح نافذة البلاغات)
-       يمكن ربطه لاحقًا بحدث لفتح modal البلاغات.
-  ================================================================ -->
-  <button id="reportErrorFab" class="report-fab" type="button" title="الإبلاغ عن مشكلة" aria-label="الإبلاغ عن مشكلة">
-    ⚠️
-  </button>
+  <!-- ✅ إصلاح العنصر المكسور -->
+  <div id="reportErrorFab" class="report-fab" role="button" aria-label="الإبلاغ عن مشكلة">⚠️</div>
 
-  <!-- =============================================================
-       ⚙️ زر عائم لوضع المطوّر (يظهر فقط بعد التفعيل)
-       سيقوم السكربت بتبديل حالته وإظهاره/إخفائه.
-  ================================================================ -->
-  <button id="devFloatingBtn" class="dev-fab inactive" type="button" title="تبديل وضع المطوّر" style="display:none">
-    <span>⚡</span>
-  </button>
+  <div id="devFloatingBtn" class="dev-fab" role="button" title="تبديل وضع المطور" style="display: none;"><span>⚡</span></div>
 
-  <!-- =============================================================
-       🖥️ الشاشات الرئيسية (Screens)
-       ملاحظة: كل شاشة عنصر .screen بارتفاع كامل، ويتم إظهار/إخفاء الشاشات
-       بإضافة/إزالة الصنف .active عبر السكربت. شاشة واحدة نشطة في كل لحظة.
-  ================================================================ -->
-
-  <!-- شاشة التحميل الأولى أثناء تجهيز الموارد -->
-  <section id="loader" class="screen active" role="status" aria-label="جاري التحميل">
+  <!-- SCREENS -->
+  <div id="loader" class="screen active" role="status" aria-label="جاري التحميل">
     <div class="spinner" aria-hidden="true"></div>
-    <p id="loaderText" class="game-subtitle" style="margin-top:1rem">جاري تحميل اللعبة...</p>
-  </section>
+    <p id="loaderText" class="game-subtitle" style="margin-top: 1rem;">جاري تحميل اللعبة...</p>
+  </div>
 
-  <!-- شاشة البداية: عرض العنوان والأزرار الرئيسية -->
-  <section id="startScreen" class="screen" aria-labelledby="startTitle">
+  <div id="startScreen" class="screen">
     <div class="content-box">
       <header class="screen-header">
-        <h1 id="startTitle" class="game-title">🧠 مسابقة المعلومات</h1>
-        <p class="game-subtitle">اختبر معلوماتك وتحدَّ أصدقاءك عبر مستويات متعددة</p>
+        <h1 class="game-title">🧠 مسابقة المعلومات</h1>
+        <p class="game-subtitle">اختبر قدراتك في مسابقة تفاعلية شيقة</p>
       </header>
-      <div class="button-group start-menu">
-        <!-- الأزرار مُعرّفة ببيانات data-action ليقرأها السكربت ويوجه التدفق -->
-        <button class="btn-main" data-action="showAvatarScreen">ابدأ اللعب</button>
-        <button class="btn-secondary" data-action="showLeaderboard">لوحة الصدارة</button>
-        <button class="btn-secondary" data-action="showDevPasswordModal">وضع المطوّر</button>
+      <div class="button-group">
+        <button data-action="showAvatarScreen" class="btn-main">ابدأ اللعب</button>
+        <button data-action="showLeaderboard" class="btn-secondary">لوحة الصدارة</button>
+        <button data-action="showDevPasswordModal" class="btn-secondary">وضع المطور</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- شاشة اختيار الصورة الرمزية -->
-  <section id="avatarScreen" class="screen" aria-labelledby="avatarTitle">
+  <div id="avatarScreen" class="screen">
     <div class="content-box">
-      <header class="screen-header"><h2 id="avatarTitle">اختر صورتك الرمزية</h2></header>
-      <!-- شبكة الصور الرمزية تُملأ ديناميكيًا من السكربت (populateAvatarGrid) -->
+      <header class="screen-header"><h2>اختر صورتك الرمزية</h2></header>
       <div class="avatar-grid" role="group" aria-label="خيارات الصور الرمزية"></div>
       <div class="button-group">
-        <!-- يتم تفعيل الزر بعد اختيار صورة -->
-        <button id="confirmAvatarBtn" class="btn-main" data-action="showNameEntryScreen" disabled>التالي</button>
+        <button id="confirmAvatarBtn" class="btn-main" disabled data-action="showNameEntryScreen">التالي</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- شاشة إدخال الاسم -->
-  <section id="nameEntryScreen" class="screen" aria-labelledby="nameTitle">
+  <div id="nameEntryScreen" class="screen">
     <div class="content-box">
-      <header class="screen-header"><h2 id="nameTitle">أدخل اسمك</h2></header>
+      <header class="screen-header"><h2>أدخل اسمك</h2></header>
       <div class="form-group">
         <label for="nameInput" class="sr-only">اسم اللاعب</label>
-        <input id="nameInput" type="text" inputmode="text" autocomplete="name" placeholder="مثلاً: عبد الله" maxlength="25" aria-required="true" aria-describedby="nameError" />
+        <input type="text" id="nameInput" placeholder="مثلا: عبد الله" maxlength="25" autocomplete="name" aria-required="true" aria-describedby="nameError">
         <div id="nameError" class="error-message" aria-live="polite"></div>
       </div>
       <div class="button-group">
-        <!-- يتفعّل عند تحقق الشروط (>=3 أحرف) -->
-        <button id="confirmNameBtn" class="btn-main" data-action="confirmName" disabled>تأكيد الاسم</button>
+        <button id="confirmNameBtn" class="btn-main" disabled data-action="confirmName">تأكيد الإسم</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- شاشة التعليمات قبل البدء -->
-  <section id="instructionsScreen" class="screen screen--align-top" aria-labelledby="instTitle">
+  <div id="instructionsScreen" class="screen screen--align-top">
     <div class="content-box">
-      <header class="screen-header"><h2 id="instTitle">📋 تعليمات اللعبة</h2></header>
+      <header class="screen-header"><h2>📋 إرشادات اللعب</h2></header>
       <div class="instructions-content">
-        <!-- عناصر التعليمات بشكل نقاط مختصرة مع أيقونات -->
-        <div class="instruction-item"><span class="instruction-icon">⚖️</span><div><strong>النقاط:</strong><br>صحيحة +100 / خاطئة -50 / مكافأة سرعة +50 (إذا أجبت قبل منتصف الوقت).</div></div>
-        <div class="instruction-item"><span class="instruction-icon">⏱️</span><div><strong>الوقت:</strong><br>30 ثانية لكل سؤال — انتهاء الوقت = خطأ.</div></div>
-        <div class="instruction-item"><span class="instruction-icon">🛠️</span><div><strong>المساعدات:</strong><br>50:50 و ❄️ تجميد 10ث (مرة واحدة لكل جولة) — ⏭️ تخطي غير محدود وتزداد كلفته 20 نقطة كل مرة.</div></div>
-        <div class="instruction-item"><span class="instruction-icon">🎯</span><div><strong>المستويات:</strong><br>سهل / متوسط / صعب / مستحيل — الانتقال عبر نافذة نهاية المستوى.</div></div>
-        <div class="instruction-item"><span class="instruction-icon">🚫</span><div><strong>الأخطاء:</strong><br>مسموح 3 أخطاء لكل جولة.</div></div>
-        <div class="instruction-item"><span class="instruction-icon">📩</span><div><strong>الدعم:</strong><br>تواصل عبر <a href="https://x.com/_MS_AbuQusay" target="_blank" rel="noopener noreferrer">X</a> أو <a href="https://www.instagram.com/_ms_abuqusay" target="_blank" rel="noopener noreferrer">Instagram</a>.</div></div>
+
+        <div class="instruction-item">
+          <span class="instruction-icon">⚖️</span>
+          <div>
+            <strong>النقاط:</strong>
+            <ul>
+              <li>الصحيحة: +100</li>
+              <li>الخاطئة: -100</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="instruction-item">
+          <span class="instruction-icon">🛠️</span>
+          <div>
+            <strong>المساعدات:</strong>
+            <ul>
+              <li>التخطي مجانية تماما</li>
+              <li>الأخرى تتجدد مع أول ثلاثة مستويات</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="instruction-item">
+          <span class="instruction-icon">🎯</span>
+          <div class="inline-list">
+            <strong>المستويات:</strong><br>
+            سهل / متوسط / صعب / مستحيل
+          </div>
+        </div>
+
+        <div class="instruction-item">
+          <span class="instruction-icon">📩</span>
+          <div>
+            <strong>الدعم:</strong>
+            <ul>
+              <li>تواصل عبر <a href="https://x.com/_MS_AbuQusay" target="_blank" rel="noopener noreferrer">إكس</a></li>
+              <li>أو عبر <a href="https://www.instagram.com/_ms_abuqusay" target="_blank" rel="noopener noreferrer">انستغرام</a></li>
+            </ul>
+          </div>
+        </div>
+
       </div>
+
       <div class="button-group">
-        <button class="btn-main" data-action="postInstructionsStart">حسناً، فهمت</button>
+        <button class="btn-main" data-action="postInstructionsStart">حسناً، لنبدأ</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- شاشة اختيار المستوى (تظهر فقط في وضع المطوّر) -->
-  <section id="levelSelectScreen" class="screen" aria-labelledby="devLevelTitle">
+ 
+  <div id="levelSelectScreen" class="screen">
     <div class="content-box">
-      <header class="screen-header"><h2 id="devLevelTitle">اختر مستوى للبدء (وضع المطوّر)</h2></header>
+      <header class="screen-header"><h2>اختر مستوى للبدء (وضع المطور)</h2></header>
       <div class="level-selection-grid">
         <button class="btn-secondary" data-level-index="0" data-action="startDevLevel">سهل</button>
         <button class="btn-secondary" data-level-index="1" data-action="startDevLevel">متوسط</button>
@@ -180,75 +151,66 @@
         <button class="btn-secondary" data-level-index="3" data-action="startDevLevel">مستحيل</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- شاشة اللعب الرئيسية -->
-  <main id="gameContainer" class="screen" aria-label="شاشة اللعب">
-    <!-- شريط علوي يحتوي زر إنهاء + مؤشرات مستوى + زر تبديل المظهر -->
+  <main id="gameContainer" class="screen">
     <div class="top-bar">
-      <button class="end-quiz-btn" data-action="showConfirmExitModal" aria-label="إنهاء المسابقة">🚪 إنهاء</button>
-      <div class="level-progress" aria-label="تقدم المستويات">
-        <!-- مؤشرات المستويات 1..4 مع وسوم توضيحية -->
+      <button class="end-quiz-btn" aria-label="إنهاء المسابقة" data-action="showConfirmExitModal">🚪 إنهاء</button>
+      <div class="level-progress">
         <div class="level-indicator" data-level="easy" data-tooltip="المستوى السهل">1</div>
         <div class="level-indicator" data-level="medium" data-tooltip="المستوى المتوسط">2</div>
         <div class="level-indicator" data-level="hard" data-tooltip="المستوى الصعب">3</div>
         <div class="level-indicator" data-level="impossible" data-tooltip="المستوى المستحيل">4</div>
       </div>
-      <button class="theme-toggle-btn" type="button" data-action="toggleTheme" aria-label="تبديل وضع السطوع والظلام">☀️</button>
+      <button class="theme-toggle-btn" aria-label="تبديل وضع السطوع والظلام" data-action="toggleTheme">☀️</button>
     </div>
 
-    <!-- رأس اللعبة: تفاصيل اللاعب + المساعدات -->
     <header class="game-header">
-      <!-- معلومات اللاعب -->
       <div class="player-info">
         <div class="player-main">
-          <img id="playerAvatar" src="" alt="الصورة الرمزية للاعب" loading="lazy" decoding="async" />
+          <img id="playerAvatar" src="" alt="الصورة الرمزية للاعب" loading="lazy" decoding="async">
           <div class="player-details">
             <span id="playerName" aria-label="اسم اللاعب"></span>
             <span id="playerId" class="player-id"></span>
           </div>
         </div>
-        <div class="player-stats" aria-label="إحصاءات اللاعب">
+        <div class="player-stats">
           <div class="stat-item">النقاط: <strong id="currentScore" aria-live="polite">100</strong></div>
           <div class="stat-item">الأخطاء: <strong id="wrongAnswersCount" aria-live="assertive">0 / 3</strong></div>
           <div class="stat-item">التخطي: <strong id="skipCount">0</strong></div>
         </div>
       </div>
 
-      <!-- المساعدات الثلاثة: 50:50 / تجميد / تخطي -->
-      <div class="helpers" role="group" aria-label="خيارات المساعدة">
-        <button class="helper-btn" data-type="fiftyFifty" aria-describedby="fiftyFiftyDesc">50:50 <span class="helper-cost">(100)</span></button>
-        <button class="helper-btn" data-type="freezeTime" aria-describedby="freezeTimeDesc">❄️ 10ث <span class="helper-cost">(100)</span></button>
-        <button class="helper-btn" data-type="skipQuestion" aria-describedby="skipQuestionDesc">⏭️ تخطي <span id="skipCost" class="helper-cost">(20)</span></button>
+      <div class="helpers" aria-label="خيارات المساعدة">
+        <button class="helper-btn" data-type="fiftyFifty" aria-describedby="fiftyFiftyDesc"><span class="sr-only">مساعدة 50:50</span>50:50<span class="helper-cost">(100)</span></button>
+        <button class="helper-btn" data-type="freezeTime" aria-describedby="freezeTimeDesc"><span class="sr-only">مساعدة تجميد الوقت</span>❄️ 10ث<span class="helper-cost">(100)</span></button>
+        <button class="helper-btn" data-type="skipQuestion" aria-describedby="skipQuestionDesc"><span class="sr-only">تخطي السؤال</span>⏭️ تخطي<span id="skipCost" class="helper-cost">(20)</span></button>
+
+        <!-- ✅ أوصاف مخفية مطابقة لـ aria-describedby -->
+        <span id="fiftyFiftyDesc" class="sr-only">يزيل خيارين خاطئين. الاستخدام مرة واحدة لكل جولة. التكلفة 100 نقطة.</span>
+        <span id="freezeTimeDesc" class="sr-only">يوقف المؤقت 10 ثوانٍ. الاستخدام مرة واحدة لكل جولة. التكلفة 100 نقطة.</span>
+        <span id="skipQuestionDesc" class="sr-only">تخطي السؤال الحالي. السعر يبدأ 20 نقطة ويزداد مع كل استخدام.</span>
       </div>
-      <!-- أوصاف للمساعدات (مقروءة لقارئ الشاشة) -->
-      <p id="fiftyFiftyDesc" class="sr-only">حذف خيارين خاطئين مرة واحدة في كل جولة.</p>
-      <p id="freezeTimeDesc" class="sr-only">تجميد المؤقت لمدة 10 ثوانٍ مرة واحدة في كل جولة.</p>
-      <p id="skipQuestionDesc" class="sr-only">تخطي السؤال الحالي. يتزايد ثمن التخطي 20 نقطة في كل مرة.</p>
     </header>
 
-    <!-- مؤقّت السؤال: شريط تقدّم + عدّاد ثواني -->
     <div class="timer-container" aria-label="مؤقت السؤال">
       <div class="timer-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"></div>
-      <span class="timer-text">30</span>
+      <span id="timer" class="timer-text">30</span>
     </div>
 
-    <!-- منطقة السؤال والخيارات -->
     <div class="main-content">
       <section class="question-box" aria-labelledby="questionCounter">
         <div class="level-badge" id="currentLevelBadge">سهل</div>
-        <h3 id="questionCounter">السؤال 1 من 10</h3>
+        <h3 id="questionCounter">السؤال 1 من 5</h3>
         <p id="questionText" aria-live="polite"></p>
       </section>
-
       <section class="options-container" aria-labelledby="questionText">
         <div class="options-grid" role="group" aria-label="خيارات الإجابة"></div>
       </section>
     </div>
   </main>
 
-  <!-- شاشة نهاية المستوى: تعرض ملخصًا صغيرًا ثم خيار متابعة/انسحاب -->
-  <section id="levelCompleteScreen" class="screen" aria-labelledby="levelCompleteTitle">
+  <div id="levelCompleteScreen" class="screen">
     <div class="content-box">
       <header class="screen-header"><h2 id="levelCompleteTitle">🎉 أكملت المستوى!</h2></header>
       <div class="level-stats">
@@ -261,12 +223,11 @@
         <button class="btn-secondary" data-action="endGame">الانسحاب وعرض النتائج</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- شاشة النهاية: النتائج النهائية + المشاركة + روابط العودة -->
-  <section id="endScreen" class="screen screen--align-top" aria-labelledby="finalTitle">
+  <div id="endScreen" class="screen screen--align-top">
     <div class="content-box">
-      <header class="screen-header"><h2 id="finalTitle">🏆 النتائج النهائية 🏆</h2></header>
+      <header class="screen-header"><h2>🏆 النتائج النهائية 🏆</h2></header>
       <div class="final-stats">
         <p>✍️ الاسم: <strong id="finalName"></strong></p>
         <p>🆔 المعرّف: <strong id="finalId"></strong></p>
@@ -281,11 +242,11 @@
         <p>⏳ متوسط وقت الإجابة: <strong id="finalAvgTime"></strong></p>
         <div class="performance-rating"><span>أداؤك: </span><strong id="performanceText"></strong></div>
       </div>
-      <section class="share-section" aria-labelledby="shareTitle">
-        <h3 id="shareTitle">📢 مشاركة النتائج</h3>
+      <section class="share-section">
+        <h3>📢 مشاركة النتائج</h3>
         <div class="share-buttons">
-          <button class="share-btn x" data-action="shareOnX" type="button">X</button>
-          <button class="share-btn instagram" data-action="shareOnInstagram" type="button">Instagram</button>
+          <button class="share-btn x" data-action="shareOnX">X</button>
+          <button class="share-btn instagram" data-action="shareOnInstagram">Instagram</button>
         </div>
       </section>
       <div class="button-group">
@@ -293,30 +254,40 @@
         <button class="btn-secondary" data-action="showLeaderboard">لوحة الصدارة</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- شاشة لوحة الصدارة -->
-  <section id="leaderboardScreen" class="screen screen--align-top" aria-labelledby="lbTitle">
+  <div id="leaderboardScreen" class="screen screen--align-top">
     <div class="content-box">
-      <header class="screen-header"><h2 id="lbTitle">🏆 لوحة الصدارة 🏆</h2></header>
-      <!-- المحتوى يُحقن ديناميكيًا من السكربت (renderLeaderboard) -->
+      <header class="screen-header"><h2>🏆 لوحة الصدارة 🏆</h2></header>
+     
+      <div class="lb-filters">
+        <select id="lbMode" aria-label="نمط ترتيب اللوحة">
+          <option value="best" selected>أفضل نتيجة (لكل جهاز)</option>
+          <option value="attempt">حسب رقم المحاولة…</option>
+          <option value="accuracy">أعلى دقة</option>
+          <option value="time">أقل وقت</option>
+        </select>
+        <select id="lbAttempt" disabled aria-label="اختر رقم المحاولة">
+          <option value="1">المحاولة 1</option>
+          <option value="2">المحاولة 2</option>
+          <option value="3">المحاولة 3</option>
+          <option value="4">المحاولة 4</option>
+          <option value="5">المحاولة 5</option>
+        </select>
+      </div>
+     
       <div id="leaderboardContent" aria-live="polite"></div>
       <div class="button-group">
         <button class="btn-secondary" data-action="showStartScreen">العودة</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- =============================================================
-       🪟 النوافذ المنبثقة (Modals)
-       تُعرض فوق الشاشات عند الحاجة. جميعها تُدار عبر السكربت بإضافة/إزالة .active
-  ================================================================ -->
-
-  <!-- نافذة تأكيد الخروج/إنهاء المسابقة -->
-  <div id="confirmExitModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmExitTitle" aria-describedby="confirmExitDesc">
+  <!-- MODALS -->
+  <div id="confirmExitModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmExitTitle">
     <div class="modal-content">
       <h3 id="confirmExitTitle">إنهاء المسابقة</h3>
-      <p id="confirmExitDesc">سيتم حفظ نقاطك الحالية. هل ترغب في المتابعة؟</p>
+      <p>سيتم حفظ نقاطك الحالية. هل ترغب في المتابعة؟</p>
       <div class="modal-buttons">
         <button class="btn-main" data-action="endGame">نعم</button>
         <button class="btn-secondary" data-action="closeModal" data-modal-id="confirmExitModal">لا</button>
@@ -324,11 +295,9 @@
     </div>
   </div>
 
-  <!-- نافذة إرسال بلاغ متقدم -->
-  <div id="advancedReportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+  <div id="advancedReportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="advancedReportTitle">
     <div class="modal-content">
-      <h3 id="reportTitle">الإبلاغ عن مشكلة</h3>
-      <!-- النموذج يُرسل إلى Supabase عبر السكربت (handleReportSubmit) -->
+      <h3 id="advancedReportTitle">الإبلاغ عن مشكلة</h3>
       <form id="reportProblemForm">
         <div class="form-group">
           <label for="problemType">نوع المشكلة:</label>
@@ -337,19 +306,43 @@
             <option value="technical">مشكلة تقنية (تجمد، بطء)</option>
             <option value="question_error">خطأ في السؤال أو الإجابة</option>
             <option value="account_issue">مشكلة في الحساب أو النقاط</option>
+            <option value="ui_ux">واجهة/تجربة المستخدم</option>
+            <option value="performance">الأداء/السرعة</option>
             <option value="suggestion">اقتراح لتحسين اللعبة</option>
             <option value="other">أخرى</option>
           </select>
         </div>
+
+        <div class="form-group">
+          <label>أين ظهرت المشكلة؟ (اختياري)</label>
+          <div class="detail-item" style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+            <label><input type="checkbox" name="where[]" value="start"> شاشة البداية</label>
+            <label><input type="checkbox" name="where[]" value="avatar"> اختيار الصورة الرمزية</label>
+            <label><input type="checkbox" name="where[]" value="name"> إدخال الاسم</label>
+            <label><input type="checkbox" name="where[]" value="instructions"> التعليمات</label>
+            <label><input type="checkbox" name="where[]" value="game"> أثناء الأسئلة</label>
+            <label><input type="checkbox" name="where[]" value="leaderboard"> لوحة الصدارة</label>
+            <label><input type="checkbox" name="where[]" value="end"> شاشة النتيجة</label>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="problemDescription">وصف المشكلة:</label>
           <textarea id="problemDescription" name="problemDescription" placeholder="يرجى تقديم تفاصيل دقيقة..." required></textarea>
         </div>
-        <!-- (اختياري لاحقًا) رفع لقطة شاشة -->
-        <!-- <div class="form-group">
-          <label for="reportScreenshot">لقطة شاشة (اختياري):</label>
-          <input type="file" id="reportScreenshot" accept="image/*" />
-        </div> -->
+
+        <div class="form-group">
+          <label for="problemScreenshot">إرفاق صورة/لقطة شاشة (اختياري):</label>
+          <input type="file" id="problemScreenshot" accept="image/*">
+          <div id="reportImagePreview" style="margin-top:.5rem;display:none;">
+            <img alt="معاينة الصورة" style="max-width:100%;border-radius:.5rem;border:1px solid var(--border-color)"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><input type="checkbox" id="includeAutoDiagnostics" checked> إرفاق معلومات التشخيص التلقائي</label>
+        </div>
+
         <div class="modal-buttons">
           <button type="submit" class="btn-main">إرسال البلاغ</button>
           <button type="button" class="btn-secondary" data-action="closeModal" data-modal-id="advancedReportModal">إلغاء</button>
@@ -358,13 +351,11 @@
     </div>
   </div>
 
-  <!-- نافذة محرّر الصورة الرمزية (قص/تعديل) -->
-  <div id="avatarEditorModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="avatarEditTitle">
+  <div id="avatarEditorModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="avatarEditorTitle">
     <div class="modal-content">
-      <h3 id="avatarEditTitle">تعديل الصورة الرمزية</h3>
+      <h3 id="avatarEditorTitle">تعديل الصورة الرمزية</h3>
       <div id="image-editor-container">
-        <!-- تُملأ الصورة عند الرفع عبر FileReader -->
-        <img id="image-to-crop" src="" alt="الصورة المراد قصّها" />
+        <img id="image-to-crop" src="" alt="صورة للتقليم/القص">
       </div>
       <div class="modal-buttons">
         <button class="btn-main" data-action="saveCroppedAvatar">حفظ الصورة</button>
@@ -373,16 +364,15 @@
     </div>
   </div>
 
-  <!-- نافذة كلمة مرور وضع المطوّر -->
-  <div id="devPasswordModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="devPwdTitle" aria-describedby="devPwdDesc">
+  <div id="devPasswordModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="devPasswordTitle">
     <div class="modal-content">
-      <h3 id="devPwdTitle">وضع المطوّر</h3>
-      <p id="devPwdDesc">الرجاء إدخال كلمة المرور لتفعيل وضع المطوّر.</p>
-      <div class="form-group" style="margin:1rem 0 0.5rem;">
+      <h3 id="devPasswordTitle">وضع المطور</h3>
+      <p>الرجاء إدخال كلمة المرور.</p>
+      <div class="form-group" style="margin: 1rem 0 0.5rem;">
         <label for="devPasswordInput" class="sr-only">كلمة المرور</label>
-        <input type="password" id="devPasswordInput" placeholder="كلمة المرور" aria-describedby="devPasswordError" />
+        <input type="password" id="devPasswordInput" placeholder="كلمة المرور" aria-describedby="devPasswordError">
       </div>
-      <div id="devPasswordError" class="error-message" aria-live="assertive"></div>
+      <div id="devPasswordError" class="error-message" aria-live="polite"></div>
       <div class="modal-buttons">
         <button class="btn-main" data-action="checkDevPassword">دخول</button>
         <button class="btn-secondary" data-action="closeModal" data-modal-id="devPasswordModal">إلغاء</button>
@@ -390,29 +380,28 @@
     </div>
   </div>
 
-  <!-- نافذة تفاصيل اللاعب (عند الضغط على عنصر من لوحة الصدارة) -->
   <div id="playerDetailsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="playerDetailsTitle">
     <div class="modal-content">
       <header class="player-details-header">
-        <img id="detailsAvatar" src="" alt="صورة اللاعب" class="player-details-avatar" />
+        <img id="detailsAvatar" src="" alt="صورة اللاعب الرمزية" class="player-details-avatar">
         <h3 id="playerDetailsTitle">تفاصيل اللاعب</h3>
+        <span id="detailsName"></span>
         <span id="detailsPlayerId" class="player-id"></span>
-        <h4 id="detailsName"></h4>
       </header>
-      <div id="playerDetailsContent" class="player-details-body"><!-- يُملأ من السكربت --></div>
+      <div id="playerDetailsContent" class="player-details-body"></div>
       <div class="modal-buttons">
         <button class="btn-secondary" data-action="closeModal" data-modal-id="playerDetailsModal">إغلاق</button>
       </div>
     </div>
   </div>
 
-  <!-- =============================================================
-       📦 المكتبات الخارجية (يجب أن تُحمّل قبل script.js إن كان السكربت يعتمد عليها)
-  ================================================================ -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" integrity="sha512-Xt0bTz3bVv9q7VhWQe2a9x5z3wWb2h0W1Q2jO7gk3i8mJEL6mJ9b0r0tS3Xc8eQZcYk2vYw6mK1Xv7w1M7q2Wg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- External Libraries (deferred to load before script.js) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" defer></script>
 
-  <!-- ملف وظائف الواجهة (يحتوي على كل منطق اللعبة وإدارة الحالة) -->
-  <script src="script.js" defer></script>
+  <!-- ✅ Supabase v2 UMD (يوفّر window.supabase بدون type=module) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
+
+  <!-- App JS -->
+  <script src="script.js?v=18" defer></script>
 </body>
 </html>
